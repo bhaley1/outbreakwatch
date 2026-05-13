@@ -1,0 +1,108 @@
+name: Update ProMED Feed
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  update-feed:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Fetch and Parse RSS Feed
+        run: |
+          python3 << 'EOF'
+          import urllib.request
+          import xml.etree.ElementTree as ET
+          import json
+          from datetime import datetime
+          import html
+          import re
+          
+          try:
+              with urllib.request.urlopen('https://promedmail.org/feed/') as response:
+                  xml_data = response.read()
+              
+              root = ET.fromstring(xml_data)
+              items = []
+              
+              for item in root.findall('./channel/item')[:50]:
+                  title = item.find('title')
+                  link = item.find('link')
+                  pub_date = item.find('pubDate')
+                  description = item.find('description')
+                  
+                  title_text = title.text if title is not None and title.text else 'Untitled'
+                  link_text = link.text if link is not None and link.text else ''
+                  pub_date_text = pub_date.text if pub_date is not None and pub_date.text else ''
+                  desc_text = description.text if description is not None and description.text else ''
+                  
+                  desc_clean = html.unescape(desc_text)
+                  desc_clean = re.sub('<[^>]+>', '', desc_clean)
+                  desc_clean = desc_clean.strip()[:300]
+                  
+                  content_lower = (title_text + ' ' + desc_clean).lower()
+                  category = 'human'
+                  
+                  if any(word in content_lower for word in ['animal', 'livestock', 'cattle', 'poultry', 'swine', 'pig', 'chicken', 'avian', 'bird', 'wildlife']):
+                      category = 'animal'
+                  elif any(word in content_lower for word in ['plant', 'crop', 'agriculture', 'wheat', 'rice']):
+                      category = 'plant'
+                  
+                  items.append({
+                      'title': title_text,
+                      'link': link_text,
+                      'pubDate': pub_date_text,
+                      'description': desc_clean,
+                      'category': category
+                  })
+              
+              output = {
+                  'items': items,
+                  'updated': datetime.utcnow().isoformat() + 'Z',
+                  'count': len(items)
+              }
+              
+              with open('feed.json', 'w', encoding='utf-8') as f:
+                  json.dump(output, f, indent=2, ensure_ascii=False)
+              
+              print(f"Successfully fetched {len(items)} items")
+              
+          except Exception as e:
+              print(f"Error: {e}")
+              output = {
+                  'items': [],
+                  'updated': datetime.utcnow().isoformat() + 'Z',
+                  'count': 0,
+                  'error': str(e)
+              }
+              with open('feed.json', 'w', encoding='utf-8') as f:
+                  json.dump(output, f, indent=2)
+          EOF
+      
+      - name: Commit and Push if Changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add feed.json
+          
+          if git diff --staged --quiet; then
+            echo "No changes to feed.json"
+          else
+            git commit -m "Update ProMED feed data - $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git push
+            echo "Feed updated successfully"
+          fi
