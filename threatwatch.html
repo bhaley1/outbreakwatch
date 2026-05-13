@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ThreatWatch — Early Warning Dashboard</title>
+<meta name="description" content="Automated early warning system for emerging biological threats based on global disease surveillance data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#1a1814;--ink-2:#4a4640;--ink-3:#8a8480;
+  --paper:#faf8f4;--paper-2:#f2efe8;--paper-3:#e8e4db;
+  --rule:rgba(26,24,20,0.12);--rule-2:rgba(26,24,20,0.06);
+  --red:#8b1a1a;--red-2:#a02020;--red-light:#fdf0f0;
+  --orange:#d97706;--orange-light:#fff3e0;
+  --yellow:#eab308;--yellow-light:#fefce8;
+  --blue:#1a4d8f;--blue-light:#e8eff8;
+  --green:#1a6b3c;--green-light:#e8f5ee;
+  --radius:4px;--radius-lg:10px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.7;min-height:100vh;}
+
+/* Header with tabs */
+header{border-bottom:1px solid var(--rule);padding:0 2rem;background:white;position:sticky;top:0;z-index:200;box-shadow:0 1px 8px rgba(0,0,0,0.04);}
+.header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;}
+.logo{font-family:'Lora',serif;font-size:20px;font-weight:600;letter-spacing:-0.02em;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:10px;}
+.logo-icon{width:32px;height:32px;background:var(--red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.logo span{color:var(--red);}
+.header-nav{display:flex;align-items:center;gap:2rem;}
+.nav-tabs{display:flex;gap:0;}
+.nav-tab{padding:8px 20px;border:1px solid var(--rule);background:var(--paper-2);color:var(--ink-2);font-size:14px;font-weight:500;text-decoration:none;transition:all 0.15s;border-radius:0;}
+.nav-tab:first-child{border-radius:var(--radius) 0 0 var(--radius);}
+.nav-tab:last-child{border-radius:0 var(--radius) var(--radius) 0;}
+.nav-tab.active{background:var(--red);color:white;border-color:var(--red);}
+.nav-tab:hover:not(.active){background:var(--paper);color:var(--ink);}
+.header-by{font-size:12px;color:var(--ink-3);}
+.header-by a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;}
+
+/* Hero */
+.hero{padding:3rem 2rem 2.5rem;background:linear-gradient(160deg,#fdf0f0 0%,#fff3e0 50%,#fdf4f4 100%);border-bottom:1px solid var(--rule);text-align:center;}
+.hero-eyebrow{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:10px;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:28px;height:1px;background:var(--red);opacity:0.4;}
+.hero h1{font-family:'Lora',serif;font-size:clamp(1.75rem,4vw,2.5rem);font-weight:600;line-height:1.15;letter-spacing:-0.025em;margin-bottom:0.75rem;}
+.hero h1 em{font-style:italic;color:var(--red);}
+.hero-sub{font-size:15px;color:var(--ink-2);max-width:600px;margin:0 auto 1.5rem;font-weight:300;}
+
+/* Main */
+main{max-width:1400px;margin:0 auto;padding:2rem;}
+
+/* Status Banner */
+.status-banner{background:var(--green-light);border:1px solid var(--green);border-radius:var(--radius-lg);padding:1rem 1.5rem;margin-bottom:2rem;display:flex;align-items:center;gap:12px;}
+.status-icon{font-size:20px;}
+.status-text{font-size:14px;color:var(--green);font-weight:500;}
+
+/* Alert Grid */
+.alert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:1.25rem;margin-bottom:3rem;}
+.alert-card{background:white;border:1px solid var(--rule);border-radius:var(--radius-lg);padding:1.5rem;transition:all 0.2s;position:relative;overflow:hidden;}
+.alert-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+.alert-critical{border-color:rgba(139,26,26,0.3);}
+.alert-critical::before{background:var(--red);}
+.alert-elevated{border-color:rgba(217,119,6,0.3);}
+.alert-elevated::before{background:var(--orange);}
+.alert-moderate{border-color:rgba(234,179,8,0.3);}
+.alert-moderate::before{background:var(--yellow);}
+.alert-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.08);}
+
+.alert-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;}
+.alert-severity{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:99px;}
+.severity-critical{background:var(--red-light);color:var(--red);}
+.severity-elevated{background:var(--orange-light);color:var(--orange);}
+.severity-moderate{background:var(--yellow-light);color:#a16207;}
+
+.alert-title{font-size:17px;font-weight:600;color:var(--ink);margin-bottom:6px;line-height:1.3;}
+.alert-location{font-size:13px;color:var(--ink-3);margin-bottom:0.75rem;}
+.alert-indicators{margin-bottom:1rem;}
+.alert-indicator{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2);margin-bottom:4px;}
+.indicator-icon{font-size:14px;}
+.alert-source{font-size:12px;color:var(--ink-3);}
+.alert-time{font-size:12px;color:var(--ink-3);margin-left:8px;}
+
+/* Analytics Section */
+.analytics-section{margin-bottom:3rem;}
+.analytics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;}
+.analytics-card{background:white;border:1px solid var(--rule);border-radius:var(--radius-lg);padding:1.5rem;}
+.analytics-title{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:1rem;}
+.trend-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--rule-2);}
+.trend-item:last-child{border-bottom:none;}
+.trend-name{font-size:14px;color:var(--ink-2);}
+.trend-change{font-size:13px;font-weight:600;}
+.trend-up{color:var(--red);}
+.trend-down{color:var(--green);}
+.trend-stable{color:var(--ink-3);}
+
+/* Empty State */
+.empty-state{text-align:center;padding:4rem 2rem;color:var(--ink-3);}
+.empty-icon{font-size:48px;margin-bottom:1rem;opacity:0.4;}
+.empty-title{font-size:18px;font-weight:600;margin-bottom:0.5rem;}
+.empty-desc{font-size:14px;line-height:1.6;}
+
+/* Footer */
+footer{border-top:1px solid var(--rule);padding:2rem;text-align:center;background:white;margin-top:3rem;}
+footer p{font-size:12px;color:var(--ink-3);}
+footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;}
+
+.home-btn{position:fixed;bottom:1.5rem;right:1.5rem;width:48px;height:48px;border-radius:50%;background:#1a1814;color:white;display:flex;align-items:center;justify-content:center;font-size:20px;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,0.2);transition:all 0.2s;z-index:999;}
+.home-btn:hover{background:#8b1a1a;transform:scale(1.08);}
+
+@media(max-width:700px){
+  main{padding:1rem;}
+  .alert-grid{grid-template-columns:1fr;}
+  .analytics-grid{grid-template-columns:1fr;}
+  .nav-tabs{flex-direction:column;width:100%;}
+  .nav-tab{border-radius:0;border-bottom:none;}
+  .nav-tab:last-child{border-bottom:1px solid var(--rule);}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="https://bhaley1.github.io/outbreakwatch/">
+      <div class="logo-icon">🌍</div>
+      Outbreak<span>Watch</span>
+    </a>
+    <div class="header-nav">
+      <div class="nav-tabs">
+        <a class="nav-tab" href="https://bhaley1.github.io/outbreakwatch/">Browse</a>
+        <a class="nav-tab active" href="#">ThreatWatch</a>
+      </div>
+      <span class="header-by">Part of <a href="https://bhaley1.github.io/scivoice/" target="_blank">SciVoice</a></span>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-eyebrow">Automated Early Warning System</div>
+  <h1>Identifying emerging <em>biological threats</em><br>in real-time.</h1>
+  <p class="hero-sub">Algorithmic analysis of global disease surveillance data to detect concerning epidemiological patterns and emerging threats.</p>
+</section>
+
+<main>
+  <div class="status-banner">
+    <span class="status-icon">✅</span>
+    <div class="status-text">
+      <strong>System Active:</strong> Monitoring WHO, CDC, ProMED, and 5 other networks. Last updated: <span id="lastUpdated">Loading...</span>
+    </div>
+  </div>
+
+  <div class="alert-grid" id="alertsGrid">
+    <div class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <div class="empty-title">Analyzing Threat Data</div>
+      <div class="empty-desc">ThreatWatch is processing the latest surveillance reports to identify emerging biological threats...</div>
+    </div>
+  </div>
+
+  <div class="analytics-section">
+    <div class="analytics-grid">
+      <div class="analytics-card">
+        <div class="analytics-title">🦠 Pathogen Trends (7 days)</div>
+        <div id="pathogenTrends">
+          <div class="trend-item">
+            <span class="trend-name">Analyzing patterns...</span>
+            <span class="trend-change trend-stable">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="analytics-card">
+        <div class="analytics-title">🌍 Geographic Activity</div>
+        <div id="geoTrends">
+          <div class="trend-item">
+            <span class="trend-name">Processing locations...</span>
+            <span class="trend-change trend-stable">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="analytics-card">
+        <div class="analytics-title">⚠️ Threat Indicators</div>
+        <div id="threatIndicators">
+          <div class="trend-item">
+            <span class="trend-name">Evaluating threats...</span>
+            <span class="trend-change trend-stable">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>ThreatWatch analyzes data from WHO, CDC, ProMED, and other authoritative sources. For immediate health emergencies, contact local health authorities. Part of <a href="https://bhaley1.github.io/scivoice/" target="_blank">SciVoice</a> · <a href="https://github.com/bhaley1/scivoice/issues" target="_blank">Feedback</a></p>
+</footer>
+
+<a href="https://bhaley1.github.io/scivoice/" class="home-btn" aria-label="Back to SciVoice" title="Back to SciVoice">🏠</a>
+
+<script>
+// ThreatWatch Analysis Engine
+let threatData = [];
+let lastAnalysis = null;
+
+// Threat Keywords and Scoring
+const THREAT_KEYWORDS = {
+  critical: {
+    keywords: ["novel strain", "unknown pathogen", "pandemic potential", "human-to-human", "high mortality", "airborne transmission"],
+    score: 10
+  },
+  pathogens: {
+    h5n1: ["H5N1", "avian influenza", "bird flu"],
+    h7n9: ["H7N9", "avian flu"],
+    mers: ["MERS", "Middle East Respiratory"],
+    novel_corona: ["novel coronavirus", "unknown coronavirus", "new coronavirus"],
+    hemorrhagic: ["Ebola", "Marburg", "hemorrhagic fever"],
+    resistance: ["multi-drug resistant", "extensively drug-resistant", "XDR", "pandrug-resistant"]
+  },
+  severity: {
+    keywords: ["high case fatality", "mortality rate", "severe disease", "intensive care"],
+    score: 8
+  },
+  spread: {
+    keywords: ["rapid spread", "exponential growth", "community transmission", "superspreader"],
+    score: 6
+  },
+  resistance: {
+    keywords: ["antibiotic resistance", "treatment failure", "no effective treatment"],
+    score: 7
+  }
+};
+
+const HIGH_RISK_REGIONS = [
+  "China", "Russia", "Iran", "North Korea", 
+  "Democratic Republic of Congo", "Guinea", "Liberia", "Sierra Leone",
+  "Middle East", "Central Asia", "Southeast Asia"
+];
+
+// Load and analyze threat data
+async function loadThreatData() {
+  try {
+    // Get data from main OutbreakWatch feed
+    const response = await fetch('https://bhaley1.github.io/outbreakwatch/feed.json');
+    const data = await response.json();
+    
+    threatData = data.items || [];
+    lastAnalysis = new Date();
+    
+    document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString();
+    
+    analyzeThreats();
+    
+  } catch (error) {
+    console.error('Error loading threat data:', error);
+    showError();
+  }
+}
+
+function analyzeThreats() {
+  const threats = [];
+  const pathogenCounts = {};
+  const geoCounts = {};
+  const indicators = {
+    novel_pathogens: 0,
+    high_mortality: 0,
+    resistance_reports: 0,
+    rapid_spread: 0
+  };
+  
+  threatData.forEach(item => {
+    const threat = analyzeSingleThreat(item);
+    if (threat.score >= 5) {
+      threats.push(threat);
+    }
+    
+    // Count patterns for analytics
+    updateAnalytics(threat, pathogenCounts, geoCounts, indicators);
+  });
+  
+  // Sort by threat score
+  threats.sort((a, b) => b.score - a.score);
+  
+  renderThreatAlerts(threats);
+  renderAnalytics(pathogenCounts, geoCounts, indicators);
+}
+
+function analyzeSingleThreat(item) {
+  const content = (item.title + ' ' + item.description).toLowerCase();
+  let score = 0;
+  let indicators = [];
+  let severity = 'moderate';
+  
+  // Critical pathogen detection
+  Object.entries(THREAT_KEYWORDS.pathogens).forEach(([type, keywords]) => {
+    keywords.forEach(keyword => {
+      if (content.includes(keyword.toLowerCase())) {
+        score += 8;
+        indicators.push(`${keyword} detected`);
+      }
+    });
+  });
+  
+  // Critical keywords
+  THREAT_KEYWORDS.critical.keywords.forEach(keyword => {
+    if (content.includes(keyword)) {
+      score += THREAT_KEYWORDS.critical.score;
+      indicators.push(`High-risk: ${keyword}`);
+    }
+  });
+  
+  // Severity indicators
+  THREAT_KEYWORDS.severity.keywords.forEach(keyword => {
+    if (content.includes(keyword)) {
+      score += THREAT_KEYWORDS.severity.score;
+      indicators.push(`Severity: ${keyword}`);
+    }
+  });
+  
+  // Spread patterns
+  THREAT_KEYWORDS.spread.keywords.forEach(keyword => {
+    if (content.includes(keyword)) {
+      score += THREAT_KEYWORDS.spread.score;
+      indicators.push(`Transmission: ${keyword}`);
+    }
+  });
+  
+  // Resistance concerns
+  THREAT_KEYWORDS.resistance.keywords.forEach(keyword => {
+    if (content.includes(keyword)) {
+      score += THREAT_KEYWORDS.resistance.score;
+      indicators.push(`Resistance: ${keyword}`);
+    }
+  });
+  
+  // Geographic risk
+  HIGH_RISK_REGIONS.forEach(region => {
+    if (content.includes(region.toLowerCase())) {
+      score += 3;
+      indicators.push(`High-risk region: ${region}`);
+    }
+  });
+  
+  // Determine severity level
+  if (score >= 15) severity = 'critical';
+  else if (score >= 10) severity = 'elevated';
+  
+  return {
+    ...item,
+    score,
+    indicators,
+    severity,
+    analyzed: true
+  };
+}
+
+function updateAnalytics(threat, pathogenCounts, geoCounts, indicators) {
+  const content = (threat.title + ' ' + threat.description).toLowerCase();
+  
+  // Count novel pathogen mentions
+  if (content.includes('novel') || content.includes('unknown') || content.includes('new strain')) {
+    indicators.novel_pathogens++;
+  }
+  
+  // Count high mortality
+  if (content.includes('mortality') || content.includes('fatal') || content.includes('death')) {
+    indicators.high_mortality++;
+  }
+  
+  // Count resistance
+  if (content.includes('resistant') || content.includes('resistance')) {
+    indicators.resistance_reports++;
+  }
+  
+  // Count rapid spread
+  if (content.includes('rapid') || content.includes('outbreak') || content.includes('epidemic')) {
+    indicators.rapid_spread++;
+  }
+  
+  // Extract locations for geographic analysis
+  HIGH_RISK_REGIONS.forEach(region => {
+    if (content.includes(region.toLowerCase())) {
+      geoCounts[region] = (geoCounts[region] || 0) + 1;
+    }
+  });
+}
+
+function renderThreatAlerts(threats) {
+  const grid = document.getElementById('alertsGrid');
+  
+  if (threats.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">✅</div>
+        <div class="empty-title">No Critical Threats Detected</div>
+        <div class="empty-desc">Current surveillance data shows no immediate biological threats meeting alert criteria. Monitoring continues.</div>
+      </div>
+    `;
+    return;
+  }
+  
+  grid.innerHTML = threats.slice(0, 6).map(threat => `
+    <div class="alert-card alert-${threat.severity}">
+      <div class="alert-header">
+        <span class="alert-severity severity-${threat.severity}">${threat.severity.toUpperCase()}</span>
+      </div>
+      <div class="alert-title">${threat.title}</div>
+      <div class="alert-location">📍 ${extractLocation(threat.description)}</div>
+      <div class="alert-indicators">
+        ${threat.indicators.slice(0, 3).map(indicator => `
+          <div class="alert-indicator">
+            <span class="indicator-icon">⚠️</span>
+            <span>${indicator}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span class="alert-source">Score: ${threat.score}</span>
+        <span class="alert-time">${new Date(threat.pubDate).toLocaleDateString()}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderAnalytics(pathogenCounts, geoCounts, indicators) {
+  // Pathogen trends
+  const pathogenHtml = Object.entries(indicators).map(([key, count]) => `
+    <div class="trend-item">
+      <span class="trend-name">${formatIndicatorName(key)}</span>
+      <span class="trend-change ${getTrendClass(count)}">${count} reports</span>
+    </div>
+  `).join('');
+  document.getElementById('pathogenTrends').innerHTML = pathogenHtml;
+  
+  // Geographic trends
+  const geoHtml = Object.entries(geoCounts).slice(0, 5).map(([region, count]) => `
+    <div class="trend-item">
+      <span class="trend-name">${region}</span>
+      <span class="trend-change ${getTrendClass(count)}">${count} reports</span>
+    </div>
+  `).join('') || '<div class="trend-item"><span class="trend-name">No high-risk regions</span><span class="trend-change trend-stable">—</span></div>';
+  document.getElementById('geoTrends').innerHTML = geoHtml;
+  
+  // Threat indicators
+  const totalThreats = threatData.filter(t => t.score >= 5).length;
+  const criticalThreats = threatData.filter(t => t.score >= 15).length;
+  
+  document.getElementById('threatIndicators').innerHTML = `
+    <div class="trend-item">
+      <span class="trend-name">Critical threats</span>
+      <span class="trend-change ${getTrendClass(criticalThreats)}">${criticalThreats}</span>
+    </div>
+    <div class="trend-item">
+      <span class="trend-name">Total alerts</span>
+      <span class="trend-change ${getTrendClass(totalThreats)}">${totalThreats}</span>
+    </div>
+  `;
+}
+
+function extractLocation(text) {
+  // Simple location extraction
+  const locations = HIGH_RISK_REGIONS.find(region => 
+    text.toLowerCase().includes(region.toLowerCase())
+  );
+  return locations || 'Location TBD';
+}
+
+function formatIndicatorName(key) {
+  return key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+}
+
+function getTrendClass(count) {
+  if (count >= 3) return 'trend-up';
+  if (count >= 1) return 'trend-stable';
+  return 'trend-down';
+}
+
+function showError() {
+  document.getElementById('alertsGrid').innerHTML = `
+    <div class="empty-state">
+      <div class="empty-icon">⚠️</div>
+      <div class="empty-title">Data Loading Error</div>
+      <div class="empty-desc">Unable to connect to surveillance data. Please check your connection and try again.</div>
+    </div>
+  `;
+}
+
+// Initialize
+loadThreatData();
+
+// Refresh every 10 minutes
+setInterval(loadThreatData, 10 * 60 * 1000);
+</script>
+
+</body>
+</html>
