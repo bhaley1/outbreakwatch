@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OutbreakWatch — Live Global Disease Surveillance</title>
-<meta name="description" content="Real-time tracking of global disease outbreaks from ProMED-mail. Free, no account needed.">
+<title>OutbreakWatch — Global Disease Surveillance Hub</title>
+<meta name="description" content="Your gateway to authoritative global disease outbreak information from WHO, CDC, and other public health organizations.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -18,6 +18,7 @@
   --red:#8b1a1a;--red-2:#a02020;--red-light:#fdf0f0;
   --orange:#d97706;--orange-light:#fff3e0;
   --blue:#1a4d8f;--blue-light:#e8eff8;
+  --green:#1a6b3c;--green-light:#e8f5ee;
   --radius:4px;--radius-lg:10px;
 }
 html{scroll-behavior:smooth;}
@@ -25,7 +26,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
 
 /* Header */
 header{border-bottom:1px solid var(--rule);padding:0 2rem;background:white;position:sticky;top:0;z-index:200;box-shadow:0 1px 8px rgba(0,0,0,0.04);}
-.header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;}
+.header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;}
 .logo{font-family:'Lora',serif;font-size:20px;font-weight:600;letter-spacing:-0.02em;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:10px;}
 .logo-icon{width:32px;height:32px;background:var(--red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}
 .logo span{color:var(--red);}
@@ -39,57 +40,32 @@ header{border-bottom:1px solid var(--rule);padding:0 2rem;background:white;posit
 .hero h1{font-family:'Lora',serif;font-size:clamp(2rem,4vw,2.75rem);font-weight:600;line-height:1.15;letter-spacing:-0.025em;margin-bottom:0.75rem;}
 .hero h1 em{font-style:italic;color:var(--red);}
 .hero-sub{font-size:15px;color:var(--ink-2);max-width:600px;margin:0 auto 1.5rem;font-weight:300;}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;background:white;border:1px solid var(--rule);border-radius:99px;padding:6px 16px;font-size:13px;color:var(--ink-2);}
-.pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulse 2s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
 
 /* Main */
-main{max-width:1400px;margin:0 auto;padding:2rem;}
+main{max-width:1200px;margin:0 auto;padding:2.5rem 2rem 4rem;}
 
-/* Stats Bar */
-.stats-bar{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;padding:1.5rem;background:white;border:1px solid var(--rule);border-radius:var(--radius-lg);}
-.stat{text-align:center;}
-.stat-num{font-family:'Lora',serif;font-size:1.75rem;font-weight:600;color:var(--red);line-height:1;}
-.stat-label{font-size:12px;color:var(--ink-3);letter-spacing:0.04em;text-transform:uppercase;margin-top:4px;}
+.section-heading{margin-bottom:1.5rem;}
+.section-heading h2{font-family:'Lora',serif;font-size:1.5rem;font-weight:600;color:var(--ink);margin-bottom:6px;}
+.section-heading p{font-size:14px;color:var(--ink-3);line-height:1.6;}
 
-/* Filters */
-.filters{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;align-items:center;}
-.filter-label{font-size:13px;font-weight:500;color:var(--ink-3);}
-.filter-btn{padding:6px 14px;border-radius:99px;border:1.5px solid var(--rule);background:var(--paper);color:var(--ink-2);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;}
-.filter-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-light);}
-.filter-btn.active{background:var(--red);color:white;border-color:var(--red);}
-.search-box{flex:1;min-width:250px;}
-.search-input{width:100%;padding:8px 16px;border:1.5px solid var(--rule);border-radius:99px;font-size:13px;font-family:'DM Sans',sans-serif;background:white;}
-.search-input:focus{outline:none;border-color:var(--red);}
-
-/* Feed */
-.feed-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
-.feed-header h2{font-family:'Lora',serif;font-size:1.25rem;font-weight:600;color:var(--ink);}
-.refresh-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:white;border:1.5px solid var(--rule);border-radius:99px;font-size:13px;font-weight:500;color:var(--ink-2);cursor:pointer;transition:all 0.15s;}
-.refresh-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-light);}
-.refresh-icon{font-size:14px;transition:transform 0.3s;}
-.refresh-btn:hover .refresh-icon{transform:rotate(180deg);}
-
-.feed{display:grid;gap:1rem;}
-.feed-item{background:white;border:1px solid var(--rule);border-radius:var(--radius-lg);padding:1.25rem;transition:all 0.2s;cursor:pointer;}
-.feed-item:hover{border-color:rgba(26,24,20,0.25);box-shadow:0 4px 16px rgba(0,0,0,0.06);transform:translateY(-1px);}
-.feed-item-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:0.75rem;}
-.feed-title{font-size:16px;font-weight:600;color:var(--ink);line-height:1.4;flex:1;}
-.feed-date{font-size:12px;color:var(--ink-3);white-space:nowrap;}
-.feed-excerpt{font-size:14px;color:var(--ink-2);line-height:1.6;margin-bottom:0.75rem;}
-.feed-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.feed-tag{font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:var(--orange-light);color:var(--orange);}
-.feed-link{font-size:13px;color:var(--blue);text-decoration:none;font-weight:500;}
-.feed-link:hover{text-decoration:underline;}
-
-/* Loading & Empty States */
-.loading{text-align:center;padding:3rem;color:var(--ink-3);font-size:14px;}
-.loading-spinner{display:inline-block;width:24px;height:24px;border:3px solid var(--rule);border-top-color:var(--red);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:0.75rem;}
-@keyframes spin{to{transform:rotate(360deg);}}
-.empty{text-align:center;padding:3rem;color:var(--ink-3);font-size:14px;}
+.source-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;margin-bottom:3rem;}
+.source-card{background:white;border:1px solid var(--rule);border-radius:var(--radius-lg);padding:1.5rem;transition:all 0.2s;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:12px;}
+.source-card:hover{border-color:rgba(26,24,20,0.25);box-shadow:0 4px 16px rgba(0,0,0,0.08);transform:translateY(-2px);}
+.source-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.source-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.icon-who{background:var(--blue-light);color:var(--blue);}
+.icon-cdc{background:var(--orange-light);color:var(--orange);}
+.icon-promed{background:var(--green-light);color:var(--green);}
+.icon-healthmap{background:var(--paper-3);color:var(--ink-2);}
+.source-badge{font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:var(--paper-2);color:var(--ink-3);}
+.source-name{font-size:17px;font-weight:600;color:var(--ink);line-height:1.3;}
+.source-org{font-size:12px;color:var(--ink-3);margin-top:-4px;}
+.source-desc{font-size:14px;color:var(--ink-2);line-height:1.6;flex:1;}
+.source-arrow{font-size:18px;color:var(--ink-3);align-self:flex-end;transition:transform 0.15s;}
+.source-card:hover .source-arrow{transform:translateX(4px);}
 
 /* Footer */
-footer{border-top:1px solid var(--rule);padding:2rem;text-align:center;background:white;margin-top:3rem;}
+footer{border-top:1px solid var(--rule);padding:2rem;text-align:center;background:white;}
 footer p{font-size:12px;color:var(--ink-3);}
 footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;}
 
@@ -97,10 +73,8 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
 .home-btn:hover{background:#8b1a1a;transform:scale(1.08);}
 
 @media(max-width:700px){
-  main{padding:1rem;}
-  .filters{flex-direction:column;align-items:stretch;}
-  .search-box{min-width:100%;}
-  .stats-bar{flex-direction:column;gap:1rem;}
+  main{padding:1.5rem 1rem 3rem;}
+  .source-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -117,209 +91,120 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
 </header>
 
 <section class="hero">
-  <div class="hero-eyebrow">Live Global Disease Surveillance</div>
-  <h1>Track emerging <em>outbreaks</em><br>as they happen.</h1>
-  <p class="hero-sub">Real-time disease surveillance from ProMED-mail — the world's largest openly available outbreak reporting system.</p>
-  <div class="hero-badge">
-    <span class="pulse-dot"></span>
-    <span>Live updates from ProMED-mail</span>
-  </div>
+  <div class="hero-eyebrow">Global Disease Surveillance Hub</div>
+  <h1>Your gateway to <em>authoritative</em><br>outbreak information.</h1>
+  <p class="hero-sub">Direct links to the world's most trusted disease surveillance systems — WHO, CDC, ProMED, and more.</p>
 </section>
 
 <main>
-  <div class="stats-bar">
-    <div class="stat">
-      <div class="stat-num" id="statTotal">—</div>
-      <div class="stat-label">Reports Today</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num" id="statCountries">—</div>
-      <div class="stat-label">Countries</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num" id="statUpdated">—</div>
-      <div class="stat-label">Last Updated</div>
-    </div>
+  <div class="section-heading">
+    <h2>Primary Surveillance Networks</h2>
+    <p>Official outbreak reporting from leading global health organizations</p>
+  </div>
+  
+  <div class="source-grid">
+    <a class="source-card" href="https://www.who.int/emergencies/disease-outbreak-news" target="_blank">
+      <div class="source-header">
+        <div class="source-icon icon-who">🏥</div>
+        <span class="source-badge">Official</span>
+      </div>
+      <div class="source-name">Disease Outbreak News</div>
+      <div class="source-org">World Health Organization</div>
+      <div class="source-desc">Official WHO reports on confirmed and potential acute public health events of international concern across all hazards.</div>
+      <div class="source-arrow">→</div>
+    </a>
+
+    <a class="source-card" href="https://www.cdc.gov/outbreaks/index.html" target="_blank">
+      <div class="source-header">
+        <div class="source-icon icon-cdc">🦠</div>
+        <span class="source-badge">Official</span>
+      </div>
+      <div class="source-name">Current Outbreak List</div>
+      <div class="source-org">U.S. Centers for Disease Control</div>
+      <div class="source-desc">Active infectious disease outbreaks currently being investigated and reported by CDC, with guidance for travelers and healthcare professionals.</div>
+      <div class="source-arrow">→</div>
+    </a>
+
+    <a class="source-card" href="https://www.promedmail.org/" target="_blank">
+      <div class="source-header">
+        <div class="source-icon icon-promed">📧</div>
+        <span class="source-badge">Curated</span>
+      </div>
+      <div class="source-name">ProMED-mail</div>
+      <div class="source-org">International Society for Infectious Diseases</div>
+      <div class="source-desc">Human expert-curated outbreak reports covering emerging infectious diseases in humans, animals, and plants. 31 years of historical data.</div>
+      <div class="source-arrow">→</div>
+    </a>
+
+    <a class="source-card" href="https://healthmap.org/en/" target="_blank">
+      <div class="source-header">
+        <div class="source-icon icon-healthmap">🗺️</div>
+        <span class="source-badge">Real-time</span>
+      </div>
+      <div class="source-name">HealthMap</div>
+      <div class="source-org">Boston Children's Hospital</div>
+      <div class="source-desc">Real-time intelligence on emerging infectious diseases using online informal sources. Interactive global disease outbreak map.</div>
+      <div class="source-arrow">→</div>
+    </a>
   </div>
 
-  <div class="filters">
-    <span class="filter-label">Filter:</span>
-    <button class="filter-btn active" data-filter="all">All Reports</button>
-    <button class="filter-btn" data-filter="human">Human Health</button>
-    <button class="filter-btn" data-filter="animal">Animal Health</button>
-    <button class="filter-btn" data-filter="plant">Plant Health</button>
-    <div class="search-box">
-      <input type="text" class="search-input" id="searchInput" placeholder="Search by disease, country, or keyword...">
-    </div>
+  <div class="section-heading">
+    <h2>Regional & Specialized Networks</h2>
+    <p>Focused surveillance for specific regions and disease types</p>
   </div>
 
-  <div class="feed-header">
-    <h2>Latest Reports</h2>
-    <button class="refresh-btn" onclick="loadFeed()">
-      <span class="refresh-icon">↻</span>
-      <span>Refresh</span>
-    </button>
-  </div>
+  <div class="source-grid">
+    <a class="source-card" href="https://www.ecdc.europa.eu/en/threats-and-outbreaks/reports-and-data/weekly-threats" target="_blank">
+      <div class="source-header">
+        <div class="source-icon icon-who">🇪🇺</div>
+        <span class="source-badge">Regional</span>
+      </div>
+      <div class="source-name">Communicable Disease Threats Report</div>
+      <div class="source-org">European Centre for Disease Prevention</div>
+      <div class="source-desc">Weekly bulletin for epidemiologists on active public health threats in Europe and internationally.</div>
+      <div class="source-arrow">→</div>
+    </a>
 
-  <div class="feed" id="feed">
-    <div class="loading">
-      <div class="loading-spinner"></div>
-      <div>Loading latest outbreak reports...</div>
-    </div>
+    <a class="source-card" href="https://www.paho.org/en/epidemiological-alerts-and-updates" target="_blank">
+      <div class="source-header">
+        <div class="source-icon icon-cdc">🌎</div>
+        <span class="source-badge">Regional</span>
+      </div>
+      <div class="source-name">Epidemiological Alerts</div>
+      <div class="source-org">Pan American Health Organization</div>
+      <div class="source-desc">Disease alerts and updates for the Americas region, covering Latin America and the Caribbean.</div>
+      <div class="source-arrow">→</div>
+    </a>
+
+    <a class="source-card" href="https://www.woah.org/en/what-we-do/animal-health-and-welfare/disease-data-collection/" target="_blank">
+      <div class="source-header">
+        <div class="source-icon icon-promed">🐄</div>
+        <span class="source-badge">Animal Health</span>
+      </div>
+      <div class="source-name">Disease Information System</div>
+      <div class="source-org">World Organisation for Animal Health</div>
+      <div class="source-desc">Global animal disease surveillance including zoonotic diseases with pandemic potential.</div>
+      <div class="source-arrow">→</div>
+    </a>
+
+    <a class="source-card" href="https://gisaid.org/" target="_blank">
+      <div class="source-header">
+        <div class="source-icon icon-healthmap">🧬</div>
+        <span class="source-badge">Genomic</span>
+      </div>
+      <div class="source-name">GISAID</div>
+      <div class="source-org">Global Initiative on Sharing Avian Influenza Data</div>
+      <div class="source-desc">Global database for influenza and coronavirus genomic surveillance, enabling real-time pathogen evolution tracking.</div>
+      <div class="source-arrow">→</div>
+    </a>
   </div>
 </main>
 
 <footer>
-  <p>OutbreakWatch aggregates data from <a href="https://promedmail.org" target="_blank">ProMED-mail</a>, maintained by the International Society for Infectious Diseases (ISID). Part of <a href="https://bhaley1.github.io/scivoice/" target="_blank">SciVoice</a> · <a href="https://github.com/bhaley1/scivoice/issues" target="_blank">Feedback</a></p>
+  <p>OutbreakWatch provides curated links to authoritative outbreak surveillance systems worldwide. Part of <a href="https://bhaley1.github.io/scivoice/" target="_blank">SciVoice</a> · <a href="https://github.com/bhaley1/scivoice/issues" target="_blank">Feedback</a></p>
 </footer>
 
 <a href="https://bhaley1.github.io/scivoice/" class="home-btn" aria-label="Back to SciVoice" title="Back to SciVoice">🏠</a>
-
-<script>
-// State
-let allItems = [];
-let filteredItems = [];
-let currentFilter = 'all';
-
-// Parse RSS feed using a CORS proxy
-async function loadFeed() {
-  const feed = document.getElementById('feed');
-  feed.innerHTML = '<div class="loading"><div class="loading-spinner"></div><div>Loading latest outbreak reports...</div></div>';
-  
-  try {
-    // Using RSS2JSON API to fetch and parse ProMED RSS feed
-    const rssUrl = 'https://promedmail.org/feed/';
-    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}&api_key=public&count=50`;
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    
-    if (data.status !== 'ok') {
-      throw new Error('RSS feed fetch failed');
-    }
-    
-    allItems = data.items.map(item => {
-      const title = item.title || 'Untitled';
-      const link = item.link || '#';
-      const pubDate = item.pubDate || '';
-      const description = item.description || '';
-      
-      // Extract clean excerpt (remove HTML tags)
-      const excerpt = description.replace(/<[^>]*>/g, '').substring(0, 200) + '...';
-      
-      // Categorize based on title/description keywords
-      let category = 'human';
-      const content = (title + ' ' + description).toLowerCase();
-      if (content.includes('animal') || content.includes('livestock') || content.includes('cattle') || content.includes('poultry') || content.includes('swine')) {
-        category = 'animal';
-      } else if (content.includes('plant') || content.includes('crop') || content.includes('agricultural')) {
-        category = 'plant';
-      }
-      
-      return { title, link, pubDate, excerpt, category };
-    });
-    
-    // Update stats
-    document.getElementById('statTotal').textContent = allItems.length;
-    const uniqueCountries = extractCountries(allItems);
-    document.getElementById('statCountries').textContent = uniqueCountries.size;
-    document.getElementById('statUpdated').textContent = 'Just now';
-    
-    // Apply current filter
-    applyFilter();
-    
-  } catch (error) {
-    console.error('Error loading feed:', error);
-    feed.innerHTML = '<div class="empty">Could not load outbreak reports. Please try refreshing the page or try again later.</div>';
-  }
-}
-
-function extractCountries(items) {
-  const countries = new Set();
-  const countryPattern = /\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\b/g;
-  items.forEach(item => {
-    const matches = (item.title + ' ' + item.excerpt).match(countryPattern);
-    if (matches) matches.forEach(m => countries.add(m));
-  });
-  return countries;
-}
-
-// Remove the XML parsing code below since we're using RSS2JSON now
-/*
-    const text = await response.text();
-}
-
-function extractCountries(items) {
-  const countries = new Set();
-  const countryPattern = /\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\b/g;
-  items.forEach(item => {
-    const matches = (item.title + ' ' + item.excerpt).match(countryPattern);
-    if (matches) matches.forEach(m => countries.add(m));
-  });
-  return countries;
-}
-
-function applyFilter() {
-  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  
-  filteredItems = allItems.filter(item => {
-    const matchesCategory = currentFilter === 'all' || item.category === currentFilter;
-    const matchesSearch = searchTerm === '' || 
-      item.title.toLowerCase().includes(searchTerm) || 
-      item.excerpt.toLowerCase().includes(searchTerm);
-    return matchesCategory && matchesSearch;
-  });
-  
-  renderFeed();
-}
-
-function renderFeed() {
-  const feed = document.getElementById('feed');
-  
-  if (filteredItems.length === 0) {
-    feed.innerHTML = '<div class="empty">No reports match your filters. Try adjusting your search.</div>';
-    return;
-  }
-  
-  feed.innerHTML = filteredItems.map(item => {
-    const date = new Date(item.pubDate);
-    const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    
-    return `
-      <div class="feed-item" onclick="window.open('${item.link}', '_blank')">
-        <div class="feed-item-header">
-          <div class="feed-title">${item.title}</div>
-          <div class="feed-date">${dateStr}</div>
-        </div>
-        <div class="feed-excerpt">${item.excerpt}</div>
-        <div class="feed-meta">
-          <span class="feed-tag">${item.category}</span>
-          <a class="feed-link" href="${item.link}" target="_blank" onclick="event.stopPropagation()">Read full report →</a>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-// Event listeners
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentFilter = btn.dataset.filter;
-    applyFilter();
-  });
-});
-
-document.getElementById('searchInput').addEventListener('input', () => {
-  applyFilter();
-});
-
-// Load on start
-loadFeed();
-
-// Auto-refresh every 5 minutes
-setInterval(loadFeed, 5 * 60 * 1000);
-</script>
 
 </body>
 </html>
