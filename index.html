@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OutbreakWatch — Live Global Disease Surveillance</title>
+<meta name="description" content="Real-time tracking of global disease outbreaks from ProMED-mail. Free, no account needed.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#1a1814;--ink-2:#4a4640;--ink-3:#8a8480;
+  --paper:#faf8f4;--paper-2:#f2efe8;--paper-3:#e8e4db;
+  --rule:rgba(26,24,20,0.12);--rule-2:rgba(26,24,20,0.06);
+  --red:#8b1a1a;--red-2:#a02020;--red-light:#fdf0f0;
+  --orange:#d97706;--orange-light:#fff3e0;
+  --blue:#1a4d8f;--blue-light:#e8eff8;
+  --radius:4px;--radius-lg:10px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.7;min-height:100vh;}
+
+/* Header */
+header{border-bottom:1px solid var(--rule);padding:0 2rem;background:white;position:sticky;top:0;z-index:200;box-shadow:0 1px 8px rgba(0,0,0,0.04);}
+.header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;}
+.logo{font-family:'Lora',serif;font-size:20px;font-weight:600;letter-spacing:-0.02em;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:10px;}
+.logo-icon{width:32px;height:32px;background:var(--red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.logo span{color:var(--red);}
+.header-by{font-size:12px;color:var(--ink-3);}
+.header-by a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;}
+
+/* Hero */
+.hero{padding:3rem 2rem 2.5rem;background:linear-gradient(160deg,#fdf4f4 0%,#fff3e0 50%,#fdf0f0 100%);border-bottom:1px solid var(--rule);text-align:center;}
+.hero-eyebrow{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:10px;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:28px;height:1px;background:var(--red);opacity:0.4;}
+.hero h1{font-family:'Lora',serif;font-size:clamp(2rem,4vw,2.75rem);font-weight:600;line-height:1.15;letter-spacing:-0.025em;margin-bottom:0.75rem;}
+.hero h1 em{font-style:italic;color:var(--red);}
+.hero-sub{font-size:15px;color:var(--ink-2);max-width:600px;margin:0 auto 1.5rem;font-weight:300;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:white;border:1px solid var(--rule);border-radius:99px;padding:6px 16px;font-size:13px;color:var(--ink-2);}
+.pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+/* Main */
+main{max-width:1400px;margin:0 auto;padding:2rem;}
+
+/* Stats Bar */
+.stats-bar{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;padding:1.5rem;background:white;border:1px solid var(--rule);border-radius:var(--radius-lg);}
+.stat{text-align:center;}
+.stat-num{font-family:'Lora',serif;font-size:1.75rem;font-weight:600;color:var(--red);line-height:1;}
+.stat-label{font-size:12px;color:var(--ink-3);letter-spacing:0.04em;text-transform:uppercase;margin-top:4px;}
+
+/* Filters */
+.filters{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;align-items:center;}
+.filter-label{font-size:13px;font-weight:500;color:var(--ink-3);}
+.filter-btn{padding:6px 14px;border-radius:99px;border:1.5px solid var(--rule);background:var(--paper);color:var(--ink-2);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;}
+.filter-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-light);}
+.filter-btn.active{background:var(--red);color:white;border-color:var(--red);}
+.search-box{flex:1;min-width:250px;}
+.search-input{width:100%;padding:8px 16px;border:1.5px solid var(--rule);border-radius:99px;font-size:13px;font-family:'DM Sans',sans-serif;background:white;}
+.search-input:focus{outline:none;border-color:var(--red);}
+
+/* Feed */
+.feed-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.feed-header h2{font-family:'Lora',serif;font-size:1.25rem;font-weight:600;color:var(--ink);}
+.refresh-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:white;border:1.5px solid var(--rule);border-radius:99px;font-size:13px;font-weight:500;color:var(--ink-2);cursor:pointer;transition:all 0.15s;}
+.refresh-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-light);}
+.refresh-icon{font-size:14px;transition:transform 0.3s;}
+.refresh-btn:hover .refresh-icon{transform:rotate(180deg);}
+
+.feed{display:grid;gap:1rem;}
+.feed-item{background:white;border:1px solid var(--rule);border-radius:var(--radius-lg);padding:1.25rem;transition:all 0.2s;cursor:pointer;}
+.feed-item:hover{border-color:rgba(26,24,20,0.25);box-shadow:0 4px 16px rgba(0,0,0,0.06);transform:translateY(-1px);}
+.feed-item-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:0.75rem;}
+.feed-title{font-size:16px;font-weight:600;color:var(--ink);line-height:1.4;flex:1;}
+.feed-date{font-size:12px;color:var(--ink-3);white-space:nowrap;}
+.feed-excerpt{font-size:14px;color:var(--ink-2);line-height:1.6;margin-bottom:0.75rem;}
+.feed-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.feed-tag{font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:var(--orange-light);color:var(--orange);}
+.feed-link{font-size:13px;color:var(--blue);text-decoration:none;font-weight:500;}
+.feed-link:hover{text-decoration:underline;}
+
+/* Loading & Empty States */
+.loading{text-align:center;padding:3rem;color:var(--ink-3);font-size:14px;}
+.loading-spinner{display:inline-block;width:24px;height:24px;border:3px solid var(--rule);border-top-color:var(--red);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:0.75rem;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.empty{text-align:center;padding:3rem;color:var(--ink-3);font-size:14px;}
+
+/* Footer */
+footer{border-top:1px solid var(--rule);padding:2rem;text-align:center;background:white;margin-top:3rem;}
+footer p{font-size:12px;color:var(--ink-3);}
+footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;}
+
+.home-btn{position:fixed;bottom:1.5rem;right:1.5rem;width:48px;height:48px;border-radius:50%;background:#1a1814;color:white;display:flex;align-items:center;justify-content:center;font-size:20px;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,0.2);transition:all 0.2s;z-index:999;}
+.home-btn:hover{background:#8b1a1a;transform:scale(1.08);}
+
+@media(max-width:700px){
+  main{padding:1rem;}
+  .filters{flex-direction:column;align-items:stretch;}
+  .search-box{min-width:100%;}
+  .stats-bar{flex-direction:column;gap:1rem;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <div class="logo-icon">🌍</div>
+      Outbreak<span>Watch</span>
+    </a>
+    <span class="header-by">Part of <a href="https://bhaley1.github.io/scivoice/" target="_blank">SciVoice</a></span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-eyebrow">Live Global Disease Surveillance</div>
+  <h1>Track emerging <em>outbreaks</em><br>as they happen.</h1>
+  <p class="hero-sub">Real-time disease surveillance from ProMED-mail — the world's largest openly available outbreak reporting system.</p>
+  <div class="hero-badge">
+    <span class="pulse-dot"></span>
+    <span>Live updates from ProMED-mail</span>
+  </div>
+</section>
+
+<main>
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-num" id="statTotal">—</div>
+      <div class="stat-label">Reports Today</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="statCountries">—</div>
+      <div class="stat-label">Countries</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="statUpdated">—</div>
+      <div class="stat-label">Last Updated</div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" data-filter="all">All Reports</button>
+    <button class="filter-btn" data-filter="human">Human Health</button>
+    <button class="filter-btn" data-filter="animal">Animal Health</button>
+    <button class="filter-btn" data-filter="plant">Plant Health</button>
+    <div class="search-box">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search by disease, country, or keyword...">
+    </div>
+  </div>
+
+  <div class="feed-header">
+    <h2>Latest Reports</h2>
+    <button class="refresh-btn" onclick="loadFeed()">
+      <span class="refresh-icon">↻</span>
+      <span>Refresh</span>
+    </button>
+  </div>
+
+  <div class="feed" id="feed">
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <div>Loading latest outbreak reports...</div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>OutbreakWatch aggregates data from <a href="https://promedmail.org" target="_blank">ProMED-mail</a>, maintained by the International Society for Infectious Diseases (ISID). Part of <a href="https://bhaley1.github.io/scivoice/" target="_blank">SciVoice</a> · <a href="https://github.com/bhaley1/scivoice/issues" target="_blank">Feedback</a></p>
+</footer>
+
+<a href="https://bhaley1.github.io/scivoice/" class="home-btn" aria-label="Back to SciVoice" title="Back to SciVoice">🏠</a>
+
+<script>
+// State
+let allItems = [];
+let filteredItems = [];
+let currentFilter = 'all';
+
+// Parse RSS feed using a CORS proxy
+async function loadFeed() {
+  const feed = document.getElementById('feed');
+  feed.innerHTML = '<div class="loading"><div class="loading-spinner"></div><div>Loading latest outbreak reports...</div></div>';
+  
+  try {
+    // Using a CORS proxy to fetch ProMED RSS feed
+    const proxyUrl = 'https://api.allorigins.win/raw?url=';
+    const rssUrl = encodeURIComponent('https://promedmail.org/feed/');
+    const response = await fetch(proxyUrl + rssUrl);
+    const text = await response.text();
+    
+    // Parse XML
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(text, 'text/xml');
+    const items = xml.querySelectorAll('item');
+    
+    allItems = Array.from(items).map(item => {
+      const title = item.querySelector('title')?.textContent || 'Untitled';
+      const link = item.querySelector('link')?.textContent || '#';
+      const pubDate = item.querySelector('pubDate')?.textContent || '';
+      const description = item.querySelector('description')?.textContent || '';
+      
+      // Extract clean excerpt (remove HTML tags)
+      const excerpt = description.replace(/<[^>]*>/g, '').substring(0, 200) + '...';
+      
+      // Categorize based on title/description keywords
+      let category = 'human';
+      const content = (title + ' ' + description).toLowerCase();
+      if (content.includes('animal') || content.includes('livestock') || content.includes('cattle') || content.includes('poultry') || content.includes('swine')) {
+        category = 'animal';
+      } else if (content.includes('plant') || content.includes('crop') || content.includes('agricultural')) {
+        category = 'plant';
+      }
+      
+      return { title, link, pubDate, excerpt, category };
+    });
+    
+    // Update stats
+    document.getElementById('statTotal').textContent = allItems.length;
+    const uniqueCountries = extractCountries(allItems);
+    document.getElementById('statCountries').textContent = uniqueCountries.size;
+    document.getElementById('statUpdated').textContent = 'Just now';
+    
+    // Apply current filter
+    applyFilter();
+    
+  } catch (error) {
+    console.error('Error loading feed:', error);
+    feed.innerHTML = '<div class="empty">Could not load outbreak reports. Please try again later.</div>';
+  }
+}
+
+function extractCountries(items) {
+  const countries = new Set();
+  const countryPattern = /\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\b/g;
+  items.forEach(item => {
+    const matches = (item.title + ' ' + item.excerpt).match(countryPattern);
+    if (matches) matches.forEach(m => countries.add(m));
+  });
+  return countries;
+}
+
+function applyFilter() {
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  
+  filteredItems = allItems.filter(item => {
+    const matchesCategory = currentFilter === 'all' || item.category === currentFilter;
+    const matchesSearch = searchTerm === '' || 
+      item.title.toLowerCase().includes(searchTerm) || 
+      item.excerpt.toLowerCase().includes(searchTerm);
+    return matchesCategory && matchesSearch;
+  });
+  
+  renderFeed();
+}
+
+function renderFeed() {
+  const feed = document.getElementById('feed');
+  
+  if (filteredItems.length === 0) {
+    feed.innerHTML = '<div class="empty">No reports match your filters. Try adjusting your search.</div>';
+    return;
+  }
+  
+  feed.innerHTML = filteredItems.map(item => {
+    const date = new Date(item.pubDate);
+    const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    
+    return `
+      <div class="feed-item" onclick="window.open('${item.link}', '_blank')">
+        <div class="feed-item-header">
+          <div class="feed-title">${item.title}</div>
+          <div class="feed-date">${dateStr}</div>
+        </div>
+        <div class="feed-excerpt">${item.excerpt}</div>
+        <div class="feed-meta">
+          <span class="feed-tag">${item.category}</span>
+          <a class="feed-link" href="${item.link}" target="_blank" onclick="event.stopPropagation()">Read full report →</a>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Event listeners
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    applyFilter();
+  });
+});
+
+document.getElementById('searchInput').addEventListener('input', () => {
+  applyFilter();
+});
+
+// Load on start
+loadFeed();
+
+// Auto-refresh every 5 minutes
+setInterval(loadFeed, 5 * 60 * 1000);
+</script>
+
+</body>
+</html>
