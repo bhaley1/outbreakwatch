@@ -187,22 +187,21 @@ async function loadFeed() {
   feed.innerHTML = '<div class="loading"><div class="loading-spinner"></div><div>Loading latest outbreak reports...</div></div>';
   
   try {
-    // Using a CORS proxy to fetch ProMED RSS feed
-    const proxyUrl = 'https://api.allorigins.win/raw?url=';
-    const rssUrl = encodeURIComponent('https://promedmail.org/feed/');
-    const response = await fetch(proxyUrl + rssUrl);
-    const text = await response.text();
+    // Using RSS2JSON API to fetch and parse ProMED RSS feed
+    const rssUrl = 'https://promedmail.org/feed/';
+    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}&api_key=public&count=50`;
+    const response = await fetch(apiUrl);
+    const data = await response.json();
     
-    // Parse XML
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(text, 'text/xml');
-    const items = xml.querySelectorAll('item');
+    if (data.status !== 'ok') {
+      throw new Error('RSS feed fetch failed');
+    }
     
-    allItems = Array.from(items).map(item => {
-      const title = item.querySelector('title')?.textContent || 'Untitled';
-      const link = item.querySelector('link')?.textContent || '#';
-      const pubDate = item.querySelector('pubDate')?.textContent || '';
-      const description = item.querySelector('description')?.textContent || '';
+    allItems = data.items.map(item => {
+      const title = item.title || 'Untitled';
+      const link = item.link || '#';
+      const pubDate = item.pubDate || '';
+      const description = item.description || '';
       
       // Extract clean excerpt (remove HTML tags)
       const excerpt = description.replace(/<[^>]*>/g, '').substring(0, 200) + '...';
@@ -230,8 +229,23 @@ async function loadFeed() {
     
   } catch (error) {
     console.error('Error loading feed:', error);
-    feed.innerHTML = '<div class="empty">Could not load outbreak reports. Please try again later.</div>';
+    feed.innerHTML = '<div class="empty">Could not load outbreak reports. Please try refreshing the page or try again later.</div>';
   }
+}
+
+function extractCountries(items) {
+  const countries = new Set();
+  const countryPattern = /\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\b/g;
+  items.forEach(item => {
+    const matches = (item.title + ' ' + item.excerpt).match(countryPattern);
+    if (matches) matches.forEach(m => countries.add(m));
+  });
+  return countries;
+}
+
+// Remove the XML parsing code below since we're using RSS2JSON now
+/*
+    const text = await response.text();
 }
 
 function extractCountries(items) {
