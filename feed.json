@@ -1,14 +1,6 @@
 {
   "items": [
     {
-      "title": "Weekly threats reports (CDTR)",
-      "link": "https://www.ecdc.europa.eu/en/publications-and-data/monitoring/weekly-threats-reports",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
       "title": "Communicable disease threats report, 9-13 May 2026, Week 20",
       "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-9-13-may-2026-week-20",
       "pubDate": "",
@@ -43,86 +35,6 @@
     {
       "title": "Communicable disease threats report, 12-18 April 2026, Week 16",
       "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-12-18-april-2026-week-16",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 4-10 April 2026, Week 15",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-4-10-april-2026-week-15",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 28 March – 3 April 2026, Week 14",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-28-march-3-april-2026-week-14",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 21 – 27 March 2026, Week 13",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-21-27-march-2026-week-13",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 14 - 20 March 2026, week 12",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-14-20-march-2026-week-12",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 7 – 13 March 2026 , week 11",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-7-13-march-2026-week-11",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 28 February – 6 March 2026 , week 10",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-28-february-6-march-2026-week-10",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 21 - 27 February 2026, week 9",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-21-27-february-2026-week-9",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 14 - 20 February 2026, week 8",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-14-20-february-2026-week-8",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 7 - 13 February 2026, week 7",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-7-13-february-2026-week-7",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 31 January - 6 February 2026, week 6",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-31-january-6-february-2026-week-6",
       "pubDate": "",
       "description": "",
       "category": "human",
@@ -257,15 +169,13 @@
       "source": "PAHO"
     }
   ],
-  "updated": "2026-05-14T00:55:55.198204Z",
-  "count": 32,
+  "updated": "2026-05-14T01:35:59.813066Z",
+  "count": 21,
   "sources": [
-    "WHO DON: 0 items",
-    "ECDC: 16 items",
-    "PAHO: 17 items",
-    "WOAH: 0 items"
+    "CDC EID: 0",
+    "WHO DON: 0",
+    "ECDC: 5",
+    "PAHO: 17"
   ],
-  "errors": [
-    "CDC EID: mismatched tag: line 111, column 22"
-  ]
+  "errors": []
 }
