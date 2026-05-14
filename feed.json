@@ -1,94 +1,6 @@
 {
   "items": [
     {
-      "title": "Infectious disease topics",
-      "link": "https://www.ecdc.europa.eu/en/all-topics",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Video: Fighting a Candida auris outbreak - healthcare workers leading the change",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/video-fighting-candida-auris-outbreak-healthcare-workers-leading-change",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Publications and data",
-      "link": "https://www.ecdc.europa.eu/en/publications-data",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "The European Respiratory Virus Surveillance Summary (ERVISS)",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/european-respiratory-virus-surveillance-summary-erviss",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Training and tools",
-      "link": "https://www.ecdc.europa.eu/en/data-tools",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Learning Portal",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/learning-portal",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "About ECDC",
-      "link": "https://www.ecdc.europa.eu/en/about-ecdc",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "ECDC: On Air",
-      "link": "https://www.ecdc.europa.eu/en/about-ecdc/media-centre/ecdc-air",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Scientific and technical publications",
-      "link": "https://www.ecdc.europa.eu/en/search?s=&sort_bef_combine=date_DESC&f%5B0%5D=categories%3A1244",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Annual Epidemiological Reports",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/monitoring/all-annual-epidemiological-reports",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Epidemiological updates",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/monitoring/epidemiological-updates",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
       "title": "Weekly threats reports (CDTR)",
       "link": "https://www.ecdc.europa.eu/en/publications-and-data/monitoring/weekly-threats-reports",
       "pubDate": "",
@@ -119,6 +31,110 @@
       "description": "",
       "category": "human",
       "source": "ECDC"
+    },
+    {
+      "title": "Communicable disease threats report, 18-24 April 2026, Week 17",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-18-24-april-2026-week-17",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Communicable disease threats report, 12-18 April 2026, Week 16",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-12-18-april-2026-week-16",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Communicable disease threats report, 4-10 April 2026, Week 15",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-4-10-april-2026-week-15",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Communicable disease threats report, 28 March – 3 April 2026, Week 14",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-28-march-3-april-2026-week-14",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Communicable disease threats report, 21 – 27 March 2026, Week 13",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-21-27-march-2026-week-13",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Communicable disease threats report, 14 - 20 March 2026, week 12",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-14-20-march-2026-week-12",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Communicable disease threats report, 7 – 13 March 2026 , week 11",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-7-13-march-2026-week-11",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Communicable disease threats report, 28 February – 6 March 2026 , week 10",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-28-february-6-march-2026-week-10",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Communicable disease threats report, 21 - 27 February 2026, week 9",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-21-27-february-2026-week-9",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Communicable disease threats report, 14 - 20 February 2026, week 8",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-14-20-february-2026-week-8",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Communicable disease threats report, 7 - 13 February 2026, week 7",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-7-13-february-2026-week-7",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Communicable disease threats report, 31 January - 6 February 2026, week 6",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-31-january-6-february-2026-week-6",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Alerts and Epidemiologic Updates",
+      "link": "https://www.paho.org/en/epidemiological-alerts-and-updates",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
     },
     {
       "title": "Epidemiological Alert: Seasonal Influenza and Other Respiratory Viruses —Start of the Southern Hemisphere Season— 27 April 2026",
@@ -199,14 +215,55 @@
       "description": "",
       "category": "human",
       "source": "PAHO"
+    },
+    {
+      "title": "Epidemiological Alert Hantavirus Pulmonary Syndrome in Americas Region - 19 December 2025",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-hantavirus-pulmonary-syndrome-americas-region-19-december-2025",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
+      "title": "Epidemiological Update: Pertussis (Whooping Cough) in the Americas Region - 8 December 2025",
+      "link": "https://www.paho.org/en/documents/epidemiological-update-pertussis-whooping-cough-americas-region-8-december-2025",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
+      "title": "Epidemiological Alert Seasonal Influenza in the Americas Region: End of the 2025 Season in the Southern Hemisphere Start of the 2025-26 Season in the Northern Hemisphere - 4 December 2025",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-seasonal-influenza-americas-region-end-2025-season-southern",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
+      "title": "Epidemiological Update Avian Influenza A(H5N1) in the Americas Region - 24 November 2025",
+      "link": "https://www.paho.org/en/documents/epidemiological-update-avian-influenza-ah5n1-americas-region-24-november-2025",
+      "pubDate": "",
+      "description": "",
+      "category": "animal",
+      "source": "PAHO"
+    },
+    {
+      "title": "Epidemiological Alert - Risk of Methanol Poisoning - 7 October 2025",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-risk-methanol-poisoning-7-october-2025",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
     }
   ],
-  "updated": "2026-05-14T00:50:51.172473Z",
-  "count": 25,
+  "updated": "2026-05-14T00:54:59.069525Z",
+  "count": 32,
   "sources": [
     "WHO DON: 0 items",
-    "ECDC: 15 items",
-    "PAHO: 10 items"
+    "ECDC: 16 items",
+    "PAHO: 17 items",
+    "WOAH: 0 items"
   ],
   "errors": [
     "CDC EID: mismatched tag: line 111, column 22"
