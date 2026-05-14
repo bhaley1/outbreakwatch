@@ -1,6 +1,214 @@
 {
-  "items": [],
-  "updated": "2026-05-14T00:32:47.898795Z",
-  "count": 0,
-  "error": "HTTP Error 404: Not Found"
+  "items": [
+    {
+      "title": "Infectious disease topics",
+      "link": "https://www.ecdc.europa.eu/en/all-topics",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Video: Fighting a Candida auris outbreak - healthcare workers leading the change",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/video-fighting-candida-auris-outbreak-healthcare-workers-leading-change",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Publications and data",
+      "link": "https://www.ecdc.europa.eu/en/publications-data",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "The European Respiratory Virus Surveillance Summary (ERVISS)",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/european-respiratory-virus-surveillance-summary-erviss",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Training and tools",
+      "link": "https://www.ecdc.europa.eu/en/data-tools",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Learning Portal",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/learning-portal",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "About ECDC",
+      "link": "https://www.ecdc.europa.eu/en/about-ecdc",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "ECDC: On Air",
+      "link": "https://www.ecdc.europa.eu/en/about-ecdc/media-centre/ecdc-air",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Scientific and technical publications",
+      "link": "https://www.ecdc.europa.eu/en/search?s=&sort_bef_combine=date_DESC&f%5B0%5D=categories%3A1244",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Annual Epidemiological Reports",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/monitoring/all-annual-epidemiological-reports",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Epidemiological updates",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/monitoring/epidemiological-updates",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Weekly threats reports (CDTR)",
+      "link": "https://www.ecdc.europa.eu/en/publications-and-data/monitoring/weekly-threats-reports",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Communicable disease threats report, 9-13 May 2026, Week 20",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-9-13-may-2026-week-20",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Communicable disease threats report, 2-8 May 2026, Week 19",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-2-8-may-2026-week-19",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Communicable disease threats report, 25-30 April 2026, Week 18",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-25-30-april-2026-week-18",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Epidemiological Alert: Seasonal Influenza and Other Respiratory Viruses —Start of the Southern Hemisphere Season— 27 April 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-seasonal-influenza-and-other-respiratory-viruses-start-southern",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
+      "title": "Epidemiological Update Mpox in the Americas Region - 23 April 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-update-mpox-americas-region-23-april-2026",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
+      "title": "Epidemiological Update Pertussis (Whooping Cough) in the Americas Region - 25 March 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-update-pertussis-whooping-cough-americas-region-25-march-2026",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
+      "title": "Epidemiological Alert: Yellow fever in the Americas Region - 13 March 2026.",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-yellow-fever-americas-region-13-march-2026",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
+      "title": "Epidemiological Update - Avian Influenza A(H5N1) in the Americas Region - 11 March 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-update-avian-influenza-ah5n1-americas-region-11-march-2026",
+      "pubDate": "",
+      "description": "",
+      "category": "animal",
+      "source": "PAHO"
+    },
+    {
+      "title": "Epidemiological Alert: Misuse of GLP-1 receptor agonist medications and considerations for the Americas Region - 27 February 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-misuse-glp-1-receptor-agonist-medications-and-considerations",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
+      "title": "Epidemiological Update Dengue in the Americas Region - 18 February 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-update-dengue-americas-region-18-february-2026",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
+      "title": "Epidemiological alert Chikungunya - 10 February 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-chikungunya-10-february-2026",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
+      "title": "Epidemiological Alert Measles in the Americas Region - 3 February 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-measles-americas-region-3-february-2026",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
+      "title": "Epidemiological Alert Simultaneous circulation of seasonal influenza and respiratory syncytial virus - 9 January 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-simultaneous-circulation-seasonal-influenza-and-respiratory",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    }
+  ],
+  "updated": "2026-05-14T00:45:57.542735Z",
+  "count": 25,
+  "sources": [
+    "WHO DON: 0 items",
+    "ECDC: 15 items",
+    "PAHO: 10 items"
+  ],
+  "errors": [
+    "CDC EID: mismatched tag: line 111, column 22"
+  ]
 }
