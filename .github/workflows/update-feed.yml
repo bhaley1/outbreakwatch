@@ -1,4 +1,4 @@
-name: Update ProMED Feed
+name: Update Outbreak Feed
 
 on:
   schedule:
@@ -12,97 +12,204 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      
-      - name: Fetch and Parse RSS Feed
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4 lxml
+
+      - name: Fetch Outbreak Data
         run: |
           python3 << 'EOF'
-          import urllib.request
-          import xml.etree.ElementTree as ET
+          import requests
           import json
           from datetime import datetime
-          import html
+          from bs4 import BeautifulSoup
           import re
-          
+
+          HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; OutbreakWatch/1.0; +https://bhaley1.github.io/outbreakwatch/)'}
+          items = []
+          sources_ok = []
+          errors = []
+
+          def clean(text):
+              if not text: return ''
+              return re.sub(r'\s+', ' ', text.strip())
+
+          def categorize(title, desc):
+              c = (title + ' ' + desc).lower()
+              if any(w in c for w in ['animal','livestock','cattle','poultry','swine','pig','avian','bird flu','wildlife','veterinary','zoonot']):
+                  return 'animal'
+              if any(w in c for w in ['plant','crop','agriculture','wheat','rice','cassava','locust']):
+                  return 'plant'
+              return 'human'
+
+          # ── SOURCE 1: WHO Disease Outbreak News (scrape HTML) ─────────────────
           try:
-              with urllib.request.urlopen('https://promedmail.org/feed/') as response:
-                  xml_data = response.read()
+              r = requests.get('https://www.who.int/emergencies/disease-outbreak-news', headers=HEADERS, timeout=20)
+              soup = BeautifulSoup(r.text, 'lxml')
               
-              root = ET.fromstring(xml_data)
-              items = []
+              # WHO DON list items
+              cards = soup.select('a.sf-list-vertical__item') or soup.select('.don-list a') or soup.select('article a') or soup.select('.list-view--item a')
               
-              for item in root.findall('./channel/item')[:50]:
-                  title = item.find('title')
-                  link = item.find('link')
-                  pub_date = item.find('pubDate')
-                  description = item.find('description')
+              # Fallback: find all links containing /emergencies/disease-outbreak-news/item/
+              if not cards:
+                  cards = [a for a in soup.find_all('a', href=True) if '/disease-outbreak-news/item/' in a.get('href','')]
+              
+              who_count = 0
+              seen_links = set()
+              for card in cards[:25]:
+                  href = card.get('href','')
+                  if not href or href in seen_links: continue
+                  seen_links.add(href)
+                  full_url = 'https://www.who.int' + href if href.startswith('/') else href
                   
-                  title_text = title.text if title is not None and title.text else 'Untitled'
-                  link_text = link.text if link is not None and link.text else ''
-                  pub_date_text = pub_date.text if pub_date is not None and pub_date.text else ''
-                  desc_text = description.text if description is not None and description.text else ''
+                  # Extract title
+                  title_el = card.find(['h3','h4','h2','strong','.sf-list-vertical__item__title']) or card
+                  title = clean(title_el.get_text())
+                  if not title or len(title) < 5: continue
                   
-                  desc_clean = html.unescape(desc_text)
-                  desc_clean = re.sub('<[^>]+>', '', desc_clean)
-                  desc_clean = desc_clean.strip()[:300]
+                  # Extract date
+                  date_el = card.find(['time','.date','.sf-list-vertical__item__date'])
+                  date_str = clean(date_el.get_text()) if date_el else ''
                   
-                  content_lower = (title_text + ' ' + desc_clean).lower()
-                  category = 'human'
-                  
-                  if any(word in content_lower for word in ['animal', 'livestock', 'cattle', 'poultry', 'swine', 'pig', 'chicken', 'avian', 'bird', 'wildlife']):
-                      category = 'animal'
-                  elif any(word in content_lower for word in ['plant', 'crop', 'agriculture', 'wheat', 'rice']):
-                      category = 'plant'
+                  # Extract description
+                  desc_el = card.find(['p','.sf-list-vertical__item__summary'])
+                  desc = clean(desc_el.get_text())[:300] if desc_el else ''
                   
                   items.append({
-                      'title': title_text,
-                      'link': link_text,
-                      'pubDate': pub_date_text,
-                      'description': desc_clean,
-                      'category': category
+                      'title': title,
+                      'link': full_url,
+                      'pubDate': date_str,
+                      'description': desc,
+                      'category': categorize(title, desc),
+                      'source': 'WHO DON'
                   })
+                  who_count += 1
               
-              output = {
-                  'items': items,
-                  'updated': datetime.utcnow().isoformat() + 'Z',
-                  'count': len(items)
-              }
-              
-              with open('feed.json', 'w', encoding='utf-8') as f:
-                  json.dump(output, f, indent=2, ensure_ascii=False)
-              
-              print(f"Successfully fetched {len(items)} items")
-              
+              sources_ok.append(f'WHO DON: {who_count} items')
           except Exception as e:
-              print(f"Error: {e}")
-              output = {
-                  'items': [],
-                  'updated': datetime.utcnow().isoformat() + 'Z',
-                  'count': 0,
-                  'error': str(e)
-              }
-              with open('feed.json', 'w', encoding='utf-8') as f:
-                  json.dump(output, f, indent=2)
+              errors.append(f'WHO DON: {str(e)}')
+
+          # ── SOURCE 2: ECDC Communicable Disease Threats Report ────────────────
+          try:
+              r = requests.get('https://www.ecdc.europa.eu/en/threats-and-outbreaks/reports-and-data/weekly-threats', headers=HEADERS, timeout=20)
+              soup = BeautifulSoup(r.text, 'lxml')
+              links = soup.select('article a, .views-row a, h3 a, h2 a')
+              ecdc_count = 0
+              seen = set()
+              for a in links[:15]:
+                  href = a.get('href','')
+                  if not href or href in seen: continue
+                  seen.add(href)
+                  title = clean(a.get_text())
+                  if len(title) < 10: continue
+                  full_url = 'https://www.ecdc.europa.eu' + href if href.startswith('/') else href
+                  items.append({
+                      'title': title,
+                      'link': full_url,
+                      'pubDate': '',
+                      'description': '',
+                      'category': categorize(title, ''),
+                      'source': 'ECDC'
+                  })
+                  ecdc_count += 1
+              sources_ok.append(f'ECDC: {ecdc_count} items')
+          except Exception as e:
+              errors.append(f'ECDC: {str(e)}')
+
+          # ── SOURCE 3: CDC Emerging Infectious Diseases RSS ────────────────────
+          try:
+              import xml.etree.ElementTree as ET
+              r = requests.get('https://wwwnc.cdc.gov/eid/rss/ahead-of-print', headers=HEADERS, timeout=20)
+              root = ET.fromstring(r.content)
+              cdc_count = 0
+              for item in root.findall('.//item')[:15]:
+                  title = item.findtext('title','')
+                  link  = item.findtext('link','')
+                  date  = item.findtext('pubDate','')
+                  desc  = re.sub('<[^>]+>','', item.findtext('description',''))[:300]
+                  if title:
+                      items.append({
+                          'title': clean(title),
+                          'link': link,
+                          'pubDate': date,
+                          'description': clean(desc),
+                          'category': categorize(title, desc),
+                          'source': 'CDC EID'
+                      })
+                      cdc_count += 1
+              sources_ok.append(f'CDC EID: {cdc_count} items')
+          except Exception as e:
+              errors.append(f'CDC EID: {str(e)}')
+
+          # ── SOURCE 4: PAHO Epidemiological Alerts ─────────────────────────────
+          try:
+              r = requests.get('https://www.paho.org/en/epidemiological-alerts-and-updates', headers=HEADERS, timeout=20)
+              soup = BeautifulSoup(r.text, 'lxml')
+              links = soup.select('h3 a, h2 a, .views-field-title a, article a')
+              paho_count = 0
+              seen = set()
+              for a in links[:10]:
+                  href = a.get('href','')
+                  if not href or href in seen: continue
+                  seen.add(href)
+                  title = clean(a.get_text())
+                  if len(title) < 10: continue
+                  full_url = 'https://www.paho.org' + href if href.startswith('/') else href
+                  items.append({
+                      'title': title,
+                      'link': full_url,
+                      'pubDate': '',
+                      'description': '',
+                      'category': categorize(title, ''),
+                      'source': 'PAHO'
+                  })
+                  paho_count += 1
+              sources_ok.append(f'PAHO: {paho_count} items')
+          except Exception as e:
+              errors.append(f'PAHO: {str(e)}')
+
+          # ── Deduplicate ───────────────────────────────────────────────────────
+          seen_titles = set()
+          unique_items = []
+          for item in items:
+              key = item['title'].lower()[:60]
+              if key not in seen_titles:
+                  seen_titles.add(key)
+                  unique_items.append(item)
+
+          output = {
+              'items': unique_items,
+              'updated': datetime.utcnow().isoformat() + 'Z',
+              'count': len(unique_items),
+              'sources': sources_ok,
+              'errors': errors
+          }
+
+          with open('feed.json', 'w', encoding='utf-8') as f:
+              json.dump(output, f, indent=2, ensure_ascii=False)
+
+          print(f"Total: {len(unique_items)} items from {len(sources_ok)} sources")
+          print("Sources:", sources_ok)
+          if errors: print("Errors:", errors)
           EOF
-      
+
       - name: Commit and Push if Changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add feed.json
-          
           if git diff --staged --quiet; then
-            echo "No changes to feed.json"
+            echo "No changes"
           else
-            git commit -m "Update ProMED feed data - $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git commit -m "Update outbreak feed - $(date -u '+%Y-%m-%d %H:%M UTC')"
             git push
-            echo "Feed updated successfully"
           fi
