@@ -2,7 +2,7 @@ name: Update Outbreak Feed
 
 on:
   schedule:
-    - cron: '0 */2 * * *'  # Every 2 hours
+    - cron: '0 */2 * * *'
   workflow_dispatch:
   push:
     branches: [main]
@@ -25,9 +25,9 @@ jobs:
       - name: Install dependencies
         run: pip install requests beautifulsoup4 lxml
 
-      - name: Fetch Outbreak Data
+      - name: Create fetch script
         run: |
-          python3 << 'EOF'
+          cat > /tmp/fetch_feed.py << 'PYEOF'
           import requests
           import json
           import xml.etree.ElementTree as ET
@@ -53,90 +53,60 @@ jobs:
                   return 'plant'
               return 'human'
 
-          # ── SOURCE 1: CDC EID RSS ─────────────────────────────────────────────
+          # CDC EID RSS
           try:
-              feeds = ['https://wwwnc.cdc.gov/eid/rss/ahead-of-print', 'https://wwwnc.cdc.gov/eid/rss/table-of-contents']
               cdc_count = 0
-              for feed_url in feeds:
+              for feed_url in ['https://wwwnc.cdc.gov/eid/rss/ahead-of-print', 'https://wwwnc.cdc.gov/eid/rss/table-of-contents']:
                   try:
                       r = requests.get(feed_url, headers=HEADERS, timeout=20)
-                      # Parse with lenient handling
-                      content = r.content
-                      try:
-                          root = ET.fromstring(content)
-                      except ET.ParseError:
-                          # Try cleaning the XML
-                          content = re.sub(rb'&(?!(amp|lt|gt|quot|apos);)', b'&amp;', content)
-                          root = ET.fromstring(content)
+                      content = re.sub(rb'&(?!(amp|lt|gt|quot|apos);)', b'&amp;', r.content)
+                      root = ET.fromstring(content)
                       for item in root.findall('.//item')[:15]:
                           title = clean(item.findtext('title',''))
                           link  = clean(item.findtext('link',''))
                           date  = clean(item.findtext('pubDate',''))
                           desc  = clean(item.findtext('description',''))[:300]
                           if title and len(title) > 10:
-                              items.append({
-                                  'title': title, 'link': link, 'pubDate': date,
-                                  'description': desc, 'category': categorize(title, desc),
-                                  'source': 'CDC EID'
-                              })
+                              items.append({'title':title,'link':link,'pubDate':date,'description':desc,'category':categorize(title,desc),'source':'CDC EID'})
                               cdc_count += 1
                   except Exception:
                       continue
-              sources_ok.append(f'CDC EID: {cdc_count}')
+              sources_ok.append('CDC EID: ' + str(cdc_count))
           except Exception as e:
-              errors.append(f'CDC EID: {str(e)}')
+              errors.append('CDC EID: ' + str(e))
 
-          # ── SOURCE 2: WHO DON - scrape and fetch individual pages ──────────────
+          # WHO DON - scrape list and fetch individual pages
           try:
               r = requests.get('https://www.who.int/emergencies/disease-outbreak-news', headers=HEADERS, timeout=25)
               soup = BeautifulSoup(r.text, 'lxml')
-              
               don_links = []
               for a in soup.find_all('a', href=True):
                   href = a['href']
-                  if '/disease-outbreak-news/item/' in href:
-                      if href not in don_links:
-                          don_links.append(href)
-              
+                  if '/disease-outbreak-news/item/' in href and href not in don_links:
+                      don_links.append(href)
               who_count = 0
-              # Get first 10 DON items and fetch their full pages for descriptions
               for href in don_links[:10]:
                   try:
                       full_url = 'https://www.who.int' + href if href.startswith('/') else href
-                      
-                      # Fetch the actual report page
                       page_r = requests.get(full_url, headers=HEADERS, timeout=15)
                       page_soup = BeautifulSoup(page_r.text, 'lxml')
-                      
-                      # Extract title
-                      title_el = page_soup.find('h1') or page_soup.find('title')
+                      title_el = page_soup.find('h1')
                       title = clean(title_el.get_text()) if title_el else ''
-                      title = title.replace('| WHO', '').strip()
-                      
-                      # Extract date
                       date_el = page_soup.find('span', class_='timestamp') or page_soup.find('time')
                       date_str = clean(date_el.get_text()) if date_el else ''
-                      
-                      # Extract first paragraph as description
                       content_div = page_soup.find('div', class_='sf-detail-body-wrapper') or page_soup.find('article') or page_soup.find('main')
                       first_p = content_div.find('p') if content_div else None
                       desc = clean(first_p.get_text())[:400] if first_p else ''
-                      
                       if title and len(title) > 5:
-                          items.append({
-                              'title': title, 'link': full_url, 'pubDate': date_str,
-                              'description': desc, 'category': categorize(title, desc),
-                              'source': 'WHO DON'
-                          })
+                          items.append({'title':title,'link':full_url,'pubDate':date_str,'description':desc,'category':categorize(title,desc),'source':'WHO DON'})
                           who_count += 1
                   except Exception:
                       continue
-              
-              sources_ok.append(f'WHO DON: {who_count}')
+              sources_ok.append('WHO DON: ' + str(who_count))
           except Exception as e:
-              errors.append(f'WHO DON: {str(e)}')
+              errors.append('WHO DON: ' + str(e))
 
-          # ── SOURCE 3: ECDC CDTR with full report fetching ──────────────────────
+          # ECDC CDTR
           try:
               r = requests.get('https://www.ecdc.europa.eu/en/threats-and-outbreaks/reports-and-data/weekly-threats', headers=HEADERS, timeout=20)
               soup = BeautifulSoup(r.text, 'lxml')
@@ -145,33 +115,25 @@ jobs:
               for a in soup.find_all('a', href=True):
                   href = a['href']
                   title = clean(a.get_text())
-                  if ('communicable-disease-threats-report' in href) and title and len(title) > 15:
+                  if 'communicable-disease-threats-report' in href and title and len(title) > 15:
                       if href not in seen:
                           seen.add(href)
                           full_url = 'https://www.ecdc.europa.eu' + href if href.startswith('/') else href
-                          
-                          # Try to fetch the actual CDTR for content
                           try:
                               page_r = requests.get(full_url, headers=HEADERS, timeout=15)
                               page_soup = BeautifulSoup(page_r.text, 'lxml')
-                              # Get summary content
-                              content = page_soup.find('div', class_='field--name-body') or page_soup.find('article')
+                              content = page_soup.find('div', class_='field--name-body')
                               desc = clean(content.get_text())[:500] if content else ''
                           except:
                               desc = ''
-                          
-                          items.append({
-                              'title': title, 'link': full_url, 'pubDate': '',
-                              'description': desc, 'category': categorize(title, desc),
-                              'source': 'ECDC'
-                          })
+                          items.append({'title':title,'link':full_url,'pubDate':'','description':desc,'category':categorize(title,desc),'source':'ECDC'})
                           ecdc_count += 1
-                          if ecdc_count >= 5: break  # Limit to most recent
-              sources_ok.append(f'ECDC: {ecdc_count}')
+                          if ecdc_count >= 5: break
+              sources_ok.append('ECDC: ' + str(ecdc_count))
           except Exception as e:
-              errors.append(f'ECDC: {str(e)}')
+              errors.append('ECDC: ' + str(e))
 
-          # ── SOURCE 4: PAHO Epidemiological Alerts with descriptions ────────────
+          # PAHO
           try:
               r = requests.get('https://www.paho.org/en/epidemiological-alerts-and-updates', headers=HEADERS, timeout=20)
               soup = BeautifulSoup(r.text, 'lxml')
@@ -184,15 +146,11 @@ jobs:
                       if href not in seen:
                           seen.add(href)
                           full_url = 'https://www.paho.org' + href if href.startswith('/') else href
-                          items.append({
-                              'title': title, 'link': full_url, 'pubDate': '',
-                              'description': '', 'category': categorize(title, ''),
-                              'source': 'PAHO'
-                          })
+                          items.append({'title':title,'link':full_url,'pubDate':'','description':'','category':categorize(title,''),'source':'PAHO'})
                           paho_count += 1
-              sources_ok.append(f'PAHO: {paho_count}')
+              sources_ok.append('PAHO: ' + str(paho_count))
           except Exception as e:
-              errors.append(f'PAHO: {str(e)}')
+              errors.append('PAHO: ' + str(e))
 
           # Deduplicate
           seen_titles = set()
@@ -203,28 +161,24 @@ jobs:
                   seen_titles.add(key)
                   unique.append(item)
 
-          output = {
-              'items': unique, 'updated': datetime.utcnow().isoformat() + 'Z',
-              'count': len(unique), 'sources': sources_ok, 'errors': errors
-          }
-
-          with open('feed.json', 'w', encoding='utf-8') as f:
+          output = {'items':unique,'updated':datetime.utcnow().isoformat()+'Z','count':len(unique),'sources':sources_ok,'errors':errors}
+          with open('feed.json','w',encoding='utf-8') as f:
               json.dump(output, f, indent=2, ensure_ascii=False)
+          print('Total:', len(unique), 'items | Sources:', sources_ok)
+          PYEOF
 
-          print(f"Total: {len(unique)} items | Sources: {sources_ok}")
-          EOF
+      - name: Fetch Outbreak Data
+        run: python3 /tmp/fetch_feed.py
 
-      - name: Run Claude AI Analysis
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      - name: Create AI analysis script
         run: |
-          python3 << 'EOF'
-          import json, os, requests
+          cat > /tmp/run_analysis.py << 'PYEOF'
+          import json, os, requests, re
           from datetime import datetime
 
           api_key = os.environ.get('ANTHROPIC_API_KEY','').strip()
           if not api_key:
-              print("⚠️  No ANTHROPIC_API_KEY secret set - skipping AI analysis")
+              print('No API key - skipping AI analysis')
               with open('analysis.json','w') as f:
                   json.dump({'error':'API key not configured','updated':datetime.utcnow().isoformat()+'Z'}, f)
               exit(0)
@@ -238,80 +192,56 @@ jobs:
                   json.dump({'error':'No feed data','updated':datetime.utcnow().isoformat()+'Z'}, f)
               exit(0)
 
-          # Build report text
           reports = []
           for i, item in enumerate(items[:30]):
-              reports.append(f"[{i+1}] Source: {item.get('source','')}\nTitle: {item.get('title','')}\nDate: {item.get('pubDate','')}\nDescription: {item.get('description','')}\nCategory: {item.get('category','')}\n")
+              reports.append('[' + str(i+1) + '] Source: ' + item.get('source','') + chr(10) +
+                             'Title: ' + item.get('title','') + chr(10) +
+                             'Date: ' + item.get('pubDate','') + chr(10) +
+                             'Description: ' + item.get('description','') + chr(10) +
+                             'Category: ' + item.get('category','') + chr(10))
 
-          report_text = '\n'.join(reports)
+          report_text = chr(10).join(reports)
 
-          system_prompt = """You are a senior epidemiologist and global health security analyst. Analyze surveillance reports to identify biological threats. Focus only on factual epidemiological signals. Use threat levels: Critical, Elevated, Moderate, Low."""
+          system_prompt = 'You are a senior epidemiologist and global health security analyst. Analyze surveillance reports to identify biological threats. Focus only on factual epidemiological signals. Use threat levels: Critical, Elevated, Moderate, Low.'
 
-          user_prompt = f"""Analyze these {len(items)} disease surveillance reports and respond ONLY with a JSON object (no markdown, no preamble):
+          json_schema = '{"executiveSummary":"3-4 sentence overview","bottomLine":"one-sentence takeaway","threats":[{"name":"Disease name","pathogen":"Scientific name","level":"Critical|Elevated|Moderate|Low","location":"Country/Region","signals":["signal 1","signal 2"],"confidence":85,"action":"Recommended action"}],"geography":[{"region":"Region","count":3,"diseases":["disease1"]}],"categories":{"human":0,"animal":0,"plant":0},"amrSignals":["AMR concern 1"],"emergingPatterns":["pattern 1"],"timeline":[{"date":"YYYY-MM-DD","event":"Description","level":"Critical|Elevated|Moderate|Low"}]}'
 
-{{
-  "executiveSummary": "3-4 sentence overview of current threat landscape",
-  "bottomLine": "one-sentence key takeaway for decision-makers",
-  "threats": [
-    {{"name":"Disease name","pathogen":"Pathogen scientific name","level":"Critical|Elevated|Moderate|Low","location":"Country/Region","signals":["signal 1","signal 2","signal 3"],"confidence":85,"action":"Recommended surveillance action"}}
-  ],
-  "geography": [
-    {{"region":"Region/Country","count":3,"diseases":["disease1","disease2"]}}
-  ],
-  "categories": {{
-    "human": 0,
-    "animal": 0,
-    "plant": 0
-  }},
-  "amrSignals": ["AMR concern 1","AMR concern 2"],
-  "emergingPatterns": ["pattern 1","pattern 2"],
-  "timeline": [
-    {{"date":"YYYY-MM-DD","event":"Brief description","level":"Critical|Elevated|Moderate|Low"}}
-  ]
-}}
-
-Identify up to 8 threats. Include actual locations from report titles/descriptions. Count diseases by region. Categorize all reports by human/animal/plant.
-
-REPORTS:
-{report_text}"""
+          user_prompt = ('Analyze these ' + str(len(items)) + ' disease surveillance reports and respond ONLY with a JSON object matching this exact schema (no markdown, no preamble):' + chr(10) + chr(10) +
+                         json_schema + chr(10) + chr(10) +
+                         'Identify up to 8 threats. Include actual locations from titles/descriptions. Count diseases by region. Categorize all reports by human/animal/plant.' + chr(10) + chr(10) +
+                         'REPORTS:' + chr(10) + report_text)
 
           try:
               r = requests.post(
                   'https://api.anthropic.com/v1/messages',
-                  headers={
-                      'Content-Type': 'application/json',
-                      'x-api-key': api_key,
-                      'anthropic-version': '2023-06-01'
-                  },
-                  json={
-                      'model': 'claude-sonnet-4-20250514',
-                      'max_tokens': 3000,
-                      'system': system_prompt,
-                      'messages': [{'role':'user','content':user_prompt}]
-                  },
-                  timeout=60
+                  headers={'Content-Type':'application/json','x-api-key':api_key,'anthropic-version':'2023-06-01'},
+                  json={'model':'claude-sonnet-4-20250514','max_tokens':3000,'system':system_prompt,'messages':[{'role':'user','content':user_prompt}]},
+                  timeout=90
               )
               data = r.json()
+              if 'content' not in data:
+                  raise Exception('API error: ' + json.dumps(data))
               raw_text = data['content'][0]['text']
-              
-              # Extract JSON
-              import re
               json_match = re.search(r'\{[\s\S]*\}', raw_text)
               if json_match:
                   analysis = json.loads(json_match.group(0))
                   analysis['updated'] = datetime.utcnow().isoformat() + 'Z'
                   analysis['totalReports'] = len(items)
-                  
                   with open('analysis.json','w') as f:
                       json.dump(analysis, f, indent=2)
-                  print(f"✅ Analysis saved - {len(analysis.get('threats',[]))} threats identified")
+                  print('Analysis saved -', len(analysis.get('threats',[])), 'threats identified')
               else:
-                  raise Exception("Could not parse JSON from response")
+                  raise Exception('Could not parse JSON from response')
           except Exception as e:
-              print(f"Analysis error: {e}")
+              print('Analysis error:', str(e))
               with open('analysis.json','w') as f:
                   json.dump({'error':str(e),'updated':datetime.utcnow().isoformat()+'Z'}, f)
-          EOF
+          PYEOF
+
+      - name: Run Claude AI Analysis
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python3 /tmp/run_analysis.py
 
       - name: Commit and Push if Changed
         run: |
