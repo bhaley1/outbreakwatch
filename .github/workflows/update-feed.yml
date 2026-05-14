@@ -215,7 +215,7 @@ jobs:
               r = requests.post(
                   'https://api.anthropic.com/v1/messages',
                   headers={'Content-Type':'application/json','x-api-key':api_key,'anthropic-version':'2023-06-01'},
-                  json={'model':'claude-sonnet-4-20250514','max_tokens':3000,'system':system_prompt,'messages':[{'role':'user','content':user_prompt}]},
+                  json={'model':'claude-sonnet-4-6','max_tokens':3000,'system':system_prompt,'messages':[{'role':'user','content':user_prompt}]},
                   timeout=90
               )
               data = r.json()
@@ -252,5 +252,6 @@ jobs:
             echo "No changes"
           else
             git commit -m "Update outbreak feed & AI analysis - $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git pull --rebase origin main || true
             git push
           fi
