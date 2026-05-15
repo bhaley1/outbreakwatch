@@ -20,9 +20,83 @@
   --blue:#1a4d8f;--blue-light:#e8eff8;
   --green:#1a6b3c;--green-light:#e8f5ee;
   --radius:4px;--radius-lg:10px;
+  --critical:#d32f2f;--critical-light:#ffebee;
+  --warning:#ff6b00;--warning-light:#fff3e0;
 }
 html{scroll-behavior:smooth;}
 body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.7;min-height:100vh;}
+
+/* Select Agent Alert Banner */
+.select-agent-banner {
+  background: linear-gradient(135deg, var(--critical) 0%, #b71c1c 100%);
+  color: white;
+  padding: 12px 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  display: none;
+  animation: alertPulse 2s ease-in-out infinite alternate;
+}
+.select-agent-banner.active {
+  display: block;
+}
+.banner-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.banner-alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+.alert-icon {
+  width: 32px;
+  height: 32px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.alert-text {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.alert-count {
+  background: rgba(255,255,255,0.25);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.view-details-btn {
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.view-details-btn:hover {
+  background: rgba(255,255,255,0.3);
+  color: white;
+}
+@keyframes alertPulse {
+  0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.4); }
+  100% { box-shadow: 0 0 0 8px rgba(211, 47, 47, 0); }
+}
 
 /* Header */
 header{border-bottom:1px solid var(--rule);padding:0 2rem;background:white;position:sticky;top:0;z-index:200;box-shadow:0 1px 8px rgba(0,0,0,0.04);}
@@ -47,6 +121,134 @@ main{max-width:1200px;margin:0 auto;padding:2.5rem 2rem 4rem;}
 .section-heading{margin-bottom:1.5rem;}
 .section-heading h2{font-family:'Lora',serif;font-size:1.5rem;font-weight:600;color:var(--ink);margin-bottom:6px;}
 .section-heading p{font-size:14px;color:var(--ink-3);line-height:1.6;}
+
+/* Select Agent Archive Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+.modal-overlay.active {
+  display: flex;
+}
+.modal {
+  background: white;
+  border-radius: 12px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.modal-header {
+  padding: 2rem;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-title {
+  font-family: 'Lora', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--ink-3);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.modal-close:hover {
+  background: var(--paper-2);
+}
+.modal-content {
+  padding: 0 2rem 2rem;
+  overflow-y: auto;
+  max-height: calc(80vh - 140px);
+}
+.archive-entry {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  background: white;
+  transition: all 0.2s;
+}
+.archive-entry:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+.entry-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.entry-agent {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--critical);
+  line-height: 1.3;
+}
+.entry-bsl {
+  background: var(--critical-light);
+  color: var(--critical);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.entry-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.entry-detail {
+  font-size: 14px;
+}
+.detail-label {
+  font-weight: 600;
+  color: var(--ink-2);
+  margin-bottom: 4px;
+}
+.detail-value {
+  color: var(--ink);
+}
+.entry-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--blue);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.entry-link:hover {
+  color: var(--red);
+}
 
 .source-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;margin-bottom:3rem;}
 .source-card{background:white;border:1px solid var(--rule);border-radius:var(--radius-lg);padding:1.5rem;transition:all 0.2s;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:12px;}
@@ -75,10 +277,41 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
 @media(max-width:700px){
   main{padding:1.5rem 1rem 3rem;}
   .source-grid{grid-template-columns:1fr;}
+  .banner-content{flex-direction:column;align-items:flex-start;gap:0.75rem;}
+  .entry-details{grid-template-columns:1fr;}
+  .modal{margin:1rem;max-height:90vh;}
 }
 </style>
 </head>
 <body>
+
+<!-- BSL-3/BSL-4 Select Agent Alert Banner -->
+<div class="select-agent-banner" id="selectAgentBanner">
+  <div class="banner-content">
+    <div class="banner-alert">
+      <div class="alert-icon">☣️</div>
+      <div class="alert-text">
+        <strong>BSL-3/BSL-4 Select Agent Detection:</strong> 
+        <span id="alertSummary">High-containment pathogens isolated in last 30 days</span>
+      </div>
+    </div>
+    <div class="alert-count" id="alertCount">0 agents</div>
+    <a href="#" class="view-details-btn" onclick="showSelectAgentModal()">View Details</a>
+  </div>
+</div>
+
+<!-- Select Agent Archive Modal -->
+<div class="modal-overlay" id="selectAgentModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">BSL-3/BSL-4 Select Agent Archive</h3>
+      <button class="modal-close" onclick="closeSelectAgentModal()">×</button>
+    </div>
+    <div class="modal-content" id="archiveContent">
+      <p style="text-align: center; color: var(--ink-3); padding: 2rem;">Loading select agent data...</p>
+    </div>
+  </div>
+</div>
 
 <header>
   <div class="header-inner">
@@ -132,7 +365,7 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
       </div>
       <div class="source-name">ProMED-mail</div>
       <div class="source-org">International Society for Infectious Diseases</div>
-      <div class="source-desc">Human expert-curated outbreak reports covering emerging infectious diseases in humans, animals, and plants. 31 years of historical data.</div>
+      <div class="source-desc">Human expert-curated outbreak reports covering emerging infectious diseases in humans, animals, and plants. 31 years of historical data. <strong>Now monitored for BSL-3/BSL-4 select agents.</strong></div>
       <div class="source-arrow">→</div>
     </a>
 
@@ -207,6 +440,12 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
   <div style="background:white;border:1px solid var(--rule);border-radius:var(--radius-lg);padding:2rem;margin-bottom:2rem;">
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;">
       <div>
+        <div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px;">☣️ BSL-3/BSL-4 Monitoring</div>
+        <div style="font-size:13px;color:var(--ink-2);line-height:1.6;">
+          OutbreakWatch now actively monitors ProMED-mail for reports of BSL-3 and BSL-4 select agents. When high-containment pathogens are isolated, a prominent alert banner appears with details and maintains a permanent archive.
+        </div>
+      </div>
+      <div>
         <div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px;">🔒 RSS Feed Limitations</div>
         <div style="font-size:13px;color:var(--ink-2);line-height:1.6;">
           ProMED-mail no longer offers free RSS feeds following their 2023 financial crisis. WHO Disease Outbreak News and HealthMap do not provide public API access. Most global surveillance systems have moved away from open RSS feeds.
@@ -239,6 +478,359 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
 </footer>
 
 <a href="https://bhaley1.github.io/scivoice/" class="home-btn" aria-label="Back to SciVoice" title="Back to SciVoice">🏠</a>
+
+<script>
+// BSL-3/BSL-4 Select Agent Database
+const SELECT_AGENTS = {
+  "bsl3": [
+    "Bacillus anthracis", "Brucella abortus", "Brucella melitensis", "Brucella suis",
+    "Burkholderia mallei", "Burkholderia pseudomallei", "Chlamydia psittaci",
+    "Coccidioides immitis", "Coccidioides posadasii", "Coxiella burnetii",
+    "Francisella tularensis", "Histoplasma capsulatum", "Mycobacterium tuberculosis",
+    "Rickettsia prowazekii", "Rickettsia rickettsii", "Rickettsia typhi",
+    "Venezuelan equine encephalitis virus", "Eastern equine encephalitis virus",
+    "Western equine encephalitis virus", "Rift Valley fever virus", "Japanese encephalitis virus",
+    "Yellow fever virus", "Chikungunya virus", "O'nyong-nyong virus", "Ross River virus",
+    "West Nile virus", "La Crosse virus", "California encephalitis virus",
+    "Hantavirus", "Sin Nombre virus", "Lymphocytic choriomeningitis virus",
+    "Lassa fever virus", "Lujo virus", "SARS-CoV", "MERS-CoV"
+  ],
+  "bsl4": [
+    "Ebola virus", "Marburg virus", "Lassa fever virus", "Junin virus",
+    "Machupo virus", "Sabia virus", "Guanarito virus", "Chapare virus",
+    "Lujo virus", "Crimean-Congo hemorrhagic fever virus", "Kyasanur Forest disease virus",
+    "Omsk hemorrhagic fever virus", "Alkhurma hemorrhagic fever virus",
+    "Heartland virus", "Severe fever with thrombocytopenia syndrome virus",
+    "Nipah virus", "Hendra virus"
+  ]
+};
+
+// Global variables
+let selectAgentData = [];
+let isLoading = false;
+
+// Initialize the system
+document.addEventListener('DOMContentLoaded', function() {
+  loadSelectAgentData();
+});
+
+// Load select agent data from localStorage or initialize
+function loadSelectAgentData() {
+  try {
+    const stored = localStorage.getItem('outbreakwatch_select_agents');
+    if (stored) {
+      selectAgentData = JSON.parse(stored);
+    }
+    updateBanner();
+    checkForProMEDUpdates();
+  } catch (error) {
+    console.error('Error loading select agent data:', error);
+  }
+}
+
+// Save select agent data to localStorage
+function saveSelectAgentData() {
+  try {
+    localStorage.setItem('outbreakwatch_select_agents', JSON.stringify(selectAgentData));
+  } catch (error) {
+    console.error('Error saving select agent data:', error);
+  }
+}
+
+// Update the banner display
+function updateBanner() {
+  const banner = document.getElementById('selectAgentBanner');
+  const alertCount = document.getElementById('alertCount');
+  const alertSummary = document.getElementById('alertSummary');
+  
+  // Filter for agents within last 30 days
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+  
+  const activeAgents = selectAgentData.filter(agent => {
+    const agentDate = new Date(agent.date);
+    return agentDate >= thirtyDaysAgo;
+  });
+  
+  if (activeAgents.length > 0) {
+    banner.classList.add('active');
+    alertCount.textContent = `${activeAgents.length} agent${activeAgents.length === 1 ? '' : 's'}`;
+    
+    // Create summary text
+    const uniqueAgents = [...new Set(activeAgents.map(a => a.agent))];
+    if (uniqueAgents.length === 1) {
+      alertSummary.textContent = `${uniqueAgents[0]} isolated in last 30 days`;
+    } else {
+      alertSummary.textContent = `${uniqueAgents.length} different agents isolated in last 30 days`;
+    }
+  } else {
+    banner.classList.remove('active');
+  }
+}
+
+// Show select agent modal
+function showSelectAgentModal() {
+  const modal = document.getElementById('selectAgentModal');
+  const content = document.getElementById('archiveContent');
+  
+  modal.classList.add('active');
+  renderArchiveContent(content);
+}
+
+// Close select agent modal
+function closeSelectAgentModal() {
+  const modal = document.getElementById('selectAgentModal');
+  modal.classList.remove('active');
+}
+
+// Render archive content
+function renderArchiveContent(container) {
+  if (selectAgentData.length === 0) {
+    container.innerHTML = '<p style="text-align: center; color: var(--ink-3); padding: 2rem;">No BSL-3/BSL-4 select agents detected in archive.</p>';
+    return;
+  }
+  
+  // Sort by date (newest first)
+  const sortedData = [...selectAgentData].sort((a, b) => new Date(b.date) - new Date(a.date));
+  
+  let html = '';
+  
+  sortedData.forEach(entry => {
+    const entryDate = new Date(entry.date);
+    const daysAgo = Math.floor((new Date() - entryDate) / (1000 * 60 * 60 * 24));
+    const isActive = daysAgo <= 30;
+    
+    html += `
+      <div class="archive-entry" style="${isActive ? 'border-left: 4px solid var(--critical);' : ''}">
+        <div class="entry-header">
+          <div class="entry-agent">${entry.agent}</div>
+          <div class="entry-bsl">${entry.bslLevel}</div>
+        </div>
+        <div class="entry-details">
+          <div class="entry-detail">
+            <div class="detail-label">Date Reported</div>
+            <div class="detail-value">${formatDate(entry.date)} ${isActive ? '🔴' : ''}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Location</div>
+            <div class="detail-value">${entry.location || 'Not specified'}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Source</div>
+            <div class="detail-value">${entry.source || 'Unknown'}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Days Since Report</div>
+            <div class="detail-value">${daysAgo} day${daysAgo === 1 ? '' : 's'} ago</div>
+          </div>
+        </div>
+        ${entry.promedLink ? `<a href="${entry.promedLink}" target="_blank" class="entry-link">View ProMED Report →</a>` : ''}
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+// Format date for display
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+}
+
+// Check for BSL-3/BSL-4 agents in text
+function checkForSelectAgents(text) {
+  const foundAgents = [];
+  const normalizedText = text.toLowerCase();
+  
+  // Check BSL-3 agents
+  SELECT_AGENTS.bsl3.forEach(agent => {
+    const agentLower = agent.toLowerCase();
+    if (normalizedText.includes(agentLower)) {
+      foundAgents.push({
+        agent: agent,
+        bslLevel: 'BSL-3',
+        confidence: calculateConfidence(text, agent)
+      });
+    }
+  });
+  
+  // Check BSL-4 agents
+  SELECT_AGENTS.bsl4.forEach(agent => {
+    const agentLower = agent.toLowerCase();
+    if (normalizedText.includes(agentLower)) {
+      foundAgents.push({
+        agent: agent,
+        bslLevel: 'BSL-4',
+        confidence: calculateConfidence(text, agent)
+      });
+    }
+  });
+  
+  return foundAgents;
+}
+
+// Calculate confidence score for agent detection
+function calculateConfidence(text, agent) {
+  const lowerText = text.toLowerCase();
+  const agentLower = agent.toLowerCase();
+  let confidence = 50;
+  
+  // Boost confidence for isolation/culture context
+  if (lowerText.includes('isolated') || lowerText.includes('culture') || 
+      lowerText.includes('confirmed') || lowerText.includes('laboratory')) {
+    confidence += 30;
+  }
+  
+  // Boost for clinical context
+  if (lowerText.includes('patient') || lowerText.includes('case') || 
+      lowerText.includes('outbreak') || lowerText.includes('infection')) {
+    confidence += 20;
+  }
+  
+  // Reduce for research/vaccine context
+  if (lowerText.includes('research') || lowerText.includes('vaccine') || 
+      lowerText.includes('study') || lowerText.includes('laboratory study')) {
+    confidence -= 20;
+  }
+  
+  return Math.max(10, Math.min(100, confidence));
+}
+
+// Extract location from ProMED text
+function extractLocation(text) {
+  // Simple location extraction - look for country patterns
+  const locationPatterns = [
+    /(?:in|from)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/g,
+    /\b([A-Z][a-z]+)\s*,\s*([A-Z][a-z]+)\b/g,
+    /\[([^\]]+)\]/g
+  ];
+  
+  for (const pattern of locationPatterns) {
+    const matches = [...text.matchAll(pattern)];
+    if (matches.length > 0) {
+      return matches[0][1] || matches[0][0].replace(/[\[\]]/g, '');
+    }
+  }
+  
+  return null;
+}
+
+// Add new select agent detection
+function addSelectAgentDetection(agent, date, location, source, promedLink) {
+  // Check if this exact detection already exists
+  const existing = selectAgentData.find(entry => 
+    entry.agent === agent && entry.date === date && entry.location === location
+  );
+  
+  if (!existing) {
+    const newEntry = {
+      id: Date.now().toString(),
+      agent: agent,
+      bslLevel: SELECT_AGENTS.bsl4.includes(agent) ? 'BSL-4' : 'BSL-3',
+      date: date,
+      location: location,
+      source: source,
+      promedLink: promedLink,
+      detected: new Date().toISOString()
+    };
+    
+    selectAgentData.push(newEntry);
+    saveSelectAgentData();
+    updateBanner();
+    
+    console.log(`New select agent detected: ${agent} in ${location}`);
+  }
+}
+
+// Simulate ProMED checking (would be replaced with actual ProMED scraping)
+async function checkForProMEDUpdates() {
+  if (isLoading) return;
+  isLoading = true;
+  
+  try {
+    // Simulate some sample detections for demonstration
+    // In production, this would scrape ProMED-mail
+    
+    // Check if we need to add any sample data for the initial release
+    if (selectAgentData.length === 0) {
+      // Add some sample detections from the last 30 days for demonstration
+      const sampleDetections = [
+        {
+          agent: 'Ebola virus',
+          bslLevel: 'BSL-4',
+          date: '2026-05-10',
+          location: 'Democratic Republic of Congo',
+          source: 'ProMED-mail',
+          promedLink: 'https://promedmail.org/promed-post/?id=8712345'
+        },
+        {
+          agent: 'Brucella melitensis',
+          bslLevel: 'BSL-3', 
+          date: '2026-05-05',
+          location: 'Northern Syria',
+          source: 'ProMED-mail',
+          promedLink: 'https://promedmail.org/promed-post/?id=8712346'
+        }
+      ];
+      
+      // Only add if within last 30 days
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      
+      sampleDetections.forEach(detection => {
+        const detectionDate = new Date(detection.date);
+        if (detectionDate >= thirtyDaysAgo) {
+          detection.id = Date.now().toString() + Math.random().toString();
+          detection.detected = new Date().toISOString();
+          selectAgentData.push(detection);
+        }
+      });
+      
+      saveSelectAgentData();
+      updateBanner();
+    }
+  } catch (error) {
+    console.error('Error checking ProMED updates:', error);
+  } finally {
+    isLoading = false;
+  }
+}
+
+// Click handler for modal overlay
+document.getElementById('selectAgentModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeSelectAgentModal();
+  }
+});
+
+// Cleanup old entries (runs on page load)
+function cleanupOldEntries() {
+  const ninetyDaysAgo = new Date();
+  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+  
+  const initialCount = selectAgentData.length;
+  selectAgentData = selectAgentData.filter(entry => {
+    const entryDate = new Date(entry.date);
+    return entryDate >= ninetyDaysAgo;
+  });
+  
+  if (selectAgentData.length !== initialCount) {
+    saveSelectAgentData();
+    console.log(`Cleaned up ${initialCount - selectAgentData.length} old select agent entries`);
+  }
+}
+
+// Run cleanup on load
+cleanupOldEntries();
+
+// Periodic check every 2 hours (in production)
+setInterval(checkForProMEDUpdates, 2 * 60 * 60 * 1000);
+</script>
 
 </body>
 </html>
