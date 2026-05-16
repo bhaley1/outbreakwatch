@@ -1,45 +1,32 @@
 {
-  "executiveSummary": "Surveillance data from ECDC and PAHO spanning October 2025 through May 2026 reveals multiple concurrent biological threats across the Americas and Europe. Avian Influenza A(H5N1) continues to pose an elevated zoonotic threat in the Americas with ongoing animal-to-human spillover risk, representing a BSL-3 select agent of significant concern. Dengue, mpox, yellow fever, and chikungunya are circulating simultaneously in the Americas, straining regional health systems. Respiratory threats including seasonal influenza, RSV, and pertussis show resurgence patterns in both hemispheres, while measles importation risk persists due to vaccination gaps.",
-  "bottomLine": "The Americas face a complex multi-pathogen emergency led by H5N1 zoonotic spillover risk and simultaneous arboviral surges, requiring coordinated One Health surveillance and emergency response capacity.",
+  "executiveSummary": "Surveillance data from ECDC (Weeks 16-20, 2026) and PAHO (October 2025-May 2026) reveal a complex multi-threat landscape across the Americas and Europe. Avian Influenza A(H5N1) in the Americas represents the highest-priority biosafety concern, with ongoing animal-sector detections reported across multiple PAHO updates spanning November 2025 through March 2026, constituting a BSL-3 select agent with pandemic potential. Additional elevated threats include Mpox (BSL-3), Yellow Fever, Dengue, and a resurgent Pertussis wave across the Americas, alongside seasonal influenza transitions in both hemispheres. Measles re-emergence and Hantavirus Pulmonary Syndrome round out a dense concurrent threat environment requiring coordinated surveillance and response.",
+  "bottomLine": "Avian Influenza A(H5N1) and Mpox as BSL-3 select agents dominate the threat landscape across the Americas, compounded by simultaneous surges in Dengue, Pertussis, Yellow Fever, and Measles demanding urgent multi-pathogen public health response.",
   "threats": [
     {
       "name": "Avian Influenza A(H5N1)",
       "pathogen": "Influenza A virus subtype H5N1",
       "level": "Critical",
-      "location": "Americas Region",
+      "location": "Americas Region (multiple countries)",
       "signals": [
-        "Multiple PAHO epidemiological updates issued November 2025 and March 2026 indicating ongoing circulation",
-        "Zoonotic spillover events detected in the Americas requiring urgent monitoring",
-        "BSL-3 select agent with pandemic potential triggering repeated alert issuance"
+        "Multiple PAHO epidemiological updates spanning November 2025 through March 2026 indicating sustained detection",
+        "Ongoing animal-sector spread with zoonotic spillover risk to humans",
+        "BSL-3 select agent with pandemic potential flagged across two separate PAHO update cycles"
       ],
       "confidence": 90,
-      "action": "Activate enhanced One Health surveillance at human-animal interfaces; enforce PPE protocols for exposed workers; sequence all human cases; coordinate with USDA and CDC on poultry outbreak containment"
-    },
-    {
-      "name": "Dengue",
-      "pathogen": "Dengue virus (DENV 1-4)",
-      "level": "Elevated",
-      "location": "Americas Region",
-      "signals": [
-        "PAHO epidemiological update issued February 2026 indicating significant regional burden",
-        "Historically early or large case counts suggesting hyperendemicity",
-        "Multiple serotype co-circulation increases severe disease risk"
-      ],
-      "confidence": 88,
-      "action": "Strengthen vector control programs; expand diagnostic capacity; prepare hospital surge plans for severe dengue; issue travel advisories for affected countries"
+      "action": "Immediate activation of One Health surveillance protocols; enhance human-animal interface monitoring; ensure stockpile readiness of antivirals and candidate H5N1 vaccines; report all human exposures to WHO under IHR"
     },
     {
       "name": "Mpox",
-      "pathogen": "Monkeypox virus (MPXV)",
+      "pathogen": "Monkeypox virus (Mpox virus)",
       "level": "Elevated",
       "location": "Americas Region",
       "signals": [
-        "PAHO epidemiological update issued April 2026 confirming ongoing transmission",
-        "BSL-3 select agent with sustained human-to-human transmission documented",
-        "Continued case reporting in the Americas following global Clade I emergence context"
+        "PAHO epidemiological update issued 23 April 2026 indicating active transmission",
+        "BSL-3 select agent requiring enhanced containment protocols",
+        "Ongoing circulation consistent with endemic establishment risk in the Americas"
       ],
       "confidence": 85,
-      "action": "Expand JYNNEOS vaccination programs targeting high-risk populations; ensure BSL-3 diagnostic capacity; conduct contact tracing; monitor for clade identification"
+      "action": "Strengthen case detection and contact tracing; ensure vaccine (MVA-BN) availability; implement ring vaccination for confirmed clusters; coordinate with ECDC for cross-regional signal sharing"
     },
     {
       "name": "Yellow Fever",
@@ -47,25 +34,64 @@
       "level": "Elevated",
       "location": "Americas Region",
       "signals": [
-        "PAHO epidemiological alert issued March 2026 indicating active transmission risk",
-        "Epizootic or human cases triggering formal alert",
-        "Vaccination coverage gaps in endemic zones increase outbreak potential"
+        "PAHO epidemiological alert issued 13 March 2026 signaling active risk",
+        "Potential sylvatic cycle amplification in endemic zones",
+        "Risk of spread to unvaccinated urban populations"
       ],
       "confidence": 80,
-      "action": "Accelerate yellow fever vaccination campaigns in at-risk populations; strengthen epizootics surveillance in non-human primates; issue travel vaccination requirements for affected areas"
+      "action": "Verify vaccination coverage in at-risk countries; conduct entomological surveillance for Aedes and Haemagogus vectors; enforce vaccination requirements for travelers from endemic areas"
+    },
+    {
+      "name": "Dengue",
+      "pathogen": "Dengue virus (DENV 1-4)",
+      "level": "Elevated",
+      "location": "Americas Region",
+      "signals": [
+        "PAHO epidemiological update 18 February 2026 documenting elevated case counts",
+        "Historical pattern of record-breaking seasons in Americas since 2024",
+        "Co-circulation risk with Chikungunya and Yellow Fever via shared Aedes aegypti vector"
+      ],
+      "confidence": 88,
+      "action": "Intensify vector control and community-based surveillance; prepare hospital surge capacity; monitor serotype shifts for severe dengue risk; coordinate with ECDC CDTR reports for imported case tracking"
     },
     {
       "name": "Pertussis (Whooping Cough)",
       "pathogen": "Bordetella pertussis",
+      "level": "Elevated",
+      "location": "Americas Region",
+      "signals": [
+        "Two consecutive PAHO alerts (December 2025 and March 2026) indicating sustained resurgence",
+        "Multi-country wave affecting infants and vulnerable populations",
+        "Potential waning vaccine immunity contributing to outbreak amplification"
+      ],
+      "confidence": 87,
+      "action": "Audit Tdap and DTaP vaccination coverage; prioritize booster campaigns for pregnant women and healthcare workers; enhance laboratory confirmation capacity; review macrolide prophylaxis protocols for close contacts"
+    },
+    {
+      "name": "Measles",
+      "pathogen": "Measles morbillivirus",
+      "level": "Elevated",
+      "location": "Americas Region",
+      "signals": [
+        "PAHO epidemiological alert issued 3 February 2026 indicating active transmission",
+        "Region had achieved elimination status; re-emergence signals importation and immunity gaps",
+        "Concurrent ECDC CDTR monitoring suggests European crossover risk"
+      ],
+      "confidence": 83,
+      "action": "Conduct rapid vaccination coverage assessments; deploy outbreak response immunization in affected areas; strengthen port-of-entry surveillance; ensure two-dose MMR verification for travelers"
+    },
+    {
+      "name": "Hantavirus Pulmonary Syndrome",
+      "pathogen": "Hantavirus (Sin Nombre virus and related)",
       "level": "Moderate",
       "location": "Americas Region",
       "signals": [
-        "Two separate PAHO alerts issued December 2025 and March 2026 indicating sustained resurgence",
-        "Multi-country reporting suggests waning immunity or vaccination gaps",
-        "Infant mortality risk elevated during prolonged outbreaks"
+        "PAHO epidemiological alert issued 19 December 2025",
+        "Seasonal rodent population dynamics may be driving increased human exposure risk",
+        "High case fatality rate (~35%) warrants vigilance even at lower case counts"
       ],
-      "confidence": 82,
-      "action": "Reinforce Tdap booster campaigns especially for healthcare workers and pregnant women; investigate vaccine coverage gaps; implement cocoon strategy for newborns"
+      "confidence": 75,
+      "action": "Enhance rodent control and public awareness campaigns in endemic rural areas; ensure ICU capacity and supportive care protocols; reinforce reporting mechanisms given high mortality"
     },
     {
       "name": "Chikungunya",
@@ -73,74 +99,54 @@
       "level": "Moderate",
       "location": "Americas Region",
       "signals": [
-        "PAHO epidemiological alert issued February 2026",
-        "Potential geographic expansion into new Aedes vector habitats",
-        "Co-circulation with dengue and Zika complicates clinical diagnosis"
+        "PAHO epidemiological alert issued 10 February 2026",
+        "Shares Aedes aegypti vector with Dengue creating co-epidemic risk",
+        "Potential geographic expansion as vector range shifts"
       ],
       "confidence": 78,
-      "action": "Enhance arboviral surveillance and laboratory differentiation; strengthen vector control; provide clinical guidance for differential diagnosis from dengue"
-    },
-    {
-      "name": "Measles",
-      "pathogen": "Measles morbillivirus",
-      "level": "Moderate",
-      "location": "Americas Region",
-      "signals": [
-        "PAHO epidemiological alert issued February 2026 highlighting importation and transmission risk",
-        "Ongoing global measles resurgence increasing importation probability",
-        "Vaccination coverage below 95% threshold in multiple American countries"
-      ],
-      "confidence": 80,
-      "action": "Conduct vaccination coverage assessments; implement supplemental immunization activities in sub-national areas with <95% MMR coverage; strengthen port-of-entry surveillance"
-    },
-    {
-      "name": "Seasonal Influenza and RSV Co-circulation",
-      "pathogen": "Influenza virus / Respiratory Syncytial Virus",
-      "level": "Moderate",
-      "location": "Americas Region (Southern Hemisphere)",
-      "signals": [
-        "PAHO alert January 2026 on simultaneous influenza and RSV circulation",
-        "April 2026 PAHO alert marking start of Southern Hemisphere influenza season",
-        "Dual respiratory virus burden risks healthcare system capacity"
-      ],
-      "confidence": 83,
-      "action": "Promote influenza vaccination at season onset; ensure RSV prophylaxis availability for high-risk infants; activate ILI sentinel surveillance networks; prepare ICU surge capacity"
+      "action": "Integrate Chikungunya surveillance into existing Dengue vector control programs; train clinicians on differentiation from Dengue; monitor for neurological complications in vulnerable populations"
     }
   ],
-  "selectAgentSummary": "Two BSL-3 select agents are under active surveillance in this reporting period. Avian Influenza A(H5N1) \u2014 a Tier 1 select agent with pandemic potential \u2014 prompted PAHO epidemiological updates in November 2025 and March 2026, indicating sustained zoonotic circulation in the Americas with human spillover risk. Monkeypox virus (MPXV) \u2014 a BSL-3 select agent \u2014 prompted a PAHO update in April 2026 confirming ongoing transmission in the Americas. Both pathogens require BSL-3 containment for diagnostic and research activities and demand heightened biosurveillance and international coordination.",
+  "selectAgentSummary": "Two BSL-3 select agents have been detected and flagged in active surveillance reports: (1) Avian Influenza A(H5N1) \u2014 documented across two PAHO epidemiological updates (November 2025 and March 2026) in the Americas Region animal sector, representing sustained zoonotic threat with pandemic potential requiring IHR notification and enhanced biosafety containment; (2) Mpox virus \u2014 documented in PAHO epidemiological update (April 2026) with active human transmission in the Americas, requiring BSL-3 laboratory handling and enhanced contact tracing. Both agents are subject to select agent regulations and require immediate escalation to national biosafety authorities.",
   "geography": [
     {
-      "region": "Americas (South America)",
-      "count": 7,
+      "region": "Americas (Pan-American)",
+      "count": 9,
       "diseases": [
-        "Dengue",
-        "Yellow Fever",
-        "Chikungunya",
-        "Avian Influenza H5N1",
+        "Avian Influenza A(H5N1)",
         "Mpox",
+        "Yellow Fever",
+        "Dengue",
         "Pertussis",
-        "Measles"
+        "Measles",
+        "Hantavirus Pulmonary Syndrome",
+        "Chikungunya",
+        "Seasonal Influenza"
       ]
     },
     {
-      "region": "Americas (North America/Caribbean)",
+      "region": "Europe (EU/EEA)",
       "count": 5,
       "diseases": [
-        "Avian Influenza H5N1",
-        "Influenza/RSV",
-        "Mpox",
-        "Pertussis",
-        "Hantavirus"
+        "Communicable disease threats (ECDC Week 16)",
+        "Communicable disease threats (ECDC Week 17)",
+        "Communicable disease threats (ECDC Week 18)",
+        "Communicable disease threats (ECDC Week 19)",
+        "Communicable disease threats (ECDC Week 20)"
       ]
     },
     {
-      "region": "Europe",
-      "count": 4,
+      "region": "Southern Hemisphere (Americas)",
+      "count": 1,
       "diseases": [
-        "Seasonal Influenza",
-        "Mpox",
-        "Measles",
-        "Pertussis"
+        "Seasonal Influenza Southern Hemisphere Season"
+      ]
+    },
+    {
+      "region": "Northern Hemisphere (Americas)",
+      "count": 1,
+      "diseases": [
+        "Seasonal Influenza Northern Hemisphere Season"
       ]
     }
   ],
@@ -150,101 +156,102 @@
     "plant": 0
   },
   "amrSignals": [
-    "No explicit AMR reports identified in current surveillance set; however, Bordetella pertussis macrolide resistance should be monitored given multi-wave resurgence patterns",
-    "Ongoing pertussis resurgence despite vaccination coverage warrants investigation into potential pathogen adaptation rather than solely vaccine-driven immunity gaps"
+    "Bordetella pertussis macrolide resistance patterns should be monitored given multi-country resurgence with two consecutive PAHO alerts",
+    "Antiviral resistance surveillance for H5N1 (oseltamivir resistance) is critical given sustained zoonotic activity across the Americas",
+    "Methanol poisoning alert (October 2025) may reflect illicit alcohol supply chains that could complicate clinical management of infectious disease patients in affected regions"
   ],
   "emergingPatterns": [
-    "Simultaneous multi-pathogen burden in the Americas spanning arboviruses, zoonoses, and vaccine-preventable diseases suggests systemic surveillance and immunization system stress",
-    "Southern Hemisphere influenza season 2026 onset coinciding with residual RSV circulation creates compounding respiratory emergency risk",
-    "Repeated PAHO pertussis alerts across consecutive months indicate failure of current control measures and possible waning vaccine immunity at population level",
-    "H5N1 sustained circulation in the Americas across two separate reporting periods (Nov 2025 and Mar 2026) suggests endemic establishment in wild bird and mammal reservoirs",
-    "Mpox persistence in the Americas despite prior vaccination campaigns raises concern for ongoing transmission networks in specific risk populations",
-    "GLP-1 receptor agonist medication misuse alert from PAHO (Feb 2026) signals emerging non-communicable public health risk intersecting with communicable disease response capacity",
-    "Methanol poisoning alert (Oct 2025) indicates parallel chemical safety threats requiring health system attention alongside biological threats"
+    "Dual-cycle Avian Influenza A(H5N1) surveillance alerts (November 2025 and March 2026) suggest persistent enzootic establishment rather than isolated spillover events in the Americas",
+    "Simultaneous co-circulation of multiple Aedes aegypti-borne viruses (Dengue, Chikungunya, Yellow Fever) across the Americas creates compounding syndromic diagnosis challenges and vector control resource strain",
+    "Back-to-back PAHO Pertussis alerts within three months indicate a sustained resurgence wave potentially driven by immunity gaps post-COVID disruptions to routine immunization",
+    "Measles re-emergence in a historically elimination-certified region signals dangerous regression in vaccination coverage likely driven by pandemic-era immunization disruptions",
+    "Mpox continued transmission into Q2 2026 despite prior international response efforts suggests endemic establishment risk in the Americas",
+    "Simultaneous seasonal influenza transitions in both hemispheres (Southern Hemisphere season start and Northern Hemisphere season overlap) create a window of heightened global respiratory virus co-circulation risk",
+    "ECDC issuing five consecutive weekly CDTR reports (Weeks 16-20) reflects sustained European surveillance alert posture consistent with multiple concurrent threat signals"
   ],
   "timeline": [
     {
       "date": "2025-10-07",
-      "event": "PAHO issues epidemiological alert on methanol poisoning risk in the Americas",
+      "event": "PAHO Epidemiological Alert issued for Risk of Methanol Poisoning in the Americas Region",
       "level": "Moderate"
     },
     {
       "date": "2025-11-24",
-      "event": "PAHO issues epidemiological update on Avian Influenza A(H5N1) in the Americas \u2014 BSL-3 select agent alert",
+      "event": "PAHO Epidemiological Update: Avian Influenza A(H5N1) detected across Americas Region \u2014 first major 2025 update cycle (BSL-3 select agent)",
       "level": "Critical"
     },
     {
       "date": "2025-12-04",
-      "event": "PAHO alert on end of Southern Hemisphere influenza season and start of Northern Hemisphere 2025-26 season",
-      "level": "Low"
-    },
-    {
-      "date": "2025-12-08",
-      "event": "PAHO epidemiological update on pertussis resurgence in the Americas",
+      "event": "PAHO Epidemiological Alert: Seasonal Influenza \u2014 End of 2025 Southern Hemisphere season and start of 2025-26 Northern Hemisphere season",
       "level": "Moderate"
     },
     {
-      "date": "2025-12-19",
-      "event": "PAHO epidemiological alert on Hantavirus Pulmonary Syndrome in the Americas",
+      "date": "2025-12-08",
+      "event": "PAHO Epidemiological Update: Pertussis resurgence documented across Americas Region (first alert cycle)",
       "level": "Elevated"
     },
     {
+      "date": "2025-12-19",
+      "event": "PAHO Epidemiological Alert: Hantavirus Pulmonary Syndrome elevated risk in Americas Region",
+      "level": "Moderate"
+    },
+    {
       "date": "2026-01-09",
-      "event": "PAHO alert on simultaneous seasonal influenza and RSV co-circulation in the Americas",
+      "event": "PAHO Epidemiological Alert: Simultaneous circulation of seasonal influenza and RSV documented in Americas",
       "level": "Moderate"
     },
     {
       "date": "2026-02-03",
-      "event": "PAHO epidemiological alert on measles risk in the Americas Region",
-      "level": "Moderate"
+      "event": "PAHO Epidemiological Alert: Measles re-emergence flagged across Americas Region",
+      "level": "Elevated"
     },
     {
       "date": "2026-02-10",
-      "event": "PAHO epidemiological alert on chikungunya in the Americas",
+      "event": "PAHO Epidemiological Alert: Chikungunya elevated risk in Americas Region",
       "level": "Moderate"
     },
     {
       "date": "2026-02-18",
-      "event": "PAHO epidemiological update on dengue surge in the Americas",
+      "event": "PAHO Epidemiological Update: Dengue cases surge documented across Americas Region",
       "level": "Elevated"
     },
     {
-      "date": "2026-02-27",
-      "event": "PAHO alert on misuse of GLP-1 receptor agonist medications in the Americas",
-      "level": "Low"
-    },
-    {
       "date": "2026-03-11",
-      "event": "PAHO epidemiological update on Avian Influenza A(H5N1) \u2014 second alert, sustained zoonotic risk in Americas",
+      "event": "PAHO Epidemiological Update: Avian Influenza A(H5N1) second major update \u2014 sustained zoonotic activity in Americas (BSL-3 select agent)",
       "level": "Critical"
     },
     {
       "date": "2026-03-13",
-      "event": "PAHO epidemiological alert on yellow fever in the Americas Region",
+      "event": "PAHO Epidemiological Alert: Yellow Fever risk elevated across Americas Region",
       "level": "Elevated"
     },
     {
       "date": "2026-03-25",
-      "event": "PAHO epidemiological update on pertussis resurgence \u2014 second wave alert",
-      "level": "Moderate"
+      "event": "PAHO Epidemiological Update: Pertussis resurgence confirmed in second consecutive update cycle across Americas",
+      "level": "Elevated"
+    },
+    {
+      "date": "2026-04-12",
+      "event": "ECDC CDTR Week 16: Multi-threat communicable disease surveillance report for EU/EEA",
+      "level": "Elevated"
     },
     {
       "date": "2026-04-23",
-      "event": "PAHO epidemiological update on mpox in the Americas \u2014 BSL-3 select agent with ongoing transmission",
+      "event": "PAHO Epidemiological Update: Mpox active transmission confirmed in Americas Region (BSL-3 select agent)",
       "level": "Elevated"
     },
     {
       "date": "2026-04-27",
-      "event": "PAHO alert marking start of Southern Hemisphere influenza and respiratory virus season 2026",
+      "event": "PAHO Epidemiological Alert: Seasonal Influenza and Respiratory Viruses \u2014 Start of Southern Hemisphere 2026 season",
       "level": "Moderate"
     },
     {
       "date": "2026-05-13",
-      "event": "ECDC communicable disease threats report Week 20 \u2014 ongoing multi-pathogen European surveillance",
-      "level": "Moderate"
+      "event": "ECDC CDTR Week 20: Most recent multi-threat European communicable disease surveillance report",
+      "level": "Elevated"
     }
   ],
-  "updated": "2026-05-16T06:27:24.155902Z",
+  "updated": "2026-05-16T09:47:33.026079Z",
   "totalReports": 21,
   "selectAgentCount": 0
 }
