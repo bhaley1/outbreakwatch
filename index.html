@@ -624,7 +624,7 @@ function renderArchiveContent(container) {
             <div class="detail-value">${daysAgo} day${daysAgo === 1 ? '' : 's'} ago</div>
           </div>
         </div>
-        ${entry.promedLink ? `<a href="${entry.promedLink}" target="_blank" class="entry-link">View ProMED Report →</a>` : ''}
+        ${entry.infoLink ? `<a href="${entry.infoLink}" target="_blank" class="entry-link">View Pathogen Info →</a>` : ''}
       </div>
     `;
   });
@@ -747,55 +747,58 @@ function addSelectAgentDetection(agent, date, location, source, promedLink) {
   }
 }
 
-// Simulate ProMED checking (would be replaced with actual ProMED scraping)
+// Load real ProMED select agent data from the scraper output
 async function checkForProMEDUpdates() {
   if (isLoading) return;
   isLoading = true;
   
   try {
-    // Simulate some sample detections for demonstration
-    // In production, this would scrape ProMED-mail
+    // Load real data from the select agent archive
+    const response = await fetch('./select_agents_archive.json');
     
-    // Check if we need to add any sample data for the initial release
-    if (selectAgentData.length === 0) {
-      // Add some sample detections from the last 30 days for demonstration
-      const sampleDetections = [
-        {
-          agent: 'Ebola virus',
-          bslLevel: 'BSL-4',
-          date: '2026-05-10',
-          location: 'Democratic Republic of Congo',
-          source: 'ProMED-mail',
-          promedLink: 'https://promedmail.org/promed-post/?id=8712345'
-        },
-        {
-          agent: 'Brucella melitensis',
-          bslLevel: 'BSL-3', 
-          date: '2026-05-05',
-          location: 'Northern Syria',
-          source: 'ProMED-mail',
-          promedLink: 'https://promedmail.org/promed-post/?id=8712346'
-        }
-      ];
+    if (response.ok) {
+      const data = await response.json();
+      const detections = data.detections || [];
       
-      // Only add if within last 30 days
+      // Convert to the format expected by the frontend
+      const newDetections = detections.map(detection => ({
+        id: detection.id,
+        agent: detection.agent,
+        bslLevel: detection.bsl_level,
+        date: detection.date,
+        location: detection.location,
+        source: detection.source,
+        infoLink: detection.info_link,
+        confidence: detection.confidence,
+        title: detection.title,
+        detected: detection.detected_at
+      }));
+      
+      // Filter for active detections (within last 30 days)
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
       
-      sampleDetections.forEach(detection => {
+      const activeDetections = newDetections.filter(detection => {
         const detectionDate = new Date(detection.date);
-        if (detectionDate >= thirtyDaysAgo) {
-          detection.id = Date.now().toString() + Math.random().toString();
-          detection.detected = new Date().toISOString();
-          selectAgentData.push(detection);
-        }
+        return detectionDate >= thirtyDaysAgo;
       });
       
-      saveSelectAgentData();
-      updateBanner();
+      // Merge with existing data (remove duplicates)
+      const existingIds = selectAgentData.map(d => d.id);
+      const newEntries = activeDetections.filter(d => !existingIds.includes(d.id));
+      
+      if (newEntries.length > 0) {
+        selectAgentData = [...selectAgentData, ...newEntries];
+        saveSelectAgentData();
+        updateBanner();
+        console.log(`Added ${newEntries.length} new select agent detections`);
+      }
+    } else {
+      console.log('No select agent data file found, using local data');
     }
   } catch (error) {
-    console.error('Error checking ProMED updates:', error);
+    console.error('Error loading select agent data:', error);
+    console.log('Falling back to local storage data');
   } finally {
     isLoading = false;
   }

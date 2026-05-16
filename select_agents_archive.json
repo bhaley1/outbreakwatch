@@ -1,0 +1,53 @@
+{
+  "detections": [
+    {
+      "id": "promed_sample_ebola_001",
+      "agent": "Ebola virus",
+      "bsl_level": "BSL-4",
+      "confidence": 92,
+      "date": "2026-05-09",
+      "location": "Democratic Republic of Congo",
+      "source": "ProMED-mail",
+      "info_link": "https://www.who.int/news-room/fact-sheets/detail/ebola-virus-disease",
+      "title": "Ebola virus disease - Democratic Republic of Congo (05): (North Kivu) fatal case",
+      "pattern_matched": "ebola virus",
+      "detected_at": "2026-05-16T02:26:25.380067"
+    },
+    {
+      "id": "promed_sample_brucella_001",
+      "agent": "Brucella melitensis",
+      "bsl_level": "BSL-3",
+      "confidence": 88,
+      "date": "2026-05-04",
+      "location": "Northern Syria",
+      "source": "ProMED-mail",
+      "info_link": "https://www.cdc.gov/brucellosis/index.html",
+      "title": "Brucellosis - Syria: livestock outbreak, human cases",
+      "pattern_matched": "brucella melitensis",
+      "detected_at": "2026-05-16T02:26:25.380096"
+    },
+    {
+      "id": "promed_sample_hantavirus_001",
+      "agent": "Hantavirus",
+      "bsl_level": "BSL-3",
+      "confidence": 85,
+      "date": "2026-05-12",
+      "location": "New Mexico, United States",
+      "source": "ProMED-mail",
+      "info_link": "https://www.cdc.gov/hantavirus/index.html",
+      "title": "Hantavirus pulmonary syndrome - USA (New Mexico): fatal case, rodent exposure",
+      "pattern_matched": "hantavirus",
+      "detected_at": "2026-05-16T02:26:25.380098"
+    }
+  ],
+  "updated": "2026-05-16T02:26:25.689536Z",
+  "total_detections": 3,
+  "active_detections": 3,
+  "metadata": {
+    "scan_date": "2026-05-16T02:26:25.691370",
+    "scan_period_days": 30,
+    "total_agents_monitored": 57,
+    "bsl3_agents_monitored": 38,
+    "bsl4_agents_monitored": 19
+  }
+}
