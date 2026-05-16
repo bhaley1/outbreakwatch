@@ -1,0 +1,574 @@
+name: Update Outbreak Feed & Select Agent Monitor
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'  # Every 2 hours
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  update-outbreak-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 lxml python-dateutil
+
+      - name: Create enhanced outbreak feed script with select agent detection
+        run: |
+          cat > /tmp/enhanced_outbreak_fetcher.py << 'PYEOF'
+          import requests
+          import json
+          import xml.etree.ElementTree as ET
+          from datetime import datetime, timedelta
+          from bs4 import BeautifulSoup
+          import re
+          import time
+          import logging
+
+          # Configure logging
+          logging.basicConfig(level=logging.INFO)
+          logger = logging.getLogger(__name__)
+
+          HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; OutbreakWatch/1.0)'}
+
+          # BSL-3 and BSL-4 Select Agent Database
+          SELECT_AGENTS = {
+              "bsl3": [
+                  "Bacillus anthracis", "Brucella abortus", "Brucella melitensis", "Brucella suis",
+                  "Burkholderia mallei", "Burkholderia pseudomallei", "Chlamydia psittaci",
+                  "Coccidioides immitis", "Coccidioides posadasii", "Coxiella burnetii",
+                  "Francisella tularensis", "Histoplasma capsulatum", "Mycobacterium tuberculosis",
+                  "Rickettsia prowazekii", "Rickettsia rickettsii", "Rickettsia typhi",
+                  "Venezuelan equine encephalitis virus", "Eastern equine encephalitis virus",
+                  "Western equine encephalitis virus", "Rift Valley fever virus",
+                  "Japanese encephalitis virus", "Yellow fever virus", "Chikungunya virus",
+                  "West Nile virus", "Hantavirus", "Lymphocytic choriomeningitis virus",
+                  "Lassa fever virus", "SARS-CoV", "MERS-CoV", "Monkeypox virus"
+              ],
+              "bsl4": [
+                  "Ebola virus", "Marburg virus", "Lassa fever virus", "Junin virus",
+                  "Machupo virus", "Sabia virus", "Guanarito virus", "Chapare virus",
+                  "Lujo virus", "Crimean-Congo hemorrhagic fever virus",
+                  "Kyasanur Forest disease virus", "Omsk hemorrhagic fever virus",
+                  "Alkhurma hemorrhagic fever virus", "Heartland virus",
+                  "Severe fever with thrombocytopenia syndrome virus",
+                  "Nipah virus", "Hendra virus", "Variola virus"
+              ]
+          }
+
+          # Synonyms for better detection
+          SYNONYMS = {
+              "anthrax": "Bacillus anthracis", "tularemia": "Francisella tularensis",
+              "glanders": "Burkholderia mallei", "melioidosis": "Burkholderia pseudomallei",
+              "q fever": "Coxiella burnetii", "psittacosis": "Chlamydia psittaci",
+              "valley fever": "Coccidioides immitis", "tuberculosis": "Mycobacterium tuberculosis",
+              "rocky mountain spotted fever": "Rickettsia rickettsii", "rmsf": "Rickettsia rickettsii",
+              "wnv": "West Nile virus", "sars": "SARS-CoV", "mers": "MERS-CoV",
+              "mpox": "Monkeypox virus", "monkeypox": "Monkeypox virus",
+              "ebola": "Ebola virus", "marburg": "Marburg virus", "lassa": "Lassa fever virus",
+              "cchf": "Crimean-Congo hemorrhagic fever virus", "nipah": "Nipah virus",
+              "hendra": "Hendra virus", "smallpox": "Variola virus"
+          }
+
+          def clean(text):
+              if not text: return ''
+              text = re.sub(r'<[^>]+>', '', text)
+              return re.sub(r'\s+', ' ', text).strip()
+
+          def categorize(title, desc):
+              c = (title + ' ' + desc).lower()
+              if any(w in c for w in ['animal','livestock','cattle','poultry','swine','pig','avian','bird flu','wildlife','veterinary','equine','bovine','feline','canine','zoonot']):
+                  return 'animal'
+              if any(w in c for w in ['plant','crop','agriculture','wheat','rice','cassava','locust','blight']):
+                  return 'plant'
+              return 'human'
+
+          def detect_select_agents(text, title=""):
+              """Detect BSL-3/BSL-4 select agents in text"""
+              combined_text = f"{title} {text}".lower()
+              found_agents = []
+              
+              # Check direct agent names
+              all_agents = SELECT_AGENTS["bsl3"] + SELECT_AGENTS["bsl4"]
+              for agent in all_agents:
+                  if agent.lower() in combined_text:
+                      bsl_level = "BSL-4" if agent in SELECT_AGENTS["bsl4"] else "BSL-3"
+                      confidence = calculate_confidence(combined_text, agent)
+                      if confidence >= 60:
+                          found_agents.append({
+                              "agent": agent,
+                              "bsl_level": bsl_level,
+                              "confidence": confidence
+                          })
+              
+              # Check synonyms
+              for synonym, canonical in SYNONYMS.items():
+                  if synonym in combined_text:
+                      if canonical in all_agents:
+                          bsl_level = "BSL-4" if canonical in SELECT_AGENTS["bsl4"] else "BSL-3"
+                          confidence = calculate_confidence(combined_text, canonical)
+                          if confidence >= 60:
+                              found_agents.append({
+                                  "agent": canonical,
+                                  "bsl_level": bsl_level,
+                                  "confidence": confidence
+                              })
+              
+              # Remove duplicates
+              unique_agents = {}
+              for agent in found_agents:
+                  name = agent["agent"]
+                  if name not in unique_agents or agent["confidence"] > unique_agents[name]["confidence"]:
+                      unique_agents[name] = agent
+              
+              return list(unique_agents.values())
+
+          def calculate_confidence(text, agent):
+              """Calculate confidence score for select agent detection"""
+              confidence = 50
+              text_lower = text.lower()
+              
+              # High confidence indicators
+              if any(term in text_lower for term in ['isolated', 'cultured', 'confirmed', 'laboratory', 'pcr positive']):
+                  confidence += 25
+              if any(term in text_lower for term in ['patient', 'case', 'outbreak', 'infection', 'disease']):
+                  confidence += 15
+              if any(term in text_lower for term in ['research', 'study', 'vaccine', 'experimental']):
+                  confidence -= 20
+              
+              return max(10, min(95, confidence))
+
+          def extract_location(text):
+              """Extract location from text"""
+              patterns = [
+                  r'\[([^\]]+)\]',  # [Location] format
+                  r'(?:in|from|at)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)',
+                  r'([A-Z][a-z]+)\s*,\s*([A-Z][a-z]+)'
+              ]
+              
+              for pattern in patterns:
+                  matches = re.findall(pattern, text[:300])
+                  if matches:
+                      if isinstance(matches[0], tuple):
+                          return ', '.join(matches[0])
+                      return matches[0]
+              return "Location not specified"
+
+          # Regular feed collection
+          items = []
+          sources_ok = []
+          errors = []
+          select_agent_detections = []
+
+          # CDC EID RSS
+          try:
+              cdc_count = 0
+              for feed_url in ['https://wwwnc.cdc.gov/eid/rss/ahead-of-print', 'https://wwwnc.cdc.gov/eid/rss/table-of-contents']:
+                  try:
+                      r = requests.get(feed_url, headers=HEADERS, timeout=20)
+                      content = re.sub(rb'&(?!(amp|lt|gt|quot|apos);)', b'&amp;', r.content)
+                      root = ET.fromstring(content)
+                      for item in root.findall('.//item')[:15]:
+                          title = clean(item.findtext('title',''))
+                          link  = clean(item.findtext('link',''))
+                          date  = clean(item.findtext('pubDate',''))
+                          desc  = clean(item.findtext('description',''))[:300]
+                          if title and len(title) > 10:
+                              items.append({'title':title,'link':link,'pubDate':date,'description':desc,'category':categorize(title,desc),'source':'CDC EID'})
+                              cdc_count += 1
+                              
+                              # Check for select agents
+                              agents = detect_select_agents(f"{title} {desc}")
+                              for agent in agents:
+                                  select_agent_detections.append({
+                                      "agent": agent["agent"],
+                                      "bsl_level": agent["bsl_level"],
+                                      "confidence": agent["confidence"],
+                                      "date": datetime.now().strftime('%Y-%m-%d'),
+                                      "location": extract_location(f"{title} {desc}"),
+                                      "source": "CDC EID",
+                                      "link": link,
+                                      "title": title[:100]
+                                  })
+                  except Exception:
+                      continue
+              sources_ok.append('CDC EID: ' + str(cdc_count))
+          except Exception as e:
+              errors.append('CDC EID: ' + str(e))
+
+          # WHO DON with select agent monitoring
+          try:
+              r = requests.get('https://www.who.int/emergencies/disease-outbreak-news', headers=HEADERS, timeout=25)
+              soup = BeautifulSoup(r.text, 'lxml')
+              don_links = []
+              for a in soup.find_all('a', href=True):
+                  href = a['href']
+                  if '/disease-outbreak-news/item/' in href and href not in don_links:
+                      don_links.append(href)
+              who_count = 0
+              for href in don_links[:10]:
+                  try:
+                      full_url = 'https://www.who.int' + href if href.startswith('/') else href
+                      page_r = requests.get(full_url, headers=HEADERS, timeout=15)
+                      page_soup = BeautifulSoup(page_r.text, 'lxml')
+                      title_el = page_soup.find('h1')
+                      title = clean(title_el.get_text()) if title_el else ''
+                      date_el = page_soup.find('span', class_='timestamp') or page_soup.find('time')
+                      date_str = clean(date_el.get_text()) if date_el else ''
+                      content_div = page_soup.find('div', class_='sf-detail-body-wrapper') or page_soup.find('article') or page_soup.find('main')
+                      first_p = content_div.find('p') if content_div else None
+                      desc = clean(first_p.get_text())[:400] if first_p else ''
+                      if title and len(title) > 5:
+                          items.append({'title':title,'link':full_url,'pubDate':date_str,'description':desc,'category':categorize(title,desc),'source':'WHO DON'})
+                          who_count += 1
+                          
+                          # Check for select agents
+                          full_content = f"{title} {desc}"
+                          if content_div:
+                              full_content += " " + clean(content_div.get_text())[:1000]
+                          
+                          agents = detect_select_agents(full_content)
+                          for agent in agents:
+                              select_agent_detections.append({
+                                  "agent": agent["agent"],
+                                  "bsl_level": agent["bsl_level"],
+                                  "confidence": agent["confidence"],
+                                  "date": datetime.now().strftime('%Y-%m-%d'),
+                                  "location": extract_location(full_content),
+                                  "source": "WHO DON",
+                                  "link": full_url,
+                                  "title": title[:100]
+                              })
+                  except Exception:
+                      continue
+              sources_ok.append('WHO DON: ' + str(who_count))
+          except Exception as e:
+              errors.append('WHO DON: ' + str(e))
+
+          # Continue with ECDC and PAHO (similar to original but with select agent detection)
+          # ECDC CDTR
+          try:
+              r = requests.get('https://www.ecdc.europa.eu/en/threats-and-outbreaks/reports-and-data/weekly-threats', headers=HEADERS, timeout=20)
+              soup = BeautifulSoup(r.text, 'lxml')
+              ecdc_count = 0
+              seen = set()
+              for a in soup.find_all('a', href=True):
+                  href = a['href']
+                  title = clean(a.get_text())
+                  if 'communicable-disease-threats-report' in href and title and len(title) > 15:
+                      if href not in seen:
+                          seen.add(href)
+                          full_url = 'https://www.ecdc.europa.eu' + href if href.startswith('/') else href
+                          try:
+                              page_r = requests.get(full_url, headers=HEADERS, timeout=15)
+                              page_soup = BeautifulSoup(page_r.text, 'lxml')
+                              content = page_soup.find('div', class_='field--name-body')
+                              desc = clean(content.get_text())[:500] if content else ''
+                              
+                              full_content = f"{title} {desc}"
+                              if content:
+                                  full_content += " " + clean(content.get_text())[:1000]
+                              
+                              # Check for select agents
+                              agents = detect_select_agents(full_content)
+                              for agent in agents:
+                                  select_agent_detections.append({
+                                      "agent": agent["agent"],
+                                      "bsl_level": agent["bsl_level"],
+                                      "confidence": agent["confidence"],
+                                      "date": datetime.now().strftime('%Y-%m-%d'),
+                                      "location": extract_location(full_content),
+                                      "source": "ECDC",
+                                      "link": full_url,
+                                      "title": title[:100]
+                                  })
+                          except:
+                              desc = ''
+                          items.append({'title':title,'link':full_url,'pubDate':'','description':desc,'category':categorize(title,desc),'source':'ECDC'})
+                          ecdc_count += 1
+                          if ecdc_count >= 5: break
+              sources_ok.append('ECDC: ' + str(ecdc_count))
+          except Exception as e:
+              errors.append('ECDC: ' + str(e))
+
+          # PAHO
+          try:
+              r = requests.get('https://www.paho.org/en/epidemiological-alerts-and-updates', headers=HEADERS, timeout=20)
+              soup = BeautifulSoup(r.text, 'lxml')
+              paho_count = 0
+              seen = set()
+              for a in soup.find_all('a', href=True):
+                  href = a['href']
+                  title = clean(a.get_text())
+                  if ('epidemiological-alert' in href or 'epidemiological-update' in href) and title and len(title) > 10:
+                      if href not in seen:
+                          seen.add(href)
+                          full_url = 'https://www.paho.org' + href if href.startswith('/') else href
+                          
+                          # Check for select agents in PAHO content
+                          agents = detect_select_agents(title)
+                          for agent in agents:
+                              select_agent_detections.append({
+                                  "agent": agent["agent"],
+                                  "bsl_level": agent["bsl_level"],
+                                  "confidence": agent["confidence"],
+                                  "date": datetime.now().strftime('%Y-%m-%d'),
+                                  "location": extract_location(title),
+                                  "source": "PAHO",
+                                  "link": full_url,
+                                  "title": title[:100]
+                              })
+                          
+                          items.append({'title':title,'link':full_url,'pubDate':'','description':'','category':categorize(title,''),'source':'PAHO'})
+                          paho_count += 1
+              sources_ok.append('PAHO: ' + str(paho_count))
+          except Exception as e:
+              errors.append('PAHO: ' + str(e))
+
+          # Deduplicate regular items
+          seen_titles = set()
+          unique = []
+          for item in items:
+              key = item['title'].lower()[:50]
+              if key not in seen_titles and len(item['title']) > 5:
+                  seen_titles.add(key)
+                  unique.append(item)
+
+          # Deduplicate select agent detections
+          seen_agents = set()
+          unique_agents = []
+          for detection in select_agent_detections:
+              key = f"{detection['agent']}_{detection['date']}_{detection['location']}"
+              if key not in seen_agents:
+                  seen_agents.add(key)
+                  unique_agents.append(detection)
+
+          # Output regular feed
+          output = {'items':unique,'updated':datetime.utcnow().isoformat()+'Z','count':len(unique),'sources':sources_ok,'errors':errors}
+          with open('feed.json','w',encoding='utf-8') as f:
+              json.dump(output, f, indent=2, ensure_ascii=False)
+
+          # Output select agent detections
+          thirty_days_ago = datetime.now() - timedelta(days=30)
+          active_detections = []
+          for detection in unique_agents:
+              try:
+                  detection_date = datetime.strptime(detection['date'], '%Y-%m-%d')
+                  if detection_date >= thirty_days_ago:
+                      active_detections.append(detection)
+              except:
+                  active_detections.append(detection)  # Include if date parsing fails
+
+          select_output = {
+              'detections': unique_agents,
+              'active_detections': active_detections,
+              'updated': datetime.now().isoformat() + 'Z',
+              'total_detections': len(unique_agents),
+              'active_count': len(active_detections),
+              'metadata': {
+                  'scan_date': datetime.now().isoformat(),
+                  'scan_period_days': 30,
+                  'agents_monitored': {
+                      'bsl3': len(SELECT_AGENTS['bsl3']),
+                      'bsl4': len(SELECT_AGENTS['bsl4']),
+                      'total': len(SELECT_AGENTS['bsl3']) + len(SELECT_AGENTS['bsl4'])
+                  }
+              }
+          }
+
+          with open('select_agents.json','w',encoding='utf-8') as f:
+              json.dump(select_output, f, indent=2, ensure_ascii=False)
+
+          print(f'Feed: {len(unique)} items | Select Agents: {len(unique_agents)} total, {len(active_detections)} active | Sources:', sources_ok)
+          
+          if active_detections:
+              print("ACTIVE SELECT AGENT DETECTIONS:")
+              for detection in active_detections:
+                  print(f"  - {detection['agent']} ({detection['bsl_level']}) - {detection['location']} - Confidence: {detection['confidence']}%")
+          PYEOF
+
+      - name: Fetch Outbreak Data with Select Agent Monitoring
+        run: python3 /tmp/enhanced_outbreak_fetcher.py
+
+      - name: Create AI analysis script (enhanced for select agents)
+        run: |
+          cat > /tmp/run_enhanced_analysis.py << 'PYEOF'
+          import json, os, requests, re
+          from datetime import datetime
+
+          api_key = os.environ.get('ANTHROPIC_API_KEY','').strip()
+          if not api_key:
+              print('No API key - skipping AI analysis')
+              with open('analysis.json','w') as f:
+                  json.dump({'error':'API key not configured','updated':datetime.utcnow().isoformat()+'Z'}, f)
+              exit(0)
+
+          # Load feed data
+          with open('feed.json') as f:
+              feed = json.load(f)
+
+          # Load select agent data
+          select_agents = []
+          try:
+              with open('select_agents.json') as f:
+                  select_data = json.load(f)
+                  select_agents = select_data.get('active_detections', [])
+          except:
+              pass
+
+          items = feed.get('items', [])
+          if not items:
+              with open('analysis.json','w') as f:
+                  json.dump({'error':'No feed data','updated':datetime.utcnow().isoformat()+'Z'}, f)
+              exit(0)
+
+          # Prepare analysis prompt
+          reports = []
+          for i, item in enumerate(items[:30]):
+              reports.append('[' + str(i+1) + '] Source: ' + item.get('source','') + chr(10) +
+                             'Title: ' + item.get('title','') + chr(10) +
+                             'Date: ' + item.get('pubDate','') + chr(10) +
+                             'Description: ' + item.get('description','') + chr(10) +
+                             'Category: ' + item.get('category','') + chr(10))
+
+          report_text = chr(10).join(reports)
+
+          # Add select agent section
+          select_agent_text = ""
+          if select_agents:
+              select_agent_text = chr(10) + chr(10) + "BSL-3/BSL-4 SELECT AGENT DETECTIONS (Last 30 Days):" + chr(10)
+              for i, agent in enumerate(select_agents):
+                  select_agent_text += f"[SA{i+1}] Agent: {agent['agent']} ({agent['bsl_level']})" + chr(10)
+                  select_agent_text += f"     Location: {agent['location']}" + chr(10)
+                  select_agent_text += f"     Date: {agent['date']}" + chr(10)
+                  select_agent_text += f"     Source: {agent['source']}" + chr(10)
+                  select_agent_text += f"     Confidence: {agent['confidence']}%" + chr(10)
+
+          system_prompt = '''You are a senior epidemiologist and global health security analyst. Analyze surveillance reports to identify biological threats. Focus on factual epidemiological signals. Use threat levels: Critical, Elevated, Moderate, Low. 
+
+          SPECIAL ATTENTION: Any BSL-3 or BSL-4 select agent detection should be flagged as Critical or Elevated threat level based on context. These are high-containment pathogens with significant biosafety implications.'''
+
+          json_schema = '{"executiveSummary":"3-4 sentence overview including any select agent detections","bottomLine":"one-sentence takeaway","threats":[{"name":"Disease name","pathogen":"Scientific name","level":"Critical|Elevated|Moderate|Low","location":"Country/Region","signals":["signal 1","signal 2"],"confidence":85,"action":"Recommended action"}],"selectAgentSummary":"Summary of BSL-3/BSL-4 detections if any","geography":[{"region":"Region","count":3,"diseases":["disease1"]}],"categories":{"human":0,"animal":0,"plant":0},"amrSignals":["AMR concern 1"],"emergingPatterns":["pattern 1"],"timeline":[{"date":"YYYY-MM-DD","event":"Description","level":"Critical|Elevated|Moderate|Low"}]}'
+
+          user_prompt = ('Analyze these ' + str(len(items)) + ' disease surveillance reports' + 
+                         (f' and {len(select_agents)} BSL-3/BSL-4 select agent detections' if select_agents else '') +
+                         ' and respond ONLY with a JSON object matching this exact schema (no markdown, no preamble):' + chr(10) + chr(10) +
+                         json_schema + chr(10) + chr(10) +
+                         'Identify up to 8 threats. Prioritize any BSL-3/BSL-4 select agents as Critical/Elevated threats. Include actual locations from titles/descriptions.' + chr(10) + chr(10) +
+                         'REPORTS:' + chr(10) + report_text + select_agent_text)
+
+          try:
+              r = requests.post(
+                  'https://api.anthropic.com/v1/messages',
+                  headers={'Content-Type':'application/json','x-api-key':api_key,'anthropic-version':'2023-06-01'},
+                  json={'model':'claude-sonnet-4-6','max_tokens':3500,'system':system_prompt,'messages':[{'role':'user','content':user_prompt}]},
+                  timeout=90
+              )
+              data = r.json()
+              if 'content' not in data:
+                  raise Exception('API error: ' + json.dumps(data))
+              raw_text = data['content'][0]['text']
+              json_match = re.search(r'\{[\s\S]*\}', raw_text)
+              if json_match:
+                  analysis = json.loads(json_match.group(0))
+                  analysis['updated'] = datetime.utcnow().isoformat() + 'Z'
+                  analysis['totalReports'] = len(items)
+                  analysis['selectAgentCount'] = len(select_agents)
+                  with open('analysis.json','w') as f:
+                      json.dump(analysis, f, indent=2)
+                  print('Enhanced analysis saved -', len(analysis.get('threats',[])), 'threats identified,', len(select_agents), 'select agents detected')
+              else:
+                  raise Exception('Could not parse JSON from response')
+          except Exception as e:
+              print('Analysis error:', str(e))
+              with open('analysis.json','w') as f:
+                  json.dump({'error':str(e),'updated':datetime.utcnow().isoformat()+'Z'}, f)
+          PYEOF
+
+      - name: Run Enhanced Claude AI Analysis
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python3 /tmp/run_enhanced_analysis.py
+
+      - name: Update index.html with latest data
+        run: |
+          # Copy the enhanced index.html to the repository root
+          if [ ! -f index.html ]; then
+            echo "Creating index.html from template..."
+            cp /tmp/enhanced_index.html index.html 2>/dev/null || echo "Template not found, will commit existing files"
+          fi
+
+      - name: Commit and Push if Changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add feed.json analysis.json select_agents.json index.html
+          if git diff --staged --quiet; then
+            echo "No changes detected"
+          else
+            # Check if there are any select agent detections to highlight in commit message
+            SELECT_AGENT_COUNT=0
+            if [ -f select_agents.json ]; then
+              SELECT_AGENT_COUNT=$(python3 -c "import json; data=json.load(open('select_agents.json')); print(data.get('active_count', 0))" 2>/dev/null || echo "0")
+            fi
+            
+            if [ "$SELECT_AGENT_COUNT" -gt 0 ]; then
+              git commit -m "🚨 ALERT: $SELECT_AGENT_COUNT active BSL-3/BSL-4 select agent detection(s) - $(date -u '+%Y-%m-%d %H:%M UTC')"
+            else
+              git commit -m "Update outbreak feed & select agent monitoring - $(date -u '+%Y-%m-%d %H:%M UTC')"
+            fi
+            
+            git pull --rebase origin main || true
+            git push
+          fi
+
+      - name: Create summary comment for select agent detections
+        if: always()
+        run: |
+          if [ -f select_agents.json ]; then
+            ACTIVE_COUNT=$(python3 -c "import json; data=json.load(open('select_agents.json')); print(data.get('active_count', 0))" 2>/dev/null || echo "0")
+            TOTAL_COUNT=$(python3 -c "import json; data=json.load(open('select_agents.json')); print(data.get('total_detections', 0))" 2>/dev/null || echo "0")
+            
+            echo "## Select Agent Monitoring Summary" >> $GITHUB_STEP_SUMMARY
+            echo "- **Active detections (last 30 days):** $ACTIVE_COUNT" >> $GITHUB_STEP_SUMMARY
+            echo "- **Total detections in archive:** $TOTAL_COUNT" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$ACTIVE_COUNT" -gt 0 ]; then
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "⚠️ **BSL-3/BSL-4 select agents detected in the last 30 days. Check the OutbreakWatch site for details.**" >> $GITHUB_STEP_SUMMARY
+              
+              # Extract and display the detections
+              python3 -c "
+          import json
+          try:
+              with open('select_agents.json') as f:
+                  data = json.load(f)
+              active = data.get('active_detections', [])
+              if active:
+                  print('', file=open('/tmp/github_summary.md', 'w'))
+                  print('### Recent Select Agent Detections:', file=open('/tmp/github_summary.md', 'a'))
+                  print('', file=open('/tmp/github_summary.md', 'a'))
+                  for detection in active[-5:]:  # Show last 5
+                      print(f\"- **{detection['agent']}** ({detection['bsl_level']}) - {detection['location']} - {detection['date']} - Confidence: {detection['confidence']}%\", file=open('/tmp/github_summary.md', 'a'))
+          except:
+              pass
+              " || true
+              
+              if [ -f /tmp/github_summary.md ]; then
+                cat /tmp/github_summary.md >> $GITHUB_STEP_SUMMARY
+              fi
+            fi
+          fi
