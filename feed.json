@@ -159,23 +159,15 @@
       "description": "",
       "category": "animal",
       "source": "PAHO"
-    },
-    {
-      "title": "Epidemiological Alert - Risk of Methanol Poisoning - 7 October 2025",
-      "link": "https://www.paho.org/en/documents/epidemiological-alert-risk-methanol-poisoning-7-october-2025",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "PAHO"
     }
   ],
-  "updated": "2026-05-17T21:00:44.823307Z",
-  "count": 21,
+  "updated": "2026-05-17T22:57:54.068235Z",
+  "count": 20,
   "sources": [
     "CDC EID: 0",
     "WHO DON: 0",
     "ECDC: 5",
-    "PAHO: 17"
+    "PAHO: 16"
   ],
   "errors": []
 }
