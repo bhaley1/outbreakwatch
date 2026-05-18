@@ -27,71 +27,12 @@
 html{scroll-behavior:smooth;}
 body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.7;min-height:100vh;}
 
-/* Threat Group Styling */
-.threat-group {
-  position: relative;
-}
-
-.group-label {
-  background: var(--paper-2);
-  padding: 8px 2rem;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  color: var(--ink-2);
-  border-left: 3px solid;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.critical-group { border-left-color: var(--critical); }
-.monitoring-group { border-left-color: var(--warning); }
-
-.collapse-toggle {
-  background: none;
-  border: none;
-  color: inherit;
-  padding: 4px 8px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background 0.2s;
-  font-size: 14px;
-}
-
-.collapse-toggle:hover {
-  background: rgba(0,0,0,0.1);
-}
-
-.monitoring-summary {
-  background: rgba(243, 156, 18, 0.1);
-  padding: 8px 2rem;
-  font-size: 12px;
-  color: var(--ink-2);
-  display: none;
-  border-bottom: 0.5px solid rgba(243, 156, 18, 0.2);
-  cursor: pointer;
-}
-
-.monitoring-summary:hover {
-  background: rgba(243, 156, 18, 0.15);
-}
-
-.collapsed .monitoring-banners {
-  display: none;
-}
-
-.collapsed .monitoring-summary {
-  display: block;
-}
-
 /* HCID Banner */
 .select-agent-banner {
   background: linear-gradient(135deg, var(--critical) 0%, #b71c1c 100%);
   color: white;
-  padding: 10px 2rem;
-  border-bottom: 0.5px solid rgba(255,255,255,0.2);
+  padding: 16px 2rem;
+  border: none;
   display: none;
   animation: alertPulse 2s ease-in-out infinite alternate;
   position: relative;
@@ -105,8 +46,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
 .amr-alert-banner {
   background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
   color: white;
-  padding: 10px 2rem;
-  border-bottom: 0.5px solid rgba(255,255,255,0.2);
+  padding: 16px 2rem;
+  border: none;
   display: none;
   animation: amrAlertPulse 2s ease-in-out infinite alternate;
   position: relative;
@@ -120,8 +61,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
 .hai-alert-banner {
   background: linear-gradient(135deg, #7c2d12 0%, #92400e 100%);
   color: white;
-  padding: 10px 2rem;
-  border-bottom: 0.5px solid rgba(255,255,255,0.2);
+  padding: 16px 2rem;
+  border: none;
   display: none;
   animation: haiAlertPulse 2s ease-in-out infinite alternate;
   position: relative;
@@ -135,8 +76,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
 .foodborne-alert-banner {
   background: linear-gradient(135deg, var(--foodborne) 0%, #f39c12 100%);
   color: white;
-  padding: 10px 2rem;
-  border-bottom: 0.5px solid rgba(255,255,255,0.2);
+  padding: 16px 2rem;
+  border: none;
   display: none;
   animation: foodborneAlertPulse 2s ease-in-out infinite alternate;
   position: relative;
@@ -150,8 +91,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
 .vector-alert-banner {
   background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
   color: white;
-  padding: 10px 2rem;
-  border-bottom: 0.5px solid rgba(255,255,255,0.2);
+  padding: 16px 2rem;
+  border: none;
   display: none;
   animation: vectorAlertPulse 2s ease-in-out infinite alternate;
   position: relative;
@@ -165,8 +106,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
 .vpd-alert-banner {
   background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
   color: white;
-  padding: 10px 2rem;
-  border-bottom: 0.5px solid rgba(255,255,255,0.2);
+  padding: 16px 2rem;
+  border: none;
   display: none;
   animation: vpdAlertPulse 2s ease-in-out infinite alternate;
   position: relative;
@@ -203,16 +144,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
 }
 
 .alert-text {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1.3;
 }
 
 .alert-count {
   background: rgba(255,255,255,0.25);
-  padding: 2px 8px;
+  padding: 4px 12px;
   border-radius: 12px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   margin-right: 12px;
   white-space: nowrap;
@@ -222,12 +163,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
   background: rgba(255,255,255,0.2);
   border: 1px solid rgba(255,255,255,0.3);
   color: white;
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-size: 11px;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 12px;
   font-weight: 500;
   text-decoration: none;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .view-details-btn:hover {
@@ -510,14 +452,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
     max-height: 95vh;
   }
   
-  .threat-group .group-label {
-    padding: 8px 1rem;
-  }
-  
-  .monitoring-summary {
-    padding: 8px 1rem;
-  }
-  
   .select-agent-banner,
   .foodborne-alert-banner,
   .amr-alert-banner,
@@ -537,116 +471,93 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
     <p class="subtitle">Global Disease Surveillance Hub</p>
   </header>
 
-  <!-- Critical Threats Group -->
-  <div class="threat-group">
-    <div class="group-label critical-group">
-      Critical Threats
-    </div>
-    
-    <!-- HCID Detection Banner -->
-    <div class="select-agent-banner active" id="selectAgentBanner">
-      <div class="banner-content">
-        <div class="banner-alert">
-          <div class="alert-icon">🦠</div>
-          <div class="alert-text">
-            <strong>HCID DETECTION:</strong> 
-            <span id="alertSummary">3 different high-consequence infectious diseases detected in last 30 days</span>
-          </div>
+  <!-- HCID Detection Banner -->
+  <div class="select-agent-banner active" id="selectAgentBanner">
+    <div class="banner-content">
+      <div class="banner-alert">
+        <div class="alert-icon">🦠</div>
+        <div class="alert-text">
+          <strong>HCID DETECTION:</strong> 
+          <span id="alertSummary">3 different high-consequence infectious diseases detected in last 30 days</span>
         </div>
-        <div class="alert-count" id="alertCount">3 agents</div>
-        <a href="#" class="view-details-btn" onclick="showSelectAgentModal()">View Details</a>
       </div>
-    </div>
-
-    <!-- AMR Alert Banner -->
-    <div class="amr-alert-banner active" id="amrAlertBanner">
-      <div class="banner-content">
-        <div class="banner-alert">
-          <div class="alert-icon">🔬</div>
-          <div class="alert-text">
-            <strong>AMR ALERT:</strong> 
-            <span id="amrAlertSummary">Critical antimicrobial resistance threats detected</span>
-          </div>
-        </div>
-        <div class="alert-count" id="amrAlertCount">4 threats</div>
-        <a href="#" class="view-details-btn" onclick="showAMRModal()">View Details</a>
-      </div>
-    </div>
-
-    <!-- HAI Alert Banner -->
-    <div class="hai-alert-banner active" id="haiAlertBanner">
-      <div class="banner-content">
-        <div class="banner-alert">
-          <div class="alert-icon">🏥</div>
-          <div class="alert-text">
-            <strong>HAI OUTBREAK:</strong> 
-            <span id="haiAlertSummary">Healthcare-associated infection clusters detected</span>
-          </div>
-        </div>
-        <div class="alert-count" id="haiAlertCount">2 clusters</div>
-        <a href="#" class="view-details-btn" onclick="showHAIModal()">View Details</a>
-      </div>
+      <div class="alert-count" id="alertCount">3 agents</div>
+      <a href="#" class="view-details-btn" onclick="showSelectAgentModal()">View Details</a>
     </div>
   </div>
 
-  <!-- Outbreak Monitoring Group -->
-  <div class="threat-group monitoring-group" id="monitoringGroup">
-    <div class="group-label monitoring-group">
-      Outbreak Monitoring
-      <button class="collapse-toggle" onclick="toggleMonitoring()" id="toggleBtn">
-        <span id="toggle-icon">−</span>
-      </button>
+  <!-- AMR Alert Banner -->
+  <div class="amr-alert-banner active" id="amrAlertBanner">
+    <div class="banner-content">
+      <div class="banner-alert">
+        <div class="alert-icon">🔬</div>
+        <div class="alert-text">
+          <strong>AMR ALERT:</strong> 
+          <span id="amrAlertSummary">4 AMR threats detected (3 critical)</span>
+        </div>
+      </div>
+      <div class="alert-count" id="amrAlertCount">4 threats</div>
+      <a href="#" class="view-details-btn" onclick="showAMRModal()">View Details</a>
     </div>
-    
-    <div class="monitoring-summary" onclick="toggleMonitoring()" id="monitoringSummary">
-      3 monitoring systems active • <span id="totalOutbreaks">11</span> total outbreaks tracked • Click to expand
+  </div>
+
+  <!-- HAI Alert Banner -->
+  <div class="hai-alert-banner active" id="haiAlertBanner">
+    <div class="banner-content">
+      <div class="banner-alert">
+        <div class="alert-icon">🏥</div>
+        <div class="alert-text">
+          <strong>HAI OUTBREAK:</strong> 
+          <span id="haiAlertSummary">2 healthcare-associated infection clusters detected</span>
+        </div>
+      </div>
+      <div class="alert-count" id="haiAlertCount">2 clusters</div>
+      <a href="#" class="view-details-btn" onclick="showHAIModal()">View Details</a>
     </div>
-    
-    <div class="monitoring-banners" id="monitoringBanners">
-      <!-- Foodborne Outbreak Alert Banner -->
-      <div class="foodborne-alert-banner active" id="foodborneAlertBanner">
-        <div class="banner-content">
-          <div class="banner-alert">
-            <div class="alert-icon">🍎</div>
-            <div class="alert-text">
-              <strong>FOODBORNE OUTBREAK:</strong> 
-              <span id="foodborneAlertSummary">5 active foodborne illness outbreaks detected globally</span>
-            </div>
-          </div>
-          <div class="alert-count" id="foodborneAlertCount">5 outbreaks</div>
-          <a href="#" class="view-details-btn" onclick="showFoodborneModal()">View Details</a>
-        </div>
-      </div>
+  </div>
 
-      <!-- Vector-Borne Disease Alert Banner -->
-      <div class="vector-alert-banner active" id="vectorAlertBanner">
-        <div class="banner-content">
-          <div class="banner-alert">
-            <div class="alert-icon">🦟</div>
-            <div class="alert-text">
-              <strong>VECTOR-BORNE OUTBREAK:</strong> 
-              <span id="vectorAlertSummary">Vector-borne disease outbreaks monitored globally</span>
-            </div>
-          </div>
-          <div class="alert-count" id="vectorAlertCount">3 outbreaks</div>
-          <a href="#" class="view-details-btn" onclick="showVectorModal()">View Details</a>
+  <!-- Foodborne Outbreak Alert Banner -->
+  <div class="foodborne-alert-banner active" id="foodborneAlertBanner">
+    <div class="banner-content">
+      <div class="banner-alert">
+        <div class="alert-icon">🍎</div>
+        <div class="alert-text">
+          <strong>FOODBORNE OUTBREAK:</strong> 
+          <span id="foodborneAlertSummary">5 active foodborne illness outbreaks detected globally</span>
         </div>
       </div>
+      <div class="alert-count" id="foodborneAlertCount">5 outbreaks</div>
+      <a href="#" class="view-details-btn" onclick="showFoodborneModal()">View Details</a>
+    </div>
+  </div>
 
-      <!-- VPD Alert Banner -->
-      <div class="vpd-alert-banner active" id="vpdAlertBanner">
-        <div class="banner-content">
-          <div class="banner-alert">
-            <div class="alert-icon">💉</div>
-            <div class="alert-text">
-              <strong>VPD OUTBREAK:</strong> 
-              <span id="vpdAlertSummary">Vaccine-preventable disease outbreaks detected</span>
-            </div>
-          </div>
-          <div class="alert-count" id="vpdAlertCount">3 outbreaks</div>
-          <a href="#" class="view-details-btn" onclick="showVPDModal()">View Details</a>
+  <!-- Vector-Borne Disease Alert Banner -->
+  <div class="vector-alert-banner active" id="vectorAlertBanner">
+    <div class="banner-content">
+      <div class="banner-alert">
+        <div class="alert-icon">🦟</div>
+        <div class="alert-text">
+          <strong>VECTOR-BORNE OUTBREAK:</strong> 
+          <span id="vectorAlertSummary">3 vector-borne disease outbreaks monitored globally</span>
         </div>
       </div>
+      <div class="alert-count" id="vectorAlertCount">3 outbreaks</div>
+      <a href="#" class="view-details-btn" onclick="showVectorModal()">View Details</a>
+    </div>
+  </div>
+
+  <!-- VPD Alert Banner -->
+  <div class="vpd-alert-banner active" id="vpdAlertBanner">
+    <div class="banner-content">
+      <div class="banner-alert">
+        <div class="alert-icon">💉</div>
+        <div class="alert-text">
+          <strong>VPD OUTBREAK:</strong> 
+          <span id="vpdAlertSummary">3 vaccine-preventable disease outbreaks detected</span>
+        </div>
+      </div>
+      <div class="alert-count" id="vpdAlertCount">3 outbreaks</div>
+      <a href="#" class="view-details-btn" onclick="showVPDModal()">View Details</a>
     </div>
   </div>
 
@@ -757,33 +668,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
 </div>
 
 <script>
-// Toggle monitoring section
-let monitoringCollapsed = false;
-
-function toggleMonitoring() {
-  const group = document.getElementById('monitoringGroup');
-  const icon = document.getElementById('toggle-icon');
-  
-  monitoringCollapsed = !monitoringCollapsed;
-  
-  if (monitoringCollapsed) {
-    group.classList.add('collapsed');
-    icon.textContent = '+';
-  } else {
-    group.classList.remove('collapsed');
-    icon.textContent = '−';
-  }
-}
-
-// Update outbreak count in monitoring summary
-function updateMonitoringSummary() {
-  const totalOutbreaks = (foodborneOutbreaks?.length || 0) + (vectorOutbreaks?.length || 0) + (vpdOutbreaks?.length || 0);
-  const totalElement = document.getElementById('totalOutbreaks');
-  if (totalElement) {
-    totalElement.textContent = totalOutbreaks;
-  }
-}
-
 // Sample surveillance data
 const selectAgents = [
   {
@@ -1166,7 +1050,7 @@ function closeVPDModal() {
   modal.classList.remove('active');
 }
 
-// Render functions
+// Render functions (same as before)
 function renderSelectAgentContent(container) {
   if (selectAgents.length === 0) {
     container.innerHTML = '<p style="text-align: center; color: var(--ink-3); padding: 2rem;">No HCID threats detected at this time.</p>';
@@ -1525,7 +1409,6 @@ document.addEventListener('DOMContentLoaded', function() {
   updateVectorStatus();
   updateHAIStatus();
   updateVPDStatus();
-  updateMonitoringSummary();
 });
 </script>
 </body>
