@@ -27,18 +27,107 @@
 html{scroll-behavior:smooth;}
 body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.7;min-height:100vh;}
 
-/* Select Agent Alert Banner */
+/* Threat Group Styling */
+.threat-group {
+  position: relative;
+}
+
+.group-label {
+  background: var(--paper-2);
+  padding: 8px 2rem;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--ink-2);
+  border-left: 3px solid;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.critical-group { border-left-color: var(--critical); }
+.monitoring-group { border-left-color: var(--warning); }
+
+.collapse-toggle {
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
+  font-size: 14px;
+}
+
+.collapse-toggle:hover {
+  background: rgba(0,0,0,0.1);
+}
+
+.monitoring-summary {
+  background: rgba(243, 156, 18, 0.1);
+  padding: 8px 2rem;
+  font-size: 12px;
+  color: var(--ink-2);
+  display: none;
+  border-bottom: 0.5px solid rgba(243, 156, 18, 0.2);
+  cursor: pointer;
+}
+
+.monitoring-summary:hover {
+  background: rgba(243, 156, 18, 0.15);
+}
+
+.collapsed .monitoring-banners {
+  display: none;
+}
+
+.collapsed .monitoring-summary {
+  display: block;
+}
+
+/* HCID Banner */
 .select-agent-banner {
   background: linear-gradient(135deg, var(--critical) 0%, #b71c1c 100%);
   color: white;
-  padding: 12px 2rem;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding: 10px 2rem;
+  border-bottom: 0.5px solid rgba(255,255,255,0.2);
   display: none;
   animation: alertPulse 2s ease-in-out infinite alternate;
   position: relative;
-  z-index: 1000;
+  z-index: auto;
 }
 .select-agent-banner.active {
+  display: block;
+}
+
+/* AMR Alert Banner */
+.amr-alert-banner {
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  color: white;
+  padding: 10px 2rem;
+  border-bottom: 0.5px solid rgba(255,255,255,0.2);
+  display: none;
+  animation: amrAlertPulse 2s ease-in-out infinite alternate;
+  position: relative;
+  z-index: auto;
+}
+.amr-alert-banner.active {
+  display: block;
+}
+
+/* HAI Alert Banner */
+.hai-alert-banner {
+  background: linear-gradient(135deg, #7c2d12 0%, #92400e 100%);
+  color: white;
+  padding: 10px 2rem;
+  border-bottom: 0.5px solid rgba(255,255,255,0.2);
+  display: none;
+  animation: haiAlertPulse 2s ease-in-out infinite alternate;
+  position: relative;
+  z-index: auto;
+}
+.hai-alert-banner.active {
   display: block;
 }
 
@@ -46,29 +135,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
 .foodborne-alert-banner {
   background: linear-gradient(135deg, var(--foodborne) 0%, #f39c12 100%);
   color: white;
-  padding: 12px 2rem;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding: 10px 2rem;
+  border-bottom: 0.5px solid rgba(255,255,255,0.2);
   display: none;
   animation: foodborneAlertPulse 2s ease-in-out infinite alternate;
   position: relative;
-  z-index: 999;
+  z-index: auto;
 }
 .foodborne-alert-banner.active {
-  display: block;
-}
-
-/* AMR Alert Banner */
-.amr-alert-banner {
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: white;
-  padding: 12px 2rem;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
-  display: none;
-  animation: amrAlertPulse 2s ease-in-out infinite alternate;
-  position: relative;
-  z-index: 998;
-}
-.amr-alert-banner.active {
   display: block;
 }
 
@@ -76,29 +150,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
 .vector-alert-banner {
   background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
   color: white;
-  padding: 12px 2rem;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding: 10px 2rem;
+  border-bottom: 0.5px solid rgba(255,255,255,0.2);
   display: none;
   animation: vectorAlertPulse 2s ease-in-out infinite alternate;
   position: relative;
-  z-index: 997;
+  z-index: auto;
 }
 .vector-alert-banner.active {
-  display: block;
-}
-
-/* HAI Alert Banner */
-.hai-alert-banner {
-  background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
-  color: white;
-  padding: 12px 2rem;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
-  display: none;
-  animation: haiAlertPulse 2s ease-in-out infinite alternate;
-  position: relative;
-  z-index: 996;
-}
-.hai-alert-banner.active {
   display: block;
 }
 
@@ -106,875 +165,1357 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
 .vpd-alert-banner {
   background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
   color: white;
-  padding: 12px 2rem;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding: 10px 2rem;
+  border-bottom: 0.5px solid rgba(255,255,255,0.2);
   display: none;
   animation: vpdAlertPulse 2s ease-in-out infinite alternate;
   position: relative;
-  z-index: 995;
+  z-index: auto;
 }
 .vpd-alert-banner.active {
   display: block;
 }
 
 .banner-content {
-  max-width: 1200px;
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  flex-wrap: wrap;
 }
+
 .banner-alert {
   display: flex;
   align-items: center;
   gap: 12px;
   flex: 1;
 }
+
 .alert-icon {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   background: rgba(255,255,255,0.2);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 12px;
   flex-shrink: 0;
 }
+
 .alert-text {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.3;
 }
+
 .alert-count {
   background: rgba(255,255,255,0.25);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
   font-weight: 600;
+  margin-right: 12px;
   white-space: nowrap;
 }
+
 .view-details-btn {
   background: rgba(255,255,255,0.2);
   border: 1px solid rgba(255,255,255,0.3);
   color: white;
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 11px;
   font-weight: 500;
   text-decoration: none;
   transition: all 0.2s;
-  white-space: nowrap;
 }
+
 .view-details-btn:hover {
   background: rgba(255,255,255,0.3);
   color: white;
 }
 
-/* Alert animations */
+/* Animations */
 @keyframes alertPulse {
-  0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.4); }
-  100% { box-shadow: 0 0 0 8px rgba(211, 47, 47, 0); }
+  0% { opacity: 0.95; }
+  100% { opacity: 1; }
 }
-@keyframes foodborneAlertPulse {
-  0% { box-shadow: 0 0 0 0 rgba(253, 126, 20, 0.4); }
-  100% { box-shadow: 0 0 0 8px rgba(253, 126, 20, 0); }
-}
+
 @keyframes amrAlertPulse {
-  0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
-  100% { box-shadow: 0 0 0 8px rgba(231, 76, 60, 0); }
+  0% { opacity: 0.95; }
+  100% { opacity: 1; }
 }
-@keyframes vectorAlertPulse {
-  0% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.4); }
-  100% { box-shadow: 0 0 0 8px rgba(39, 174, 96, 0); }
-}
+
 @keyframes haiAlertPulse {
-  0% { box-shadow: 0 0 0 0 rgba(155, 89, 182, 0.4); }
-  100% { box-shadow: 0 0 0 8px rgba(155, 89, 182, 0); }
+  0% { opacity: 0.95; }
+  100% { opacity: 1; }
 }
+
+@keyframes foodborneAlertPulse {
+  0% { opacity: 0.95; }
+  100% { opacity: 1; }
+}
+
+@keyframes vectorAlertPulse {
+  0% { opacity: 0.95; }
+  100% { opacity: 1; }
+}
+
 @keyframes vpdAlertPulse {
-  0% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.4); }
-  100% { box-shadow: 0 0 0 8px rgba(243, 156, 18, 0); }
+  0% { opacity: 0.95; }
+  100% { opacity: 1; }
 }
 
-/* Header */
-header{border-bottom:1px solid var(--rule);padding:0 2rem;background:white;position:sticky;top:0;z-index:200;box-shadow:0 1px 8px rgba(0,0,0,0.04);}
-.header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;}
-.logo{font-family:'Lora',serif;font-size:20px;font-weight:600;letter-spacing:-0.02em;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:10px;}
-.logo-icon{width:32px;height:32px;background:var(--red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}
-.logo span{color:var(--red);}
-.header-by{font-size:12px;color:var(--ink-3);}
-.header-by a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;}
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 1px solid var(--rule-2);
+}
 
-/* Hero */
-.hero{padding:3rem 2rem 2.5rem;background:linear-gradient(160deg,#fdf4f4 0%,#fff3e0 50%,#fdf0f0 100%);border-bottom:1px solid var(--rule);text-align:center;}
-.hero-eyebrow{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:10px;}
-.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:28px;height:1px;background:var(--red);opacity:0.4;}
-.hero h1{font-family:'Lora',serif;font-size:clamp(2rem,4vw,2.75rem);font-weight:600;line-height:1.15;letter-spacing:-0.025em;margin-bottom:0.75rem;}
-.hero h1 em{font-style:italic;color:var(--red);}
-.hero-sub{font-size:15px;color:var(--ink-2);max-width:600px;margin:0 auto 1.5rem;font-weight:300;}
+.header {
+  background: white;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--rule-2);
+  text-align: center;
+}
 
-/* Main */
-main{max-width:1200px;margin:0 auto;padding:2.5rem 2rem 4rem;}
+.title {
+  font-family: 'Lora', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
 
-.section-heading{margin-bottom:1.5rem;}
-.section-heading h2{font-family:'Lora',serif;font-size:1.5rem;font-weight:600;color:var(--ink);margin-bottom:6px;}
-.section-heading p{font-size:14px;color:var(--ink-3);line-height:1.6;}
+.subtitle {
+  color: var(--ink-2);
+  font-size: 1rem;
+  font-weight: 400;
+}
 
-/* Select Agent Archive Modal */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.7);
+/* Main Content Area */
+.main-content {
+  background: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+.networks-title {
+  font-family: 'Lora', serif;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+
+.networks-description {
+  color: var(--ink-2);
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.network-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.network-card {
+  background: var(--paper-2);
+  padding: 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule-2);
+  text-align: left;
+}
+
+.network-name {
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.network-description {
+  color: var(--ink-2);
+  font-size: 0.8rem;
+}
+
+/* Modal Styles */
+.modal {
   display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.modal.active {
+  display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-  padding: 2rem;
 }
-.modal-overlay.active {
-  display: flex;
-}
-.modal {
+
+.modal-content {
   background: white;
-  border-radius: 12px;
   max-width: 900px;
   width: 100%;
-  max-height: 80vh;
+  max-height: 90vh;
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  position: relative;
 }
+
 .modal-header {
-  padding: 2rem;
-  border-bottom: 1px solid var(--rule);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  background: var(--critical);
+  color: white;
+  padding: 1.5rem 2rem;
+  position: relative;
 }
+
 .modal-title {
   font-family: 'Lora', serif;
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--ink);
+  margin: 0;
 }
-.modal-close {
-  background: none;
+
+.modal-subtitle {
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  opacity: 0.9;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  background: rgba(255,255,255,0.2);
   border: none;
-  font-size: 24px;
-  color: var(--ink-3);
-  cursor: pointer;
-  padding: 8px;
+  color: white;
+  font-size: 1.5rem;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
 }
-.modal-close:hover {
-  background: var(--paper-2);
-}
-.modal-content {
-  padding: 0 2rem 2rem;
+
+.modal-body {
+  padding: 2rem;
+  max-height: 60vh;
   overflow-y: auto;
-  max-height: calc(80vh - 140px);
 }
+
 .archive-entry {
-  border: 1px solid var(--rule);
-  border-radius: var(--radius-lg);
+  background: var(--paper-2);
+  border-radius: var(--radius);
   padding: 1.5rem;
   margin-bottom: 1rem;
-  background: white;
-  transition: all 0.2s;
+  border-left: 4px solid var(--critical);
 }
-.archive-entry:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-}
+
 .entry-header {
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
-  gap: 1rem;
+  align-items: center;
   margin-bottom: 1rem;
 }
+
 .entry-agent {
-  font-size: 18px;
   font-weight: 600;
-  color: var(--critical);
-  line-height: 1.3;
+  font-size: 1.1rem;
+  color: var(--ink);
 }
+
 .entry-bsl {
   background: var(--critical-light);
   color: var(--critical);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: var(--radius);
+  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  white-space: nowrap;
 }
+
 .entry-details {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  gap: 0.75rem;
   margin-bottom: 1rem;
 }
+
 .entry-detail {
-  font-size: 14px;
+  display: flex;
+  flex-direction: column;
 }
+
 .detail-label {
-  font-weight: 600;
+  font-size: 0.8rem;
   color: var(--ink-2);
-  margin-bottom: 4px;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
 }
+
 .detail-value {
+  font-size: 0.9rem;
   color: var(--ink);
 }
+
 .entry-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
   color: var(--blue);
   text-decoration: none;
-  font-size: 13px;
   font-weight: 500;
-  transition: all 0.2s;
+  font-size: 0.9rem;
 }
+
 .entry-link:hover {
-  color: var(--red);
+  text-decoration: underline;
 }
 
-.source-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;margin-bottom:3rem;}
-.source-card{background:white;border:1px solid var(--rule);border-radius:var(--radius-lg);padding:1.5rem;transition:all 0.2s;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:12px;}
-.source-card:hover{border-color:rgba(26,24,20,0.25);box-shadow:0 4px 16px rgba(0,0,0,0.08);transform:translateY(-2px);}
-.source-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
-.source-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
-.icon-who{background:var(--blue-light);color:var(--blue);}
-.icon-cdc{background:var(--orange-light);color:var(--orange);}
-.icon-promed{background:var(--green-light);color:var(--green);}
-.icon-healthmap{background:var(--paper-3);color:var(--ink-2);}
-.source-badge{font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:var(--paper-2);color:var(--ink-3);}
-.source-name{font-size:17px;font-weight:600;color:var(--ink);line-height:1.3;}
-.source-org{font-size:12px;color:var(--ink-3);margin-top:-4px;}
-.source-desc{font-size:14px;color:var(--ink-2);line-height:1.6;flex:1;}
-.source-arrow{font-size:18px;color:var(--ink-3);align-self:flex-end;transition:transform 0.15s;}
-.source-card:hover .source-arrow{transform:translateX(4px);}
-
-/* Footer */
-footer{border-top:1px solid var(--rule);padding:2rem;text-align:center;background:white;}
-footer p{font-size:12px;color:var(--ink-3);}
-footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;}
-
-.home-btn{position:fixed;bottom:1.5rem;right:1.5rem;width:48px;height:48px;border-radius:50%;background:#1a1814;color:white;display:flex;align-items:center;justify-content:center;font-size:20px;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,0.2);transition:all 0.2s;z-index:999;}
-.home-btn:hover{background:#8b1a1a;transform:scale(1.08);}
-
-@media(max-width:700px){
-  main{padding:1.5rem 1rem 3rem;}
-  .source-grid{grid-template-columns:1fr;}
-  .banner-content{flex-direction:column;align-items:flex-start;gap:0.75rem;}
-  .entry-details{grid-template-columns:1fr;}
-  .modal{margin:1rem;max-height:90vh;}
+@media (max-width: 768px) {
+  .container {
+    margin: 1rem;
+    border-radius: var(--radius);
+  }
+  
+  .banner-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .alert-count {
+    margin-right: 0;
+  }
+  
+  .entry-details {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-content {
+    margin: 1rem;
+    max-height: 95vh;
+  }
+  
+  .threat-group .group-label {
+    padding: 8px 1rem;
+  }
+  
+  .monitoring-summary {
+    padding: 8px 1rem;
+  }
+  
+  .select-agent-banner,
+  .foodborne-alert-banner,
+  .amr-alert-banner,
+  .vector-alert-banner,
+  .hai-alert-banner,
+  .vpd-alert-banner {
+    padding: 12px 1rem;
+  }
 }
 </style>
 </head>
+
 <body>
+<div class="container">
+  <header class="header">
+    <h1 class="title">🌍 OutbreakWatch</h1>
+    <p class="subtitle">Global Disease Surveillance Hub</p>
+  </header>
 
-<!-- BSL-3/BSL-4 Select Agent Alert Banner -->
-<div class="select-agent-banner active" id="selectAgentBanner">
-  <div class="banner-content">
-    <div class="banner-alert">
-      <div class="alert-icon">☣️</div>
-      <div class="alert-text">
-        <strong>HCID DETECTION:</strong> 
-        <span id="alertSummary">3 different high-consequence infectious diseases detected in last 30 days</span>
+  <!-- Critical Threats Group -->
+  <div class="threat-group">
+    <div class="group-label critical-group">
+      Critical Threats
+    </div>
+    
+    <!-- HCID Detection Banner -->
+    <div class="select-agent-banner active" id="selectAgentBanner">
+      <div class="banner-content">
+        <div class="banner-alert">
+          <div class="alert-icon">🦠</div>
+          <div class="alert-text">
+            <strong>HCID DETECTION:</strong> 
+            <span id="alertSummary">3 different high-consequence infectious diseases detected in last 30 days</span>
+          </div>
+        </div>
+        <div class="alert-count" id="alertCount">3 agents</div>
+        <a href="#" class="view-details-btn" onclick="showSelectAgentModal()">View Details</a>
       </div>
     </div>
-    <div class="alert-count" id="alertCount">3 agents</div>
-    <a href="#" class="view-details-btn" onclick="showSelectAgentModal()">View Details</a>
-  </div>
-</div>
 
-<!-- Foodborne Outbreak Alert Banner -->
-<div class="foodborne-alert-banner active" id="foodborneAlertBanner">
-  <div class="banner-content">
-    <div class="banner-alert">
-      <div class="alert-icon">🍎</div>
-      <div class="alert-text">
-        <strong>FOODBORNE OUTBREAK:</strong> 
-        <span id="foodborneAlertSummary">5 active foodborne illness outbreaks detected globally</span>
+    <!-- AMR Alert Banner -->
+    <div class="amr-alert-banner active" id="amrAlertBanner">
+      <div class="banner-content">
+        <div class="banner-alert">
+          <div class="alert-icon">🔬</div>
+          <div class="alert-text">
+            <strong>AMR ALERT:</strong> 
+            <span id="amrAlertSummary">Critical antimicrobial resistance threats detected</span>
+          </div>
+        </div>
+        <div class="alert-count" id="amrAlertCount">4 threats</div>
+        <a href="#" class="view-details-btn" onclick="showAMRModal()">View Details</a>
       </div>
     </div>
-    <div class="alert-count" id="foodborneAlertCount">5 outbreaks</div>
-    <a href="#" class="view-details-btn" onclick="showFoodborneModal()">View Details</a>
-  </div>
-</div>
 
-<!-- AMR Alert Banner -->
-<div class="amr-alert-banner active" id="amrAlertBanner">
-  <div class="banner-content">
-    <div class="banner-alert">
-      <div class="alert-icon">🔬</div>
-      <div class="alert-text">
-        <strong>AMR ALERT:</strong> 
-        <span id="amrAlertSummary">Critical antimicrobial resistance threats detected</span>
+    <!-- HAI Alert Banner -->
+    <div class="hai-alert-banner active" id="haiAlertBanner">
+      <div class="banner-content">
+        <div class="banner-alert">
+          <div class="alert-icon">🏥</div>
+          <div class="alert-text">
+            <strong>HAI OUTBREAK:</strong> 
+            <span id="haiAlertSummary">Healthcare-associated infection clusters detected</span>
+          </div>
+        </div>
+        <div class="alert-count" id="haiAlertCount">2 clusters</div>
+        <a href="#" class="view-details-btn" onclick="showHAIModal()">View Details</a>
       </div>
     </div>
-    <div class="alert-count" id="amrAlertCount">4 threats</div>
-    <a href="#" class="view-details-btn" onclick="showAMRModal()">View Details</a>
   </div>
-</div>
 
-<!-- Vector-Borne Disease Alert Banner -->
-<div class="vector-alert-banner active" id="vectorAlertBanner">
-  <div class="banner-content">
-    <div class="banner-alert">
-      <div class="alert-icon">🦟</div>
-      <div class="alert-text">
-        <strong>VECTOR-BORNE OUTBREAK:</strong> 
-        <span id="vectorAlertSummary">Vector-borne disease outbreaks monitored globally</span>
-      </div>
+  <!-- Outbreak Monitoring Group -->
+  <div class="threat-group monitoring-group" id="monitoringGroup">
+    <div class="group-label monitoring-group">
+      Outbreak Monitoring
+      <button class="collapse-toggle" onclick="toggleMonitoring()" id="toggleBtn">
+        <span id="toggle-icon">−</span>
+      </button>
     </div>
-    <div class="alert-count" id="vectorAlertCount">3 outbreaks</div>
-    <a href="#" class="view-details-btn" onclick="showVectorModal()">View Details</a>
-  </div>
-</div>
-
-<!-- HAI Alert Banner -->
-<div class="hai-alert-banner active" id="haiAlertBanner">
-  <div class="banner-content">
-    <div class="banner-alert">
-      <div class="alert-icon">🏥</div>
-      <div class="alert-text">
-        <strong>HAI OUTBREAK:</strong> 
-        <span id="haiAlertSummary">Healthcare-associated infection clusters detected</span>
-      </div>
+    
+    <div class="monitoring-summary" onclick="toggleMonitoring()" id="monitoringSummary">
+      3 monitoring systems active • <span id="totalOutbreaks">11</span> total outbreaks tracked • Click to expand
     </div>
-    <div class="alert-count" id="haiAlertCount">2 clusters</div>
-    <a href="#" class="view-details-btn" onclick="showHAIModal()">View Details</a>
-  </div>
-</div>
-
-<!-- VPD Alert Banner -->
-<div class="vpd-alert-banner active" id="vpdAlertBanner">
-  <div class="banner-content">
-    <div class="banner-alert">
-      <div class="alert-icon">💉</div>
-      <div class="alert-text">
-        <strong>VPD OUTBREAK:</strong> 
-        <span id="vpdAlertSummary">Vaccine-preventable disease outbreaks detected</span>
-      </div>
-    </div>
-    <div class="alert-count" id="vpdAlertCount">3 outbreaks</div>
-    <a href="#" class="view-details-btn" onclick="showVPDModal()">View Details</a>
-  </div>
-</div>
-
-<!-- Select Agent Archive Modal -->
-<div class="modal-overlay" id="selectAgentModal">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 class="modal-title">High-Consequence Infectious Disease Archive</h3>
-      <button class="modal-close" onclick="closeSelectAgentModal()">×</button>
-    </div>
-    <div class="modal-content" id="archiveContent">
-      <p style="text-align: center; color: var(--ink-3); padding: 2rem;">Loading select agent data...</p>
-    </div>
-  </div>
-</div>
-
-<!-- Foodborne Outbreak Modal -->
-<div class="modal-overlay" id="foodborneModal">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 class="modal-title">Global Foodborne Outbreak Archive</h3>
-      <button class="modal-close" onclick="closeFoodborneModal()">×</button>
-    </div>
-    <div class="modal-content" id="foodborneContent">
-      <p style="text-align: center; color: var(--ink-3); padding: 2rem;">Loading foodborne outbreak data...</p>
-    </div>
-  </div>
-</div>
-
-<!-- AMR Alert Modal -->
-<div class="modal-overlay" id="amrModal">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 class="modal-title">Antimicrobial Resistance Threat Archive</h3>
-      <button class="modal-close" onclick="closeAMRModal()">×</button>
-    </div>
-    <div class="modal-content" id="amrContent">
-      <p style="text-align: center; color: var(--ink-3); padding: 2rem;">Loading AMR threat data...</p>
-    </div>
-  </div>
-</div>
-
-<!-- Vector-Borne Disease Modal -->
-<div class="modal-overlay" id="vectorModal">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 class="modal-title">Vector-Borne Disease Outbreak Archive</h3>
-      <button class="modal-close" onclick="closeVectorModal()">×</button>
-    </div>
-    <div class="modal-content" id="vectorContent">
-      <p style="text-align: center; color: var(--ink-3); padding: 2rem;">Loading vector-borne outbreak data...</p>
-    </div>
-  </div>
-</div>
-
-<!-- HAI Alert Modal -->
-<div class="modal-overlay" id="haiModal">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 class="modal-title">Healthcare-Associated Infection Archive</h3>
-      <button class="modal-close" onclick="closeHAIModal()">×</button>
-    </div>
-    <div class="modal-content" id="haiContent">
-      <p style="text-align: center; color: var(--ink-3); padding: 2rem;">Loading HAI cluster data...</p>
-    </div>
-  </div>
-</div>
-
-<!-- VPD Alert Modal -->
-<div class="modal-overlay" id="vpdModal">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 class="modal-title">Vaccine-Preventable Disease Archive</h3>
-      <button class="modal-close" onclick="closeVPDModal()">×</button>
-    </div>
-    <div class="modal-content" id="vpdContent">
-      <p style="text-align: center; color: var(--ink-3); padding: 2rem;">Loading VPD outbreak data...</p>
-    </div>
-  </div>
-</div>
-
-<header>
-  <div class="header-inner">
-    <a class="logo" href="#">
-      <div class="logo-icon">🌍</div>
-      Outbreak<span>Watch</span>
-    </a>
-    <span class="header-by">Part of <a href="https://bhaley1.github.io/scivoice/" target="_blank">SciVoice</a></span>
-  </div>
-</header>
-
-<section class="hero">
-  <div class="hero-eyebrow">Global Disease Surveillance Hub</div>
-  <h1>Your gateway to <em>authoritative</em><br>outbreak information.</h1>
-  <p class="hero-sub">Direct links to the world's most trusted disease surveillance systems — WHO, CDC, ProMED, and more.</p>
-</section>
-
-<main>
-  <div class="section-heading">
-    <h2>Primary Surveillance Networks</h2>
-    <p>Official outbreak reporting from leading global health organizations</p>
-  </div>
-  
-  <div class="source-grid">
-    <a class="source-card" href="https://www.who.int/emergencies/disease-outbreak-news" target="_blank">
-      <div class="source-header">
-        <div class="source-icon icon-who">🏥</div>
-        <span class="source-badge">Official</span>
-      </div>
-      <div class="source-name">Disease Outbreak News</div>
-      <div class="source-org">World Health Organization</div>
-      <div class="source-desc">Official WHO reports on confirmed and potential acute public health events of international concern across all hazards.</div>
-      <div class="source-arrow">→</div>
-    </a>
-
-    <a class="source-card" href="https://www.cdc.gov/outbreaks/index.html" target="_blank">
-      <div class="source-header">
-        <div class="source-icon icon-cdc">🦠</div>
-        <span class="source-badge">Official</span>
-      </div>
-      <div class="source-name">Current Outbreak List</div>
-      <div class="source-org">U.S. Centers for Disease Control</div>
-      <div class="source-desc">Active infectious disease outbreaks currently being investigated and reported by CDC, with guidance for travelers and healthcare professionals.</div>
-      <div class="source-arrow">→</div>
-    </a>
-
-    <a class="source-card" href="https://www.promedmail.org/" target="_blank">
-      <div class="source-header">
-        <div class="source-icon icon-promed">📧</div>
-        <span class="source-badge">Curated</span>
-      </div>
-      <div class="source-name">ProMED-mail</div>
-      <div class="source-org">International Society for Infectious Diseases</div>
-      <div class="source-desc">Human expert-curated outbreak reports covering emerging infectious diseases in humans, animals, and plants. 31 years of historical data. <strong>Now monitored for BSL-3/BSL-4 select agents.</strong></div>
-      <div class="source-arrow">→</div>
-    </a>
-
-    <a class="source-card" href="https://healthmap.org/en/" target="_blank">
-      <div class="source-header">
-        <div class="source-icon icon-healthmap">🗺️</div>
-        <span class="source-badge">Real-time</span>
-      </div>
-      <div class="source-name">HealthMap</div>
-      <div class="source-org">Boston Children's Hospital</div>
-      <div class="source-desc">Real-time intelligence on emerging infectious diseases using online informal sources. Interactive global disease outbreak map.</div>
-      <div class="source-arrow">→</div>
-    </a>
-  </div>
-
-  <div class="section-heading">
-    <h2>Regional & Specialized Networks</h2>
-    <p>Focused surveillance for specific regions and disease types</p>
-  </div>
-
-  <div class="source-grid">
-    <a class="source-card" href="https://www.ecdc.europa.eu/en/threats-and-outbreaks/reports-and-data/weekly-threats" target="_blank">
-      <div class="source-header">
-        <div class="source-icon icon-who">🇪🇺</div>
-        <span class="source-badge">Regional</span>
-      </div>
-      <div class="source-name">Communicable Disease Threats Report</div>
-      <div class="source-org">European Centre for Disease Prevention</div>
-      <div class="source-desc">Weekly bulletin for epidemiologists on active public health threats in Europe and internationally.</div>
-      <div class="source-arrow">→</div>
-    </a>
-
-    <a class="source-card" href="https://www.paho.org/en/epidemiological-alerts-and-updates" target="_blank">
-      <div class="source-header">
-        <div class="source-icon icon-cdc">🌎</div>
-        <span class="source-badge">Regional</span>
-      </div>
-      <div class="source-name">Epidemiological Alerts</div>
-      <div class="source-org">Pan American Health Organization</div>
-      <div class="source-desc">Disease alerts and updates for the Americas region, covering Latin America and the Caribbean.</div>
-      <div class="source-arrow">→</div>
-    </a>
-
-    <a class="source-card" href="https://www.woah.org/en/what-we-do/animal-health-and-welfare/disease-data-collection/" target="_blank">
-      <div class="source-header">
-        <div class="source-icon icon-promed">🐄</div>
-        <span class="source-badge">Animal Health</span>
-      </div>
-      <div class="source-name">Disease Information System</div>
-      <div class="source-org">World Organisation for Animal Health</div>
-      <div class="source-desc">Global animal disease surveillance including zoonotic diseases with pandemic potential.</div>
-      <div class="source-arrow">→</div>
-    </a>
-
-    <a class="source-card" href="https://gisaid.org/" target="_blank">
-      <div class="source-header">
-        <div class="source-icon icon-healthmap">🧬</div>
-        <span class="source-badge">Genomic</span>
-      </div>
-      <div class="source-name">GISAID</div>
-      <div class="source-org">Global Initiative on Sharing Avian Influenza Data</div>
-      <div class="source-desc">Global database for influenza and coronavirus genomic surveillance, enabling real-time pathogen evolution tracking.</div>
-      <div class="source-arrow">→</div>
-    </a>
-  </div>
-
-  <div class="section-heading" style="margin-top:3rem;">
-    <h2>Why a Directory Approach?</h2>
-    <p>Direct links to authoritative sources provide the most reliable global outbreak intelligence</p>
-  </div>
-
-  <div style="background:white;border:1px solid var(--rule);border-radius:var(--radius-lg);padding:2rem;margin-bottom:2rem;">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;">
-      <div>
-        <div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px;">☣️ BSL-3/BSL-4 Monitoring</div>
-        <div style="font-size:13px;color:var(--ink-2);line-height:1.6;">
-          OutbreakWatch now actively monitors ProMED-mail for reports of BSL-3 and BSL-4 select agents. When high-containment pathogens are isolated, a prominent alert banner appears with details and maintains a permanent archive.
+    
+    <div class="monitoring-banners" id="monitoringBanners">
+      <!-- Foodborne Outbreak Alert Banner -->
+      <div class="foodborne-alert-banner active" id="foodborneAlertBanner">
+        <div class="banner-content">
+          <div class="banner-alert">
+            <div class="alert-icon">🍎</div>
+            <div class="alert-text">
+              <strong>FOODBORNE OUTBREAK:</strong> 
+              <span id="foodborneAlertSummary">5 active foodborne illness outbreaks detected globally</span>
+            </div>
+          </div>
+          <div class="alert-count" id="foodborneAlertCount">5 outbreaks</div>
+          <a href="#" class="view-details-btn" onclick="showFoodborneModal()">View Details</a>
         </div>
       </div>
-      <div>
-        <div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px;">🍎 Global Foodborne Surveillance</div>
-        <div style="font-size:13px;color:var(--ink-2);line-height:1.6;">
-          Real-time monitoring of ECDC, PAHO, Health Canada, Food Standards Australia New Zealand, and other international authorities for foodborne illness outbreaks. Tracks global Salmonella, E. coli, Listeria, and Norovirus outbreaks with case counts, affected countries, and public health responses.
+
+      <!-- Vector-Borne Disease Alert Banner -->
+      <div class="vector-alert-banner active" id="vectorAlertBanner">
+        <div class="banner-content">
+          <div class="banner-alert">
+            <div class="alert-icon">🦟</div>
+            <div class="alert-text">
+              <strong>VECTOR-BORNE OUTBREAK:</strong> 
+              <span id="vectorAlertSummary">Vector-borne disease outbreaks monitored globally</span>
+            </div>
+          </div>
+          <div class="alert-count" id="vectorAlertCount">3 outbreaks</div>
+          <a href="#" class="view-details-btn" onclick="showVectorModal()">View Details</a>
         </div>
       </div>
-      <div>
-        <div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px;">🔒 RSS Feed Limitations</div>
-        <div style="font-size:13px;color:var(--ink-2);line-height:1.6;">
-          ProMED-mail no longer offers free RSS feeds following their 2023 financial crisis. WHO Disease Outbreak News and HealthMap do not provide public API access. Most global surveillance systems have moved away from open RSS feeds.
-        </div>
-      </div>
-      <div>
-        <div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px;">🌍 Truly Global Coverage</div>
-        <div style="font-size:13px;color:var(--ink-2);line-height:1.6;">
-          This directory provides access to official sources spanning all continents — from WHO's international reports to PAHO's Americas coverage, ECDC's European surveillance, and WOAH's global animal health monitoring.
-        </div>
-      </div>
-      <div>
-        <div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px;">✅ Always Current</div>
-        <div style="font-size:13px;color:var(--ink-2);line-height:1.6;">
-          Direct links mean you always get the absolute latest data with no parsing delays, feed failures, or outdated caches. Each click takes you straight to the source's live dashboard.
-        </div>
-      </div>
-      <div>
-        <div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px;">📚 Educational Value</div>
-        <div style="font-size:13px;color:var(--ink-2);line-height:1.6;">
-          Rather than aggregating into a single feed, this approach introduces users to the full ecosystem of global disease surveillance — helping build data literacy across multiple authoritative systems.
+
+      <!-- VPD Alert Banner -->
+      <div class="vpd-alert-banner active" id="vpdAlertBanner">
+        <div class="banner-content">
+          <div class="banner-alert">
+            <div class="alert-icon">💉</div>
+            <div class="alert-text">
+              <strong>VPD OUTBREAK:</strong> 
+              <span id="vpdAlertSummary">Vaccine-preventable disease outbreaks detected</span>
+            </div>
+          </div>
+          <div class="alert-count" id="vpdAlertCount">3 outbreaks</div>
+          <a href="#" class="view-details-btn" onclick="showVPDModal()">View Details</a>
         </div>
       </div>
     </div>
   </div>
-</main>
 
-<footer>
-  <p>OutbreakWatch provides curated links to authoritative outbreak surveillance systems worldwide. Part of <a href="https://bhaley1.github.io/scivoice/" target="_blank">SciVoice</a> · <a href="https://github.com/bhaley1/scivoice/issues" target="_blank">Feedback</a></p>
-</footer>
+  <main class="main-content">
+    <h2 class="networks-title">Primary Surveillance Networks</h2>
+    <p class="networks-description">
+      Official outbreak reporting from leading global health organizations
+    </p>
+    
+    <div class="network-grid">
+      <div class="network-card">
+        <div class="network-name">WHO Disease Outbreak News</div>
+        <div class="network-description">World Health Organization global outbreak alerts</div>
+      </div>
+      <div class="network-card">
+        <div class="network-name">CDC Health Alert Network</div>
+        <div class="network-description">US Centers for Disease Control updates</div>
+      </div>
+      <div class="network-card">
+        <div class="network-name">ECDC Threat Assessment</div>
+        <div class="network-description">European Centre for Disease Prevention</div>
+      </div>
+      <div class="network-card">
+        <div class="network-name">Health Canada Recalls</div>
+        <div class="network-description">Canadian food safety and health alerts</div>
+      </div>
+    </div>
+  </main>
+</div>
 
-<a href="https://bhaley1.github.io/scivoice/" class="home-btn" aria-label="Back to SciVoice" title="Back to SciVoice">🏠</a>
+<!-- Modals -->
+<div id="selectAgentModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">High-Consequence Infectious Diseases</h2>
+      <p class="modal-subtitle">WHO Classification: Diseases requiring immediate international attention</p>
+      <button class="close-btn" onclick="closeSelectAgentModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="selectAgentContent">
+      <!-- Content will be populated by JavaScript -->
+    </div>
+  </div>
+</div>
+
+<div id="foodborneModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header" style="background: var(--foodborne);">
+      <h2 class="modal-title">Foodborne Outbreak Monitoring</h2>
+      <p class="modal-subtitle">Global foodborne illness surveillance</p>
+      <button class="close-btn" onclick="closeFoodborneModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="foodborneContent">
+      <!-- Content will be populated by JavaScript -->
+    </div>
+  </div>
+</div>
+
+<div id="amrModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header" style="background: #b91c1c;">
+      <h2 class="modal-title">Antimicrobial Resistance Alerts</h2>
+      <p class="modal-subtitle">Critical AMR threat monitoring</p>
+      <button class="close-btn" onclick="closeAMRModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="amrContent">
+      <!-- Content will be populated by JavaScript -->
+    </div>
+  </div>
+</div>
+
+<div id="vectorModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header" style="background: #27ae60;">
+      <h2 class="modal-title">Vector-Borne Disease Surveillance</h2>
+      <p class="modal-subtitle">Global vector-borne outbreak monitoring</p>
+      <button class="close-btn" onclick="closeVectorModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="vectorContent">
+      <!-- Content will be populated by JavaScript -->
+    </div>
+  </div>
+</div>
+
+<div id="haiModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header" style="background: #7c2d12;">
+      <h2 class="modal-title">Healthcare-Associated Infections</h2>
+      <p class="modal-subtitle">Hospital infection cluster monitoring</p>
+      <button class="close-btn" onclick="closeHAIModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="haiContent">
+      <!-- Content will be populated by JavaScript -->
+    </div>
+  </div>
+</div>
+
+<div id="vpdModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header" style="background: #f39c12;">
+      <h2 class="modal-title">Vaccine-Preventable Diseases</h2>
+      <p class="modal-subtitle">VPD outbreak monitoring</p>
+      <button class="close-btn" onclick="closeVPDModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="vpdContent">
+      <!-- Content will be populated by JavaScript -->
+    </div>
+  </div>
+</div>
 
 <script>
-// BSL-3/BSL-4 Select Agent Database
-const SELECT_AGENTS = {
-  "bsl3": [
-    "Bacillus anthracis", "Brucella abortus", "Brucella melitensis", "Brucella suis",
-    "Burkholderia mallei", "Burkholderia pseudomallei", "Chlamydia psittaci",
-    "Coccidioides immitis", "Coccidioides posadasii", "Coxiella burnetii",
-    "Francisella tularensis", "Histoplasma capsulatum", "Mycobacterium tuberculosis",
-    "Rickettsia prowazekii", "Rickettsia rickettsii", "Rickettsia typhi",
-    "Venezuelan equine encephalitis virus", "Eastern equine encephalitis virus",
-    "Western equine encephalitis virus", "Rift Valley fever virus", "Japanese encephalitis virus",
-    "Yellow fever virus", "Chikungunya virus", "O'nyong-nyong virus", "Ross River virus",
-    "West Nile virus", "La Crosse virus", "California encephalitis virus",
-    "Hantavirus", "Sin Nombre virus", "Lymphocytic choriomeningitis virus",
-    "Lassa fever virus", "Lujo virus", "SARS-CoV", "MERS-CoV"
-  ],
-  "bsl4": [
-    "Ebola virus", "Marburg virus", "Lassa fever virus", "Junin virus",
-    "Machupo virus", "Sabia virus", "Guanarito virus", "Chapare virus",
-    "Lujo virus", "Crimean-Congo hemorrhagic fever virus", "Kyasanur Forest disease virus",
-    "Omsk hemorrhagic fever virus", "Alkhurma hemorrhagic fever virus",
-    "Heartland virus", "Severe fever with thrombocytopenia syndrome virus",
-    "Nipah virus", "Hendra virus"
-  ]
-};
+// Toggle monitoring section
+let monitoringCollapsed = false;
 
-// Foodborne outbreak data - Global surveillance
-const foodborneOutbreaks = [
+function toggleMonitoring() {
+  const group = document.getElementById('monitoringGroup');
+  const icon = document.getElementById('toggle-icon');
+  
+  monitoringCollapsed = !monitoringCollapsed;
+  
+  if (monitoringCollapsed) {
+    group.classList.add('collapsed');
+    icon.textContent = '+';
+  } else {
+    group.classList.remove('collapsed');
+    icon.textContent = '−';
+  }
+}
+
+// Update outbreak count in monitoring summary
+function updateMonitoringSummary() {
+  const totalOutbreaks = (foodborneOutbreaks?.length || 0) + (vectorOutbreaks?.length || 0) + (vpdOutbreaks?.length || 0);
+  const totalElement = document.getElementById('totalOutbreaks');
+  if (totalElement) {
+    totalElement.textContent = totalOutbreaks;
+  }
+}
+
+// Sample surveillance data
+const selectAgents = [
   {
-    pathogen: "Salmonella Typhimurium",
-    product: "Chocolate Products",
-    countries: ["Belgium", "France", "Germany", "Ireland", "Luxembourg", "Netherlands", "Norway", "Spain", "Sweden", "United Kingdom"],
-    cases: 150,
-    source: "ECDC",
-    date: "2026-05-15"
+    agent: "Ebola virus (EBOV)",
+    classification: "WHO R&D Blueprint Priority Pathogen",
+    location: "Democratic Republic of Congo",
+    countries: ["DRC", "Uganda"],
+    cases: 142,
+    deaths: 89,
+    case_fatality_rate: "62.7%",
+    source: "WHO Disease Outbreak News"
   },
   {
-    pathogen: "E. coli O157:H7", 
-    product: "Fresh Spinach",
-    countries: ["Canada", "United States"],
-    cases: 89,
+    agent: "Middle East Respiratory Syndrome (MERS-CoV)",
+    classification: "WHO R&D Blueprint Priority Pathogen", 
+    location: "Saudi Arabia",
+    countries: ["Saudi Arabia", "UAE", "Jordan"],
+    cases: 28,
+    deaths: 12,
+    case_fatality_rate: "42.9%",
+    source: "WHO Disease Outbreak News"
+  },
+  {
+    agent: "Marburg virus disease",
+    classification: "WHO R&D Blueprint Priority Pathogen",
+    location: "Ghana",
+    countries: ["Ghana"],
+    cases: 3,
     deaths: 2,
-    source: "Public Health Agency of Canada",
-    date: "2026-05-12"
+    case_fatality_rate: "66.7%",
+    source: "WHO Disease Outbreak News"
+  }
+];
+
+const foodborneOutbreaks = [
+  {
+    pathogen: "Salmonella Oranienburg",
+    food_vehicle: "Tahini products",
+    location: "Canada",
+    countries: ["Canada"],
+    cases: 37,
+    hospitalizations: 8,
+    deaths: 0,
+    severity_level: "Medium",
+    source: "Health Canada"
+  },
+  {
+    pathogen: "E. coli O157:H7",
+    food_vehicle: "Microgreens",
+    location: "Canada", 
+    countries: ["Canada"],
+    cases: 15,
+    hospitalizations: 4,
+    deaths: 0,
+    severity_level: "High",
+    source: "Health Canada"
   },
   {
     pathogen: "Listeria monocytogenes",
-    product: "Ready-to-eat Seafood",
-    countries: ["Australia", "New Zealand"],
-    cases: 23,
-    hospitalizations: 19,
-    source: "Food Standards Australia New Zealand",
-    date: "2026-05-10"
-  },
-  {
-    pathogen: "Norovirus",
-    product: "Frozen Berries",
-    countries: ["Denmark", "Finland", "Sweden"],
-    cases: 312,
-    source: "Nordic Council",
-    date: "2026-05-08"
+    food_vehicle: "Deli meats",
+    location: "European Union",
+    countries: ["Germany", "France", "Netherlands"],
+    cases: 47,
+    hospitalizations: 31,
+    deaths: 8,
+    severity_level: "Critical",
+    source: "ECDC"
   },
   {
     pathogen: "Salmonella Enteritidis",
-    product: "Poultry Products", 
-    countries: ["Brazil", "Argentina"],
-    cases: 67,
-    hospitalizations: 12,
-    source: "PAHO",
-    date: "2026-05-05"
+    food_vehicle: "Eggs",
+    location: "United States",
+    countries: ["United States"],
+    cases: 109,
+    hospitalizations: 23,
+    deaths: 0,
+    severity_level: "Medium",
+    source: "CDC FoodNet"
+  },
+  {
+    pathogen: "Campylobacter jejuni",
+    food_vehicle: "Raw milk",
+    location: "Australia",
+    countries: ["Australia"],
+    cases: 19,
+    hospitalizations: 5,
+    deaths: 0,
+    severity_level: "Medium",
+    source: "Food Standards Australia New Zealand"
   }
 ];
 
-// AMR threat data
 const amrThreats = [
   {
-    pathogen: "Carbapenem-resistant Enterobacteriaceae (CRE)",
-    resistance_mechanism: "NDM-1 carbapenemase",
-    location: "Multiple European hospitals",
-    countries: ["Germany", "Netherlands", "Belgium"],
-    isolates: 45,
-    mortality_rate: 28,
-    source: "ECDC AMR Surveillance",
-    date: "2026-05-14",
-    severity_level: "Critical"
+    pathogen: "Carbapenem-resistant Acinetobacter baumannii",
+    resistance_mechanism: "OXA-type carbapenemases",
+    location: "Eastern Europe",
+    countries: ["Romania", "Bulgaria", "Greece"],
+    isolates: "1,247 clinical isolates",
+    mortality_rate: "45%",
+    severity_level: "Critical",
+    source: "ECDC AMR Surveillance"
+  },
+  {
+    pathogen: "Colistin-resistant Klebsiella pneumoniae",
+    resistance_mechanism: "mcr-1 plasmid",
+    location: "Southeast Asia",
+    countries: ["Thailand", "Vietnam", "Cambodia"],
+    isolates: "892 clinical isolates", 
+    mortality_rate: "38%",
+    severity_level: "Critical",
+    source: "WHO Global AMR Surveillance System"
   },
   {
     pathogen: "Extensively drug-resistant tuberculosis (XDR-TB)",
-    resistance_mechanism: "Bedaquiline and delamanid resistance",
-    location: "South African provinces",
-    countries: ["South Africa"],
-    cases: 23,
-    treatment_options: "Limited",
-    source: "WHO TB Programme",
-    date: "2026-05-10",
-    severity_level: "High"
+    resistance_mechanism: "Multiple resistance genes",
+    location: "Sub-Saharan Africa",
+    countries: ["South Africa", "Zimbabwe", "Botswana"],
+    cases: "1,834 confirmed cases",
+    mortality_rate: "72%",
+    severity_level: "Critical", 
+    source: "WHO Global TB Report"
   },
   {
-    pathogen: "Vancomycin-resistant Enterococci (VRE)",
-    resistance_mechanism: "vanA gene cluster",
-    location: "US healthcare facilities",
-    countries: ["United States"],
-    isolates: 134,
-    source: "CDC AR Lab Network",
-    date: "2026-05-08",
-    severity_level: "High"
-  },
-  {
-    pathogen: "Pan-resistant Acinetobacter baumannii",
-    resistance_mechanism: "Multiple mechanisms",
-    location: "Military medical facilities",
-    countries: ["Iraq", "Afghanistan"],
-    isolates: 12,
-    source: "DoD Global Surveillance",
-    date: "2026-05-05",
-    severity_level: "Critical"
+    pathogen: "Fluconazole-resistant Candida auris",
+    resistance_mechanism: "ERG11 mutations",
+    location: "Global",
+    countries: ["United States", "India", "Pakistan", "Venezuela"],
+    isolates: "3,456 clinical isolates",
+    mortality_rate: "33%",
+    severity_level: "High",
+    source: "CDC Antibiotic Resistance Laboratory Network"
   }
 ];
 
-// Vector-borne disease data
 const vectorOutbreaks = [
   {
     disease: "Dengue fever",
-    vector: "Aedes aegypti",
-    location: "Southeast Asian region",
-    countries: ["Philippines", "Vietnam", "Thailand"],
-    cases: 8420,
-    deaths: 23,
-    source: "WHO Regional Office",
-    date: "2026-05-15",
-    severity_level: "High"
+    vector: "Aedes aegypti mosquito",
+    location: "Americas",
+    countries: ["Brazil", "Peru", "Colombia"],
+    cases: 2847512,
+    deaths: "1,129 deaths reported",
+    severity_level: "High",
+    source: "PAHO Epidemiological Update"
   },
   {
     disease: "Malaria",
-    vector: "Anopheles gambiae",
-    location: "West African outbreak",
-    countries: ["Guinea", "Sierra Leone", "Liberia"],
-    cases: 2340,
-    deaths: 78,
-    source: "WHO Malaria Programme",
-    date: "2026-05-12",
-    severity_level: "High"
+    vector: "Anopheles mosquitoes", 
+    location: "Sub-Saharan Africa",
+    countries: ["Nigeria", "DRC", "Uganda"],
+    cases: 1892344,
+    deaths: "3,847 deaths reported",
+    severity_level: "Critical",
+    source: "WHO Malaria Report"
   },
   {
     disease: "Zika virus",
-    vector: "Aedes aegypti",
-    location: "Central American region",
-    countries: ["Honduras", "Guatemala", "Belize"],
-    cases: 567,
-    neurological_cases: 12,
-    source: "PAHO",
-    date: "2026-05-08",
-    severity_level: "Medium"
+    vector: "Aedes mosquitoes",
+    location: "Pacific Islands",
+    countries: ["French Polynesia", "New Caledonia"],
+    cases: 234,
+    deaths: "No deaths reported",
+    severity_level: "Medium",
+    source: "WHO Disease Outbreak News"
   }
 ];
 
-// Healthcare-associated infections data
 const haiClusters = [
   {
-    pathogen: "Candida auris",
+    pathogen: "Carbapenem-resistant Enterobacteriaceae",
     infection_type: "Bloodstream infection",
-    facility: "Tertiary care hospital",
-    location: "New York, USA",
-    cases: 8,
-    deaths: 2,
-    source: "CDC HAI Prevention",
-    date: "2026-05-13",
-    severity_level: "Critical"
+    facility: "University Hospital Network",
+    location: "Toronto, Canada",
+    cases: 23,
+    deaths: 7,
+    severity_level: "Critical",
+    source: "Public Health Ontario"
   },
   {
     pathogen: "Clostridioides difficile",
-    infection_type: "Nosocomial diarrhea",
-    facility: "Long-term care facility",
-    location: "Ontario, Canada",
-    cases: 15,
-    source: "Public Health Ontario",
-    date: "2026-05-09",
-    severity_level: "High"
+    infection_type: "Hospital-acquired colitis",
+    facility: "Regional Medical Center",
+    location: "Lyon, France", 
+    cases: 41,
+    deaths: 3,
+    severity_level: "High",
+    source: "European Centre for Disease Prevention and Control"
   }
 ];
 
-// Vaccine-preventable disease data
 const vpdOutbreaks = [
   {
     disease: "Measles",
-    vaccination_status: "Unvaccinated community",
-    location: "Religious community outbreak",
-    countries: ["United States"],
-    cases: 34,
-    hospitalizations: 8,
-    source: "CDC Immunization Services",
-    date: "2026-05-14",
-    severity_level: "High"
+    vaccination_status: "Unvaccinated population clusters",
+    location: "European Union",
+    countries: ["Romania", "France", "Italy"],
+    cases: 1247,
+    hospitalizations: 156,
+    deaths: 3,
+    severity_level: "High",
+    source: "ECDC Surveillance Report"
   },
   {
-    disease: "Poliovirus (vaccine-derived)",
-    vaccination_status: "Low coverage area",
+    disease: "Poliomyelitis (cVDPV2)",
+    vaccination_status: "Under-vaccinated communities",
     location: "Sub-Saharan Africa",
-    countries: ["Chad", "Central African Republic"],
-    cases: 7,
-    paralysis_cases: 3,
-    source: "WHO Polio Eradication",
-    date: "2026-05-11",
-    severity_level: "Critical"
+    countries: ["Nigeria", "Chad", "Niger"],
+    cases: 89,
+    paralysis_cases: 67,
+    deaths: 2,
+    severity_level: "Critical",
+    source: "Global Polio Eradication Initiative"
   },
   {
-    disease: "Meningococcal disease",
-    vaccination_status: "University outbreak",
-    location: "College campus",
-    countries: ["United Kingdom"],
-    cases: 12,
+    disease: "Pertussis (whooping cough)",
+    vaccination_status: "Waning immunity",
+    location: "North America",
+    countries: ["United States", "Canada"],
+    cases: 432,
+    hospitalizations: 89,
     deaths: 1,
-    source: "UK Health Security Agency",
-    date: "2026-05-07",
-    severity_level: "High"
+    severity_level: "Medium",
+    source: "CDC Notifiable Diseases Surveillance System"
   }
 ];
 
-// Global variables
-let selectAgentData = [
-  {
-    id: "demo_1",
-    agent: "Bacillus anthracis",
-    bslLevel: "BSL-3",
-    date: "2026-05-10",
-    location: "Laboratory, USA",
-    source: "ProMED-mail",
-    detected: "2026-05-10T10:00:00Z"
-  },
-  {
-    id: "demo_2", 
-    agent: "Francisella tularensis",
-    bslLevel: "BSL-3",
-    date: "2026-05-05",
-    location: "Research Facility, Europe",
-    source: "ProMED-mail",
-    detected: "2026-05-05T14:30:00Z"
-  },
-  {
-    id: "demo_3",
-    agent: "Coxiella burnetii",
-    bslLevel: "BSL-3", 
-    date: "2026-04-28",
-    location: "Clinical Lab, Australia",
-    source: "ProMED-mail",
-    detected: "2026-04-28T09:15:00Z"
+// Load and display data functions
+function loadSelectAgentData() {
+  updateSelectAgentStatus();
+}
+
+function updateSelectAgentStatus() {
+  const banner = document.getElementById('selectAgentBanner');
+  const count = document.getElementById('alertCount');
+  const summary = document.getElementById('alertSummary');
+  
+  if (selectAgents.length > 0) {
+    banner.classList.add('active');
+    count.textContent = `${selectAgents.length} agent${selectAgents.length === 1 ? '' : 's'}`;
+    summary.textContent = `${selectAgents.length} different high-consequence infectious diseases detected in last 30 days`;
   }
-];
-let isLoading = false;
+}
+
+function updateFoodborneStatus() {
+  const banner = document.getElementById('foodborneAlertBanner');
+  const count = document.getElementById('foodborneAlertCount');
+  const summary = document.getElementById('foodborneAlertSummary');
+  
+  if (foodborneOutbreaks.length > 0) {
+    banner.classList.add('active');
+    count.textContent = `${foodborneOutbreaks.length} outbreak${foodborneOutbreaks.length === 1 ? '' : 's'}`;
+    summary.textContent = `${foodborneOutbreaks.length} active foodborne illness outbreaks detected globally`;
+  }
+}
+
+function updateAMRStatus() {
+  const banner = document.getElementById('amrAlertBanner');
+  const count = document.getElementById('amrAlertCount');
+  const summary = document.getElementById('amrAlertSummary');
+  
+  if (amrThreats.length > 0) {
+    banner.classList.add('active');
+    count.textContent = `${amrThreats.length} threat${amrThreats.length === 1 ? '' : 's'}`;
+    const criticalThreats = amrThreats.filter(t => t.severity_level === 'Critical').length;
+    if (criticalThreats > 0) {
+      summary.textContent = `${amrThreats.length} AMR threats detected (${criticalThreats} critical)`;
+    } else {
+      summary.textContent = `${amrThreats.length} antimicrobial resistance threats detected`;
+    }
+  }
+}
+
+function updateVectorStatus() {
+  const banner = document.getElementById('vectorAlertBanner');
+  const count = document.getElementById('vectorAlertCount');
+  const summary = document.getElementById('vectorAlertSummary');
+  
+  if (vectorOutbreaks.length > 0) {
+    banner.classList.add('active');
+    count.textContent = `${vectorOutbreaks.length} outbreak${vectorOutbreaks.length === 1 ? '' : 's'}`;
+    summary.textContent = `${vectorOutbreaks.length} vector-borne disease outbreak${vectorOutbreaks.length === 1 ? '' : 's'} monitored globally`;
+  }
+}
+
+function updateHAIStatus() {
+  const banner = document.getElementById('haiAlertBanner');
+  const count = document.getElementById('haiAlertCount');
+  const summary = document.getElementById('haiAlertSummary');
+  
+  if (haiClusters.length > 0) {
+    banner.classList.add('active');
+    count.textContent = `${haiClusters.length} cluster${haiClusters.length === 1 ? '' : 's'}`;
+    summary.textContent = `${haiClusters.length} healthcare-associated infection cluster${haiClusters.length === 1 ? '' : 's'} detected`;
+  }
+}
+
+function updateVPDStatus() {
+  const banner = document.getElementById('vpdAlertBanner');
+  const count = document.getElementById('vpdAlertCount');
+  const summary = document.getElementById('vpdAlertSummary');
+  
+  if (vpdOutbreaks.length > 0) {
+    banner.classList.add('active');
+    count.textContent = `${vpdOutbreaks.length} outbreak${vpdOutbreaks.length === 1 ? '' : 's'}`;
+    summary.textContent = `${vpdOutbreaks.length} vaccine-preventable disease outbreak${vpdOutbreaks.length === 1 ? '' : 's'} detected`;
+  }
+}
+
+// Modal functions
+function showSelectAgentModal() {
+  const modal = document.getElementById('selectAgentModal');
+  const content = document.getElementById('selectAgentContent');
+  modal.classList.add('active');
+  renderSelectAgentContent(content);
+}
+
+function closeSelectAgentModal() {
+  const modal = document.getElementById('selectAgentModal');
+  modal.classList.remove('active');
+}
+
+function showFoodborneModal() {
+  const modal = document.getElementById('foodborneModal');
+  const content = document.getElementById('foodborneContent');
+  modal.classList.add('active');
+  renderFoodborneContent(content);
+}
+
+function closeFoodborneModal() {
+  const modal = document.getElementById('foodborneModal');
+  modal.classList.remove('active');
+}
+
+function showAMRModal() {
+  const modal = document.getElementById('amrModal');
+  const content = document.getElementById('amrContent');
+  modal.classList.add('active');
+  renderAMRContent(content);
+}
+
+function closeAMRModal() {
+  const modal = document.getElementById('amrModal');
+  modal.classList.remove('active');
+}
+
+function showVectorModal() {
+  const modal = document.getElementById('vectorModal');
+  const content = document.getElementById('vectorContent');
+  modal.classList.add('active');
+  renderVectorContent(content);
+}
+
+function closeVectorModal() {
+  const modal = document.getElementById('vectorModal');
+  modal.classList.remove('active');
+}
+
+function showHAIModal() {
+  const modal = document.getElementById('haiModal');
+  const content = document.getElementById('haiContent');
+  modal.classList.add('active');
+  renderHAIContent(content);
+}
+
+function closeHAIModal() {
+  const modal = document.getElementById('haiModal');
+  modal.classList.remove('active');
+}
+
+function showVPDModal() {
+  const modal = document.getElementById('vpdModal');
+  const content = document.getElementById('vpdContent');
+  modal.classList.add('active');
+  renderVPDContent(content);
+}
+
+function closeVPDModal() {
+  const modal = document.getElementById('vpdModal');
+  modal.classList.remove('active');
+}
+
+// Render functions
+function renderSelectAgentContent(container) {
+  if (selectAgents.length === 0) {
+    container.innerHTML = '<p style="text-align: center; color: var(--ink-3); padding: 2rem;">No HCID threats detected at this time.</p>';
+    return;
+  }
+  
+  let html = '';
+  selectAgents.forEach(agent => {
+    html += `
+      <div class="archive-entry">
+        <div class="entry-header">
+          <div class="entry-agent">${agent.agent}</div>
+          <div class="entry-bsl">🔴 HCID</div>
+        </div>
+        <div class="entry-details">
+          <div class="entry-detail">
+            <div class="detail-label">Classification</div>
+            <div class="detail-value">${agent.classification}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Location</div>
+            <div class="detail-value">${agent.location}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Countries</div>
+            <div class="detail-value">${agent.countries.join(', ')}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Cases</div>
+            <div class="detail-value">${agent.cases}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Deaths</div>
+            <div class="detail-value">${agent.deaths}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Case Fatality Rate</div>
+            <div class="detail-value">${agent.case_fatality_rate}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Source</div>
+            <div class="detail-value">${agent.source}</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 1rem;">
+          <a href="https://www.who.int/emergencies/disease-outbreak-news" target="_blank" class="entry-link">WHO Disease Outbreak News →</a>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+function renderFoodborneContent(container) {
+  if (foodborneOutbreaks.length === 0) {
+    container.innerHTML = '<p style="text-align: center; color: var(--ink-3); padding: 2rem;">No foodborne outbreaks detected at this time.</p>';
+    return;
+  }
+  
+  const sortedOutbreaks = [...foodborneOutbreaks].sort((a, b) => {
+    const severityOrder = { 'Critical': 0, 'High': 1, 'Medium': 2 };
+    return severityOrder[a.severity_level] - severityOrder[b.severity_level];
+  });
+  
+  let html = '';
+  sortedOutbreaks.forEach(outbreak => {
+    const severityClass = outbreak.severity_level === 'Critical' ? 'critical' : outbreak.severity_level === 'High' ? 'warning' : 'foodborne';
+    const severityIcon = outbreak.severity_level === 'Critical' ? '🔴' : outbreak.severity_level === 'High' ? '🟡' : '🟢';
+    
+    html += `
+      <div class="archive-entry" style="border-left: 4px solid var(--${severityClass});">
+        <div class="entry-header">
+          <div class="entry-agent">${outbreak.pathogen}</div>
+          <div class="entry-bsl" style="background: var(--${severityClass}-light); color: var(--${severityClass});">
+            ${severityIcon} ${outbreak.severity_level}
+          </div>
+        </div>
+        <div class="entry-details">
+          <div class="entry-detail">
+            <div class="detail-label">Food Vehicle</div>
+            <div class="detail-value">${outbreak.food_vehicle}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Location</div>
+            <div class="detail-value">${outbreak.location}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Countries</div>
+            <div class="detail-value">${outbreak.countries.join(', ')}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Cases</div>
+            <div class="detail-value">${outbreak.cases}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Hospitalizations</div>
+            <div class="detail-value">${outbreak.hospitalizations}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Deaths</div>
+            <div class="detail-value">${outbreak.deaths}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Source</div>
+            <div class="detail-value">${outbreak.source}</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 1rem;">
+          <a href="https://www.canada.ca/en/public-health/services/food-poisoning-food-borne-illness.html" target="_blank" class="entry-link">Health Canada Food Safety →</a>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+function renderAMRContent(container) {
+  if (amrThreats.length === 0) {
+    container.innerHTML = '<p style="text-align: center; color: var(--ink-3); padding: 2rem;">No critical AMR threats detected at this time.</p>';
+    return;
+  }
+  
+  const sortedThreats = [...amrThreats].sort((a, b) => {
+    const severityOrder = { 'Critical': 0, 'High': 1, 'Medium': 2 };
+    return severityOrder[a.severity_level] - severityOrder[b.severity_level];
+  });
+  
+  let html = '';
+  sortedThreats.forEach(threat => {
+    const severityClass = threat.severity_level === 'Critical' ? 'critical' : 'warning';
+    const severityIcon = threat.severity_level === 'Critical' ? '🔴' : '🟡';
+    
+    html += `
+      <div class="archive-entry" style="border-left: 4px solid var(--${severityClass});">
+        <div class="entry-header">
+          <div class="entry-agent">${threat.pathogen}</div>
+          <div class="entry-bsl" style="background: var(--${severityClass}-light); color: var(--${severityClass});">
+            ${severityIcon} ${threat.severity_level}
+          </div>
+        </div>
+        <div class="entry-details">
+          <div class="entry-detail">
+            <div class="detail-label">Resistance Mechanism</div>
+            <div class="detail-value">${threat.resistance_mechanism}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Location</div>
+            <div class="detail-value">${threat.location}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Countries</div>
+            <div class="detail-value">${threat.countries.join(', ')}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Isolates/Cases</div>
+            <div class="detail-value">${threat.isolates || threat.cases || 'Unknown'}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Mortality Rate</div>
+            <div class="detail-value">${threat.mortality_rate ? threat.mortality_rate + '%' : 'Under assessment'}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Source</div>
+            <div class="detail-value">${threat.source}</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 1rem;">
+          <a href="https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance" target="_blank" class="entry-link">WHO AMR Information →</a>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+function renderVectorContent(container) {
+  if (vectorOutbreaks.length === 0) {
+    container.innerHTML = '<p style="text-align: center; color: var(--ink-3); padding: 2rem;">No vector-borne disease outbreaks detected at this time.</p>';
+    return;
+  }
+  
+  let html = '';
+  vectorOutbreaks.forEach(outbreak => {
+    const severityClass = outbreak.severity_level === 'Critical' ? 'critical' : outbreak.severity_level === 'High' ? 'warning' : 'green';
+    const severityIcon = outbreak.severity_level === 'Critical' ? '🔴' : outbreak.severity_level === 'High' ? '🟡' : '🟢';
+    
+    html += `
+      <div class="archive-entry" style="border-left: 4px solid var(--${severityClass});">
+        <div class="entry-header">
+          <div class="entry-agent">${outbreak.disease}</div>
+          <div class="entry-bsl" style="background: var(--${severityClass}-light); color: var(--${severityClass});">
+            ${severityIcon} ${outbreak.severity_level}
+          </div>
+        </div>
+        <div class="entry-details">
+          <div class="entry-detail">
+            <div class="detail-label">Vector Species</div>
+            <div class="detail-value">${outbreak.vector}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Location</div>
+            <div class="detail-value">${outbreak.location}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Countries</div>
+            <div class="detail-value">${outbreak.countries.join(', ')}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Cases</div>
+            <div class="detail-value">${outbreak.cases.toLocaleString()}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Deaths</div>
+            <div class="detail-value">${outbreak.deaths || 'Under investigation'}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Source</div>
+            <div class="detail-value">${outbreak.source}</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 1rem;">
+          <a href="https://www.who.int/news-room/fact-sheets/detail/vector-borne-diseases" target="_blank" class="entry-link">WHO Vector Disease Info →</a>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+function renderHAIContent(container) {
+  if (haiClusters.length === 0) {
+    container.innerHTML = '<p style="text-align: center; color: var(--ink-3); padding: 2rem;">No HAI clusters detected at this time.</p>';
+    return;
+  }
+  
+  let html = '';
+  haiClusters.forEach(cluster => {
+    const severityClass = cluster.severity_level === 'Critical' ? 'critical' : 'warning';
+    const severityIcon = cluster.severity_level === 'Critical' ? '🔴' : '🟡';
+    
+    html += `
+      <div class="archive-entry" style="border-left: 4px solid var(--${severityClass});">
+        <div class="entry-header">
+          <div class="entry-agent">${cluster.pathogen}</div>
+          <div class="entry-bsl" style="background: var(--${severityClass}-light); color: var(--${severityClass});">
+            ${severityIcon} ${cluster.severity_level}
+          </div>
+        </div>
+        <div class="entry-details">
+          <div class="entry-detail">
+            <div class="detail-label">Infection Type</div>
+            <div class="detail-value">${cluster.infection_type}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Facility</div>
+            <div class="detail-value">${cluster.facility}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Location</div>
+            <div class="detail-value">${cluster.location}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Cases</div>
+            <div class="detail-value">${cluster.cases}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Deaths</div>
+            <div class="detail-value">${cluster.deaths || 'None reported'}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Source</div>
+            <div class="detail-value">${cluster.source}</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 1rem;">
+          <a href="https://www.who.int/news-room/fact-sheets/detail/healthcare-associated-infections" target="_blank" class="entry-link">WHO HAI Information →</a>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+function renderVPDContent(container) {
+  if (vpdOutbreaks.length === 0) {
+    container.innerHTML = '<p style="text-align: center; color: var(--ink-3); padding: 2rem;">No VPD outbreaks detected at this time.</p>';
+    return;
+  }
+  
+  let html = '';
+  vpdOutbreaks.forEach(outbreak => {
+    const severityClass = outbreak.severity_level === 'Critical' ? 'critical' : outbreak.severity_level === 'High' ? 'warning' : 'green';
+    const severityIcon = outbreak.severity_level === 'Critical' ? '🔴' : outbreak.severity_level === 'High' ? '🟡' : '🟢';
+    
+    html += `
+      <div class="archive-entry" style="border-left: 4px solid var(--${severityClass});">
+        <div class="entry-header">
+          <div class="entry-agent">${outbreak.disease}</div>
+          <div class="entry-bsl" style="background: var(--${severityClass}-light); color: var(--${severityClass});">
+            ${severityIcon} ${outbreak.severity_level}
+          </div>
+        </div>
+        <div class="entry-details">
+          <div class="entry-detail">
+            <div class="detail-label">Vaccination Status</div>
+            <div class="detail-value">${outbreak.vaccination_status}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Location</div>
+            <div class="detail-value">${outbreak.location}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Countries</div>
+            <div class="detail-value">${outbreak.countries.join(', ')}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Cases</div>
+            <div class="detail-value">${outbreak.cases}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Severe Outcomes</div>
+            <div class="detail-value">${outbreak.hospitalizations ? outbreak.hospitalizations + ' hospitalizations' : ''}${outbreak.deaths ? (outbreak.hospitalizations ? ', ' : '') + outbreak.deaths + ' deaths' : ''}${outbreak.paralysis_cases ? (outbreak.hospitalizations || outbreak.deaths ? ', ' : '') + outbreak.paralysis_cases + ' paralysis cases' : ''}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Source</div>
+            <div class="detail-value">${outbreak.source}</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 1rem;">
+          <a href="https://www.who.int/teams/immunization-vaccines-and-biologicals/diseases" target="_blank" class="entry-link">WHO Immunization Info →</a>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+// Modal click handlers
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('modal')) {
+    e.target.classList.remove('active');
+  }
+});
 
 // Initialize the system
 document.addEventListener('DOMContentLoaded', function() {
@@ -984,518 +1525,8 @@ document.addEventListener('DOMContentLoaded', function() {
   updateVectorStatus();
   updateHAIStatus();
   updateVPDStatus();
-  
-  // Schedule automatic BSL data refresh at 12:00 AM and 12:00 PM EST
-  scheduleAutomaticRefresh();
-  
-  // Display last refresh time if available
-  const lastRefresh = localStorage.getItem('outbreakwatch_last_refresh');
-  if (lastRefresh) {
-    console.log(`BSL data last refreshed: ${new Date(lastRefresh).toLocaleString("en-US", {timeZone: "America/New_York"})} EST`);
-  }
+  updateMonitoringSummary();
 });
-
-// Load select agent data from localStorage or initialize
-function loadSelectAgentData() {
-  try {
-    const stored = localStorage.getItem('outbreakwatch_select_agents');
-    if (stored) {
-      selectAgentData = JSON.parse(stored);
-    }
-    updateBanner();
-    checkForProMEDUpdates();
-  } catch (error) {
-    console.error('Error loading select agent data:', error);
-  }
-}
-
-// Save select agent data to localStorage
-function saveSelectAgentData() {
-  try {
-    localStorage.setItem('outbreakwatch_select_agents', JSON.stringify(selectAgentData));
-  } catch (error) {
-    console.error('Error saving select agent data:', error);
-  }
-}
-
-// Update the BSL banner display
-function updateBanner() {
-  const banner = document.getElementById('selectAgentBanner');
-  const alertCount = document.getElementById('alertCount');
-  const alertSummary = document.getElementById('alertSummary');
-  
-  // Filter for agents within last 30 days
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-  
-  const activeAgents = selectAgentData.filter(agent => {
-    const agentDate = new Date(agent.date);
-    return agentDate >= thirtyDaysAgo;
-  });
-  
-  if (activeAgents.length > 0) {
-    banner.classList.add('active');
-    alertCount.textContent = `${activeAgents.length} agent${activeAgents.length === 1 ? '' : 's'}`;
-    
-    // Create summary text
-    const uniqueAgents = [...new Set(activeAgents.map(a => a.agent))];
-    if (uniqueAgents.length === 1) {
-      alertSummary.textContent = `${uniqueAgents[0]} isolated in last 30 days`;
-    } else {
-      alertSummary.textContent = `${uniqueAgents.length} different agents isolated in last 30 days`;
-    }
-  } else {
-    banner.classList.remove('active');
-  }
-}
-
-// Update foodborne alert status
-function updateFoodborneStatus() {
-  const banner = document.getElementById('foodborneAlertBanner');
-  const count = document.getElementById('foodborneAlertCount');
-  const summary = document.getElementById('foodborneAlertSummary');
-  
-  if (foodborneOutbreaks.length > 0) {
-    banner.classList.add('active');
-    count.textContent = `${foodborneOutbreaks.length} outbreak${foodborneOutbreaks.length === 1 ? '' : 's'}`;
-    summary.textContent = `${foodborneOutbreaks.length} active foodborne illness outbreak${foodborneOutbreaks.length === 1 ? '' : 's'} detected`;
-  }
-}
-
-// Show foodborne modal
-function showFoodborneModal() {
-  const modal = document.getElementById('foodborneModal');
-  const content = document.getElementById('foodborneContent');
-  
-  modal.classList.add('active');
-  renderFoodborneContent(content);
-}
-
-// Close foodborne modal
-function closeFoodborneModal() {
-  const modal = document.getElementById('foodborneModal');
-  modal.classList.remove('active');
-}
-
-// Render foodborne outbreak content in modal format
-function renderFoodborneContent(container) {
-  if (foodborneOutbreaks.length === 0) {
-    container.innerHTML = '<p style="text-align: center; color: var(--ink-3); padding: 2rem;">No active foodborne outbreaks detected at this time.<br><br>Data sources: WHO, ECDC, Health Canada, CDC<br>Last checked: ' + new Date().toLocaleString() + '</p>';
-    return;
-  }
-  
-  // Sort by severity and cases
-  const sortedOutbreaks = [...foodborneOutbreaks].sort((a, b) => {
-    const severityOrder = { 'High': 0, 'Medium': 1, 'Low': 2 };
-    const aSeverity = severityOrder[a.severity_level || 'Medium'];
-    const bSeverity = severityOrder[b.severity_level || 'Medium'];
-    if (aSeverity !== bSeverity) return aSeverity - bSeverity;
-    return (b.cases || 0) - (a.cases || 0);
-  });
-  
-  let html = '';
-  
-  sortedOutbreaks.forEach(entry => {
-    const severityLevel = entry.severity_level || 'Medium';
-    const severityClass = severityLevel === 'High' ? 'critical' : 
-                         severityLevel === 'Low' ? 'green' : 'warning';
-    const severityIcon = severityLevel === 'High' ? '🔴' : 
-                        severityLevel === 'Medium' ? '🟡' : '🟢';
-    
-    html += `
-      <div class="archive-entry" style="border-left: 4px solid var(--${severityClass});">
-        <div class="entry-header">
-          <div class="entry-agent">${entry.pathogen}</div>
-          <div class="entry-bsl" style="background: var(--${severityClass}-light); color: var(--${severityClass});">
-            ${severityIcon} ${severityLevel}
-          </div>
-        </div>
-        <div class="entry-details">
-          <div class="entry-detail">
-            <div class="detail-label">Food Product</div>
-            <div class="detail-value">${entry.product || 'Food Product'}</div>
-          </div>
-          <div class="entry-detail">
-            <div class="detail-label">Countries Affected</div>
-            <div class="detail-value">${(entry.countries || entry.states || ['Unknown']).join(', ')}</div>
-          </div>
-          <div class="entry-detail">
-            <div class="detail-label">Cases Reported</div>
-            <div class="detail-value">${entry.cases ? entry.cases + ' cases' : 'Under investigation'}</div>
-          </div>
-          <div class="entry-detail">
-            <div class="detail-label">Health Impact</div>
-            <div class="detail-value">
-              ${entry.deaths ? entry.deaths + ' deaths' : ''}
-              ${entry.hospitalizations ? (entry.deaths ? ', ' : '') + entry.hospitalizations + ' hospitalizations' : ''}
-              ${(!entry.deaths && !entry.hospitalizations) ? 'Being monitored' : ''}
-            </div>
-          </div>
-          <div class="entry-detail">
-            <div class="detail-label">Date Reported</div>
-            <div class="detail-value">${formatDate(entry.date || entry.date_reported || new Date().toISOString())}</div>
-          </div>
-          <div class="entry-detail">
-            <div class="detail-label">Source Organization</div>
-            <div class="detail-value">${entry.source_organization || entry.source || 'Health Authority'}</div>
-          </div>
-          <div class="entry-detail">
-            <div class="detail-label">Status</div>
-            <div class="detail-value">${entry.status || 'Active Investigation'}</div>
-          </div>
-          <div class="entry-detail">
-            <div class="detail-label">Description</div>
-            <div class="detail-value">${entry.description || 'Foodborne illness outbreak investigation'}</div>
-          </div>
-        </div>
-        <div style="display: flex; gap: 12px; margin-top: 1rem;">
-          ${entry.source_url ? `<a href="${entry.source_url}" target="_blank" class="entry-link">View Official Alert →</a>` : ''}
-          <a href="https://www.cdc.gov/foodsafety/diseases/${getPathogenSlug(entry.pathogen)}.html" target="_blank" class="entry-link">Pathogen Information →</a>
-        </div>
-      </div>
-    `;
-  });
-  
-  container.innerHTML = html;
-}
-
-// Get pathogen slug for CDC links
-function getPathogenSlug(pathogen) {
-  const slugs = {
-    'Salmonella': 'salmonella',
-    'E. coli': 'ecoli',
-    'Listeria': 'listeria',
-    'Listeria monocytogenes': 'listeria',
-    'Campylobacter': 'campylobacter',
-    'Norovirus': 'norovirus',
-    'Hepatitis A': 'hepatitisa',
-    'Shigella': 'shigella',
-    'Clostridium perfringens': 'clostridium',
-    'Cyclospora': 'cyclospora'
-  };
-  
-  return slugs[pathogen] || 'foodborne-germs';
-}
-
-// Legacy function for compatibility - redirects to modal
-function showFoodborneDetails() {
-  showFoodborneModal();
-}
-
-// Show select agent modal
-function showSelectAgentModal() {
-  const modal = document.getElementById('selectAgentModal');
-  const content = document.getElementById('archiveContent');
-  
-  modal.classList.add('active');
-  renderArchiveContent(content);
-}
-
-// Close select agent modal
-function closeSelectAgentModal() {
-  const modal = document.getElementById('selectAgentModal');
-  modal.classList.remove('active');
-}
-
-// Render archive content
-function renderArchiveContent(container) {
-  if (selectAgentData.length === 0) {
-    container.innerHTML = '<p style="text-align: center; color: var(--ink-3); padding: 2rem;">No BSL-3/BSL-4 select agents detected in archive.</p>';
-    return;
-  }
-  
-  // Sort by date (newest first)
-  const sortedData = [...selectAgentData].sort((a, b) => new Date(b.date) - new Date(a.date));
-  
-  let html = '';
-  
-  sortedData.forEach(entry => {
-    const entryDate = new Date(entry.date);
-    const daysAgo = Math.floor((new Date() - entryDate) / (1000 * 60 * 60 * 24));
-    const isActive = daysAgo <= 30;
-    
-    html += `
-      <div class="archive-entry" style="${isActive ? 'border-left: 4px solid var(--critical);' : ''}">
-        <div class="entry-header">
-          <div class="entry-agent">${entry.agent}</div>
-          <div class="entry-bsl">${entry.bslLevel}</div>
-        </div>
-        <div class="entry-details">
-          <div class="entry-detail">
-            <div class="detail-label">Date Reported</div>
-            <div class="detail-value">${formatDate(entry.date)} ${isActive ? '🔴' : ''}</div>
-          </div>
-          <div class="entry-detail">
-            <div class="detail-label">Location</div>
-            <div class="detail-value">${entry.location || 'Not specified'}</div>
-          </div>
-          <div class="entry-detail">
-            <div class="detail-label">Source</div>
-            <div class="detail-value">${entry.source || 'Unknown'}</div>
-          </div>
-          <div class="entry-detail">
-            <div class="detail-label">Days Since Report</div>
-            <div class="detail-value">${daysAgo} day${daysAgo === 1 ? '' : 's'} ago</div>
-          </div>
-        </div>
-        ${entry.infoLink ? `<a href="${entry.infoLink}" target="_blank" class="entry-link">View Pathogen Info →</a>` : ''}
-      </div>
-    `;
-  });
-  
-  container.innerHTML = html;
-}
-
-// Format date for display
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-}
-
-// Check for BSL-3/BSL-4 agents in text
-function checkForSelectAgents(text) {
-  const foundAgents = [];
-  const normalizedText = text.toLowerCase();
-  
-  // Check BSL-3 agents
-  SELECT_AGENTS.bsl3.forEach(agent => {
-    const agentLower = agent.toLowerCase();
-    if (normalizedText.includes(agentLower)) {
-      foundAgents.push({
-        agent: agent,
-        bslLevel: 'BSL-3',
-        confidence: calculateConfidence(text, agent)
-      });
-    }
-  });
-  
-  // Check BSL-4 agents
-  SELECT_AGENTS.bsl4.forEach(agent => {
-    const agentLower = agent.toLowerCase();
-    if (normalizedText.includes(agentLower)) {
-      foundAgents.push({
-        agent: agent,
-        bslLevel: 'BSL-4',
-        confidence: calculateConfidence(text, agent)
-      });
-    }
-  });
-  
-  return foundAgents;
-}
-
-// Calculate confidence score for agent detection
-function calculateConfidence(text, agent) {
-  const lowerText = text.toLowerCase();
-  const agentLower = agent.toLowerCase();
-  let confidence = 50;
-  
-  // Boost confidence for isolation/culture context
-  if (lowerText.includes('isolated') || lowerText.includes('culture') || 
-      lowerText.includes('confirmed') || lowerText.includes('laboratory')) {
-    confidence += 30;
-  }
-  
-  // Boost for clinical context
-  if (lowerText.includes('patient') || lowerText.includes('case') || 
-      lowerText.includes('outbreak') || lowerText.includes('infection')) {
-    confidence += 20;
-  }
-  
-  // Reduce for research/vaccine context
-  if (lowerText.includes('research') || lowerText.includes('vaccine') || 
-      lowerText.includes('study') || lowerText.includes('laboratory study')) {
-    confidence -= 20;
-  }
-  
-  return Math.max(10, Math.min(100, confidence));
-}
-
-// Extract location from ProMED text
-function extractLocation(text) {
-  // Simple location extraction - look for country patterns
-  const locationPatterns = [
-    /(?:in|from)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/g,
-    /\b([A-Z][a-z]+)\s*,\s*([A-Z][a-z]+)\b/g,
-    /\[([^\]]+)\]/g
-  ];
-  
-  for (const pattern of locationPatterns) {
-    const matches = [...text.matchAll(pattern)];
-    if (matches.length > 0) {
-      return matches[0][1] || matches[0][0].replace(/[\[\]]/g, '');
-    }
-  }
-  
-  return null;
-}
-
-// Add new select agent detection
-function addSelectAgentDetection(agent, date, location, source, promedLink) {
-  // Check if this exact detection already exists
-  const existing = selectAgentData.find(entry => 
-    entry.agent === agent && entry.date === date && entry.location === location
-  );
-  
-  if (!existing) {
-    const newEntry = {
-      id: Date.now().toString(),
-      agent: agent,
-      bslLevel: SELECT_AGENTS.bsl4.includes(agent) ? 'BSL-4' : 'BSL-3',
-      date: date,
-      location: location,
-      source: source,
-      promedLink: promedLink,
-      detected: new Date().toISOString()
-    };
-    
-    selectAgentData.push(newEntry);
-    saveSelectAgentData();
-    updateBanner();
-    
-    console.log(`New select agent detected: ${agent} in ${location}`);
-  }
-}
-
-// Load real ProMED select agent data from the scraper output
-async function checkForProMEDUpdates() {
-  if (isLoading) return;
-  isLoading = true;
-  
-  try {
-    console.log('Checking for BSL-3/BSL-4 pathogen updates...');
-    
-    // Load real data from the select agent archive
-    const response = await fetch('./select_agents_archive.json?t=' + new Date().getTime());
-    
-    if (response.ok) {
-      const data = await response.json();
-      const detections = data.detections || [];
-      
-      // Convert to the format expected by the frontend
-      const newDetections = detections.map(detection => ({
-        id: detection.id,
-        agent: detection.agent,
-        bslLevel: detection.bsl_level,
-        date: detection.date,
-        location: detection.location,
-        source: detection.source,
-        infoLink: detection.info_link,
-        confidence: detection.confidence,
-        title: detection.title,
-        detected: detection.detected_at
-      }));
-      
-      // Filter for active detections (within last 30 days)
-      const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-      
-      const activeDetections = newDetections.filter(detection => {
-        const detectionDate = new Date(detection.date);
-        return detectionDate >= thirtyDaysAgo;
-      });
-      
-      // Merge with existing data (remove duplicates)
-      const existingIds = selectAgentData.map(d => d.id);
-      const newEntries = activeDetections.filter(d => !existingIds.includes(d.id));
-      
-      if (newEntries.length > 0) {
-        selectAgentData = [...selectAgentData, ...newEntries];
-        saveSelectAgentData();
-        updateBanner();
-        console.log(`Added ${newEntries.length} new select agent detections`);
-      }
-      
-      // Update last refresh timestamp
-      localStorage.setItem('outbreakwatch_last_refresh', new Date().toISOString());
-    } else {
-      console.log('No select agent data file found, using local data');
-    }
-  } catch (error) {
-    console.error('Error loading select agent data:', error);
-    console.log('Falling back to local storage data');
-  } finally {
-    isLoading = false;
-  }
-}
-
-// Calculate next scheduled refresh time (12:00 AM or 12:00 PM EST)
-function getNextRefreshTime() {
-  const now = new Date();
-  const est = new Date(now.toLocaleString("en-US", {timeZone: "America/New_York"}));
-  
-  // Set to next 12:00 AM or 12:00 PM EST
-  const nextRefresh = new Date(est);
-  
-  if (est.getHours() < 12) {
-    // Before noon, schedule for 12:00 PM today
-    nextRefresh.setHours(12, 0, 0, 0);
-  } else {
-    // After noon, schedule for 12:00 AM tomorrow
-    nextRefresh.setDate(nextRefresh.getDate() + 1);
-    nextRefresh.setHours(0, 0, 0, 0);
-  }
-  
-  return nextRefresh;
-}
-
-// Schedule automatic refresh at 12:00 AM and 12:00 PM EST
-function scheduleAutomaticRefresh() {
-  const nextRefresh = getNextRefreshTime();
-  const msUntilRefresh = nextRefresh.getTime() - new Date().getTime();
-  
-  console.log(`Next BSL data refresh scheduled for: ${nextRefresh.toLocaleString("en-US", {timeZone: "America/New_York"})} EST`);
-  
-  setTimeout(() => {
-    checkForProMEDUpdates();
-    // Schedule the next refresh (12 hours later)
-    setTimeout(() => {
-      scheduleAutomaticRefresh();
-    }, 12 * 60 * 60 * 1000);
-  }, msUntilRefresh);
-}
-
-// Click handler for modal overlay
-document.getElementById('selectAgentModal').addEventListener('click', function(e) {
-  if (e.target === this) {
-    closeSelectAgentModal();
-  }
-});
-
-// Click handler for foodborne modal overlay
-document.getElementById('foodborneModal').addEventListener('click', function(e) {
-  if (e.target === this) {
-    closeFoodborneModal();
-  }
-});
-
-// Cleanup old entries (runs on page load)
-function cleanupOldEntries() {
-  const ninetyDaysAgo = new Date();
-  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
-  
-  const initialCount = selectAgentData.length;
-  selectAgentData = selectAgentData.filter(entry => {
-    const entryDate = new Date(entry.date);
-    return entryDate >= ninetyDaysAgo;
-  });
-  
-  if (selectAgentData.length !== initialCount) {
-    saveSelectAgentData();
-    console.log(`Cleaned up ${initialCount - selectAgentData.length} old select agent entries`);
-  }
-}
-
-// Run cleanup on load
-cleanupOldEntries();
-
-// Note: Automatic refresh is now scheduled at 12:00 AM and 12:00 PM EST via scheduleAutomaticRefresh()
 </script>
-
 </body>
 </html>
-<script src="additional_surveillance_functions.js"></script>
