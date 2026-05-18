@@ -1040,7 +1040,5 @@ cleanupOldEntries();
 // Note: Automatic refresh is now scheduled at 12:00 AM and 12:00 PM EST via scheduleAutomaticRefresh()
 </script>
 
-<script src="real_foodborne_integration.js"></script>
 </body>
 </html>
-<script src="real_foodborne_integration.js"></script>
