@@ -57,6 +57,66 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
   display: block;
 }
 
+/* AMR Alert Banner */
+.amr-alert-banner {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  padding: 12px 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  display: none;
+  animation: amrAlertPulse 2s ease-in-out infinite alternate;
+  position: relative;
+  z-index: 998;
+}
+.amr-alert-banner.active {
+  display: block;
+}
+
+/* Vector-Borne Disease Alert Banner */
+.vector-alert-banner {
+  background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+  color: white;
+  padding: 12px 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  display: none;
+  animation: vectorAlertPulse 2s ease-in-out infinite alternate;
+  position: relative;
+  z-index: 997;
+}
+.vector-alert-banner.active {
+  display: block;
+}
+
+/* HAI Alert Banner */
+.hai-alert-banner {
+  background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+  color: white;
+  padding: 12px 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  display: none;
+  animation: haiAlertPulse 2s ease-in-out infinite alternate;
+  position: relative;
+  z-index: 996;
+}
+.hai-alert-banner.active {
+  display: block;
+}
+
+/* VPD Alert Banner */
+.vpd-alert-banner {
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  color: white;
+  padding: 12px 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  display: none;
+  animation: vpdAlertPulse 2s ease-in-out infinite alternate;
+  position: relative;
+  z-index: 995;
+}
+.vpd-alert-banner.active {
+  display: block;
+}
+
 .banner-content {
   max-width: 1200px;
   margin: 0 auto;
@@ -121,6 +181,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
 @keyframes foodborneAlertPulse {
   0% { box-shadow: 0 0 0 0 rgba(253, 126, 20, 0.4); }
   100% { box-shadow: 0 0 0 8px rgba(253, 126, 20, 0); }
+}
+@keyframes amrAlertPulse {
+  0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+  100% { box-shadow: 0 0 0 8px rgba(231, 76, 60, 0); }
+}
+@keyframes vectorAlertPulse {
+  0% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.4); }
+  100% { box-shadow: 0 0 0 8px rgba(39, 174, 96, 0); }
+}
+@keyframes haiAlertPulse {
+  0% { box-shadow: 0 0 0 0 rgba(155, 89, 182, 0.4); }
+  100% { box-shadow: 0 0 0 8px rgba(155, 89, 182, 0); }
+}
+@keyframes vpdAlertPulse {
+  0% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.4); }
+  100% { box-shadow: 0 0 0 8px rgba(243, 156, 18, 0); }
 }
 
 /* Header */
@@ -316,8 +392,8 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
     <div class="banner-alert">
       <div class="alert-icon">☣️</div>
       <div class="alert-text">
-        <strong>BSL-3/BSL-4 Select Agent Detection:</strong> 
-        <span id="alertSummary">3 different agents isolated in last 30 days</span>
+        <strong>HCID DETECTION:</strong> 
+        <span id="alertSummary">3 different high-consequence infectious diseases detected in last 30 days</span>
       </div>
     </div>
     <div class="alert-count" id="alertCount">3 agents</div>
@@ -340,11 +416,71 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
   </div>
 </div>
 
+<!-- AMR Alert Banner -->
+<div class="amr-alert-banner active" id="amrAlertBanner">
+  <div class="banner-content">
+    <div class="banner-alert">
+      <div class="alert-icon">🔬</div>
+      <div class="alert-text">
+        <strong>AMR ALERT:</strong> 
+        <span id="amrAlertSummary">Critical antimicrobial resistance threats detected</span>
+      </div>
+    </div>
+    <div class="alert-count" id="amrAlertCount">4 threats</div>
+    <a href="#" class="view-details-btn" onclick="showAMRModal()">View Details</a>
+  </div>
+</div>
+
+<!-- Vector-Borne Disease Alert Banner -->
+<div class="vector-alert-banner active" id="vectorAlertBanner">
+  <div class="banner-content">
+    <div class="banner-alert">
+      <div class="alert-icon">🦟</div>
+      <div class="alert-text">
+        <strong>VECTOR-BORNE OUTBREAK:</strong> 
+        <span id="vectorAlertSummary">Vector-borne disease outbreaks monitored globally</span>
+      </div>
+    </div>
+    <div class="alert-count" id="vectorAlertCount">3 outbreaks</div>
+    <a href="#" class="view-details-btn" onclick="showVectorModal()">View Details</a>
+  </div>
+</div>
+
+<!-- HAI Alert Banner -->
+<div class="hai-alert-banner active" id="haiAlertBanner">
+  <div class="banner-content">
+    <div class="banner-alert">
+      <div class="alert-icon">🏥</div>
+      <div class="alert-text">
+        <strong>HAI OUTBREAK:</strong> 
+        <span id="haiAlertSummary">Healthcare-associated infection clusters detected</span>
+      </div>
+    </div>
+    <div class="alert-count" id="haiAlertCount">2 clusters</div>
+    <a href="#" class="view-details-btn" onclick="showHAIModal()">View Details</a>
+  </div>
+</div>
+
+<!-- VPD Alert Banner -->
+<div class="vpd-alert-banner active" id="vpdAlertBanner">
+  <div class="banner-content">
+    <div class="banner-alert">
+      <div class="alert-icon">💉</div>
+      <div class="alert-text">
+        <strong>VPD OUTBREAK:</strong> 
+        <span id="vpdAlertSummary">Vaccine-preventable disease outbreaks detected</span>
+      </div>
+    </div>
+    <div class="alert-count" id="vpdAlertCount">3 outbreaks</div>
+    <a href="#" class="view-details-btn" onclick="showVPDModal()">View Details</a>
+  </div>
+</div>
+
 <!-- Select Agent Archive Modal -->
 <div class="modal-overlay" id="selectAgentModal">
   <div class="modal">
     <div class="modal-header">
-      <h3 class="modal-title">BSL-3/BSL-4 Select Agent Archive</h3>
+      <h3 class="modal-title">High-Consequence Infectious Disease Archive</h3>
       <button class="modal-close" onclick="closeSelectAgentModal()">×</button>
     </div>
     <div class="modal-content" id="archiveContent">
@@ -362,6 +498,58 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
     </div>
     <div class="modal-content" id="foodborneContent">
       <p style="text-align: center; color: var(--ink-3); padding: 2rem;">Loading foodborne outbreak data...</p>
+    </div>
+  </div>
+</div>
+
+<!-- AMR Alert Modal -->
+<div class="modal-overlay" id="amrModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Antimicrobial Resistance Threat Archive</h3>
+      <button class="modal-close" onclick="closeAMRModal()">×</button>
+    </div>
+    <div class="modal-content" id="amrContent">
+      <p style="text-align: center; color: var(--ink-3); padding: 2rem;">Loading AMR threat data...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Vector-Borne Disease Modal -->
+<div class="modal-overlay" id="vectorModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Vector-Borne Disease Outbreak Archive</h3>
+      <button class="modal-close" onclick="closeVectorModal()">×</button>
+    </div>
+    <div class="modal-content" id="vectorContent">
+      <p style="text-align: center; color: var(--ink-3); padding: 2rem;">Loading vector-borne outbreak data...</p>
+    </div>
+  </div>
+</div>
+
+<!-- HAI Alert Modal -->
+<div class="modal-overlay" id="haiModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Healthcare-Associated Infection Archive</h3>
+      <button class="modal-close" onclick="closeHAIModal()">×</button>
+    </div>
+    <div class="modal-content" id="haiContent">
+      <p style="text-align: center; color: var(--ink-3); padding: 2rem;">Loading HAI cluster data...</p>
+    </div>
+  </div>
+</div>
+
+<!-- VPD Alert Modal -->
+<div class="modal-overlay" id="vpdModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Vaccine-Preventable Disease Archive</h3>
+      <button class="modal-close" onclick="closeVPDModal()">×</button>
+    </div>
+    <div class="modal-content" id="vpdContent">
+      <p style="text-align: center; color: var(--ink-3); padding: 2rem;">Loading VPD outbreak data...</p>
     </div>
   </div>
 </div>
@@ -611,6 +799,151 @@ const foodborneOutbreaks = [
   }
 ];
 
+// AMR threat data
+const amrThreats = [
+  {
+    pathogen: "Carbapenem-resistant Enterobacteriaceae (CRE)",
+    resistance_mechanism: "NDM-1 carbapenemase",
+    location: "Multiple European hospitals",
+    countries: ["Germany", "Netherlands", "Belgium"],
+    isolates: 45,
+    mortality_rate: 28,
+    source: "ECDC AMR Surveillance",
+    date: "2026-05-14",
+    severity_level: "Critical"
+  },
+  {
+    pathogen: "Extensively drug-resistant tuberculosis (XDR-TB)",
+    resistance_mechanism: "Bedaquiline and delamanid resistance",
+    location: "South African provinces",
+    countries: ["South Africa"],
+    cases: 23,
+    treatment_options: "Limited",
+    source: "WHO TB Programme",
+    date: "2026-05-10",
+    severity_level: "High"
+  },
+  {
+    pathogen: "Vancomycin-resistant Enterococci (VRE)",
+    resistance_mechanism: "vanA gene cluster",
+    location: "US healthcare facilities",
+    countries: ["United States"],
+    isolates: 134,
+    source: "CDC AR Lab Network",
+    date: "2026-05-08",
+    severity_level: "High"
+  },
+  {
+    pathogen: "Pan-resistant Acinetobacter baumannii",
+    resistance_mechanism: "Multiple mechanisms",
+    location: "Military medical facilities",
+    countries: ["Iraq", "Afghanistan"],
+    isolates: 12,
+    source: "DoD Global Surveillance",
+    date: "2026-05-05",
+    severity_level: "Critical"
+  }
+];
+
+// Vector-borne disease data
+const vectorOutbreaks = [
+  {
+    disease: "Dengue fever",
+    vector: "Aedes aegypti",
+    location: "Southeast Asian region",
+    countries: ["Philippines", "Vietnam", "Thailand"],
+    cases: 8420,
+    deaths: 23,
+    source: "WHO Regional Office",
+    date: "2026-05-15",
+    severity_level: "High"
+  },
+  {
+    disease: "Malaria",
+    vector: "Anopheles gambiae",
+    location: "West African outbreak",
+    countries: ["Guinea", "Sierra Leone", "Liberia"],
+    cases: 2340,
+    deaths: 78,
+    source: "WHO Malaria Programme",
+    date: "2026-05-12",
+    severity_level: "High"
+  },
+  {
+    disease: "Zika virus",
+    vector: "Aedes aegypti",
+    location: "Central American region",
+    countries: ["Honduras", "Guatemala", "Belize"],
+    cases: 567,
+    neurological_cases: 12,
+    source: "PAHO",
+    date: "2026-05-08",
+    severity_level: "Medium"
+  }
+];
+
+// Healthcare-associated infections data
+const haiClusters = [
+  {
+    pathogen: "Candida auris",
+    infection_type: "Bloodstream infection",
+    facility: "Tertiary care hospital",
+    location: "New York, USA",
+    cases: 8,
+    deaths: 2,
+    source: "CDC HAI Prevention",
+    date: "2026-05-13",
+    severity_level: "Critical"
+  },
+  {
+    pathogen: "Clostridioides difficile",
+    infection_type: "Nosocomial diarrhea",
+    facility: "Long-term care facility",
+    location: "Ontario, Canada",
+    cases: 15,
+    source: "Public Health Ontario",
+    date: "2026-05-09",
+    severity_level: "High"
+  }
+];
+
+// Vaccine-preventable disease data
+const vpdOutbreaks = [
+  {
+    disease: "Measles",
+    vaccination_status: "Unvaccinated community",
+    location: "Religious community outbreak",
+    countries: ["United States"],
+    cases: 34,
+    hospitalizations: 8,
+    source: "CDC Immunization Services",
+    date: "2026-05-14",
+    severity_level: "High"
+  },
+  {
+    disease: "Poliovirus (vaccine-derived)",
+    vaccination_status: "Low coverage area",
+    location: "Sub-Saharan Africa",
+    countries: ["Chad", "Central African Republic"],
+    cases: 7,
+    paralysis_cases: 3,
+    source: "WHO Polio Eradication",
+    date: "2026-05-11",
+    severity_level: "Critical"
+  },
+  {
+    disease: "Meningococcal disease",
+    vaccination_status: "University outbreak",
+    location: "College campus",
+    countries: ["United Kingdom"],
+    cases: 12,
+    deaths: 1,
+    source: "UK Health Security Agency",
+    date: "2026-05-07",
+    severity_level: "High"
+  }
+];
+
 // Global variables
 let selectAgentData = [
   {
@@ -647,6 +980,10 @@ let isLoading = false;
 document.addEventListener('DOMContentLoaded', function() {
   loadSelectAgentData();
   updateFoodborneStatus();
+  updateAMRStatus();
+  updateVectorStatus();
+  updateHAIStatus();
+  updateVPDStatus();
   
   // Schedule automatic BSL data refresh at 12:00 AM and 12:00 PM EST
   scheduleAutomaticRefresh();
@@ -1161,3 +1498,4 @@ cleanupOldEntries();
 
 </body>
 </html>
+<script src="additional_surveillance_functions.js"></script>
