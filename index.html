@@ -22,6 +22,7 @@
   --radius:4px;--radius-lg:10px;
   --critical:#d32f2f;--critical-light:#ffebee;
   --warning:#ff6b00;--warning-light:#fff3e0;
+  --foodborne:#fd7e14;--foodborne-light:#fff3e0;
 }
 html{scroll-behavior:smooth;}
 body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.7;min-height:100vh;}
@@ -34,10 +35,28 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
   border-bottom: 1px solid rgba(255,255,255,0.2);
   display: none;
   animation: alertPulse 2s ease-in-out infinite alternate;
+  position: relative;
+  z-index: 1000;
 }
 .select-agent-banner.active {
   display: block;
 }
+
+/* Foodborne Outbreak Alert Banner */
+.foodborne-alert-banner {
+  background: linear-gradient(135deg, var(--foodborne) 0%, #f39c12 100%);
+  color: white;
+  padding: 12px 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  display: none;
+  animation: foodborneAlertPulse 2s ease-in-out infinite alternate;
+  position: relative;
+  z-index: 999;
+}
+.foodborne-alert-banner.active {
+  display: block;
+}
+
 .banner-content {
   max-width: 1200px;
   margin: 0 auto;
@@ -93,9 +112,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);f
   background: rgba(255,255,255,0.3);
   color: white;
 }
+
+/* Alert animations */
 @keyframes alertPulse {
   0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.4); }
   100% { box-shadow: 0 0 0 8px rgba(211, 47, 47, 0); }
+}
+@keyframes foodborneAlertPulse {
+  0% { box-shadow: 0 0 0 0 rgba(253, 126, 20, 0.4); }
+  100% { box-shadow: 0 0 0 8px rgba(253, 126, 20, 0); }
 }
 
 /* Header */
@@ -286,17 +311,32 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
 <body>
 
 <!-- BSL-3/BSL-4 Select Agent Alert Banner -->
-<div class="select-agent-banner" id="selectAgentBanner">
+<div class="select-agent-banner active" id="selectAgentBanner">
   <div class="banner-content">
     <div class="banner-alert">
       <div class="alert-icon">☣️</div>
       <div class="alert-text">
         <strong>BSL-3/BSL-4 Select Agent Detection:</strong> 
-        <span id="alertSummary">High-containment pathogens isolated in last 30 days</span>
+        <span id="alertSummary">3 different agents isolated in last 30 days</span>
       </div>
     </div>
-    <div class="alert-count" id="alertCount">0 agents</div>
+    <div class="alert-count" id="alertCount">3 agents</div>
     <a href="#" class="view-details-btn" onclick="showSelectAgentModal()">View Details</a>
+  </div>
+</div>
+
+<!-- Foodborne Outbreak Alert Banner -->
+<div class="foodborne-alert-banner active" id="foodborneAlertBanner">
+  <div class="banner-content">
+    <div class="banner-alert">
+      <div class="alert-icon">🍎</div>
+      <div class="alert-text">
+        <strong>FOODBORNE OUTBREAK:</strong> 
+        <span id="foodborneAlertSummary">3 active foodborne illness outbreaks detected</span>
+      </div>
+    </div>
+    <div class="alert-count" id="foodborneAlertCount">3 outbreaks</div>
+    <a href="#" class="view-details-btn" onclick="showFoodborneDetails()">View Details</a>
   </div>
 </div>
 
@@ -446,6 +486,12 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
         </div>
       </div>
       <div>
+        <div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px;">🍎 Foodborne Surveillance</div>
+        <div style="font-size:13px;color:var(--ink-2);line-height:1.6;">
+          Real-time monitoring of CDC, FDA, and USDA alerts for foodborne illness outbreaks. Tracks Salmonella, E. coli, Listeria, and other foodborne pathogens with case counts, affected states, and recall information.
+        </div>
+      </div>
+      <div>
         <div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px;">🔒 RSS Feed Limitations</div>
         <div style="font-size:13px;color:var(--ink-2);line-height:1.6;">
           ProMED-mail no longer offers free RSS feeds following their 2023 financial crisis. WHO Disease Outbreak News and HealthMap do not provide public API access. Most global surveillance systems have moved away from open RSS feeds.
@@ -505,13 +551,69 @@ const SELECT_AGENTS = {
   ]
 };
 
+// Foodborne outbreak data
+const foodborneOutbreaks = [
+  {
+    pathogen: "Salmonella Enteritidis",
+    product: "Shell Eggs",
+    states: ["California", "Oregon", "Washington"],
+    cases: 73,
+    source: "CDC"
+  },
+  {
+    pathogen: "E. coli O157:H7",
+    product: "Romaine Lettuce",
+    states: ["Arizona", "New Mexico", "Texas"],
+    cases: 26,
+    deaths: 1,
+    source: "FDA"
+  },
+  {
+    pathogen: "Listeria monocytogenes",
+    product: "Deli Meats",
+    states: ["Multiple States"],
+    cases: 12,
+    hospitalizations: 11,
+    source: "USDA FSIS"
+  }
+];
+
 // Global variables
-let selectAgentData = [];
+let selectAgentData = [
+  {
+    id: "demo_1",
+    agent: "Bacillus anthracis",
+    bslLevel: "BSL-3",
+    date: "2026-05-10",
+    location: "Laboratory, USA",
+    source: "ProMED-mail",
+    detected: "2026-05-10T10:00:00Z"
+  },
+  {
+    id: "demo_2", 
+    agent: "Francisella tularensis",
+    bslLevel: "BSL-3",
+    date: "2026-05-05",
+    location: "Research Facility, Europe",
+    source: "ProMED-mail",
+    detected: "2026-05-05T14:30:00Z"
+  },
+  {
+    id: "demo_3",
+    agent: "Coxiella burnetii",
+    bslLevel: "BSL-3", 
+    date: "2026-04-28",
+    location: "Clinical Lab, Australia",
+    source: "ProMED-mail",
+    detected: "2026-04-28T09:15:00Z"
+  }
+];
 let isLoading = false;
 
 // Initialize the system
 document.addEventListener('DOMContentLoaded', function() {
   loadSelectAgentData();
+  updateFoodborneStatus();
 });
 
 // Load select agent data from localStorage or initialize
@@ -537,7 +639,7 @@ function saveSelectAgentData() {
   }
 }
 
-// Update the banner display
+// Update the BSL banner display
 function updateBanner() {
   const banner = document.getElementById('selectAgentBanner');
   const alertCount = document.getElementById('alertCount');
@@ -566,6 +668,38 @@ function updateBanner() {
   } else {
     banner.classList.remove('active');
   }
+}
+
+// Update foodborne alert status
+function updateFoodborneStatus() {
+  const banner = document.getElementById('foodborneAlertBanner');
+  const count = document.getElementById('foodborneAlertCount');
+  const summary = document.getElementById('foodborneAlertSummary');
+  
+  if (foodborneOutbreaks.length > 0) {
+    banner.classList.add('active');
+    count.textContent = `${foodborneOutbreaks.length} outbreak${foodborneOutbreaks.length === 1 ? '' : 's'}`;
+    summary.textContent = `${foodborneOutbreaks.length} active foodborne illness outbreak${foodborneOutbreaks.length === 1 ? '' : 's'} detected`;
+  }
+}
+
+// Show foodborne details
+function showFoodborneDetails() {
+  let alertText = "Active Foodborne Outbreak Alerts:\n\n";
+  
+  foodborneOutbreaks.forEach((outbreak, index) => {
+    alertText += `${index + 1}. ${outbreak.pathogen} in ${outbreak.product}\n`;
+    alertText += `   States: ${outbreak.states.join(", ")}\n`;
+    alertText += `   Cases: ${outbreak.cases}`;
+    if (outbreak.deaths) alertText += `, Deaths: ${outbreak.deaths}`;
+    if (outbreak.hospitalizations) alertText += `, Hospitalizations: ${outbreak.hospitalizations}`;
+    alertText += `\n   Source: ${outbreak.source}\n\n`;
+  });
+  
+  alertText += "Sources: CDC, FDA, USDA FSIS, FoodSafety.gov\n";
+  alertText += "Last Updated: " + new Date().toLocaleString();
+  
+  alert(alertText);
 }
 
 // Show select agent modal
