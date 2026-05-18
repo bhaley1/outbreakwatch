@@ -1,9 +1,10 @@
-name: 🌍 Daily Outbreak Data Update
+name: 🌍 Twice-Daily Outbreak Data Update
 
 on:
   schedule:
-    # Run daily at 12:00 UTC (8:00 AM EST / 7:00 AM EST depending on DST)
-    - cron: '0 12 * * *'
+    # Run at 3:00 AM EST (8:00 UTC) and 3:00 PM EST (20:00 UTC)
+    - cron: '0 8 * * *'   # 3:00 AM EST
+    - cron: '0 20 * * *'  # 3:00 PM EST
   workflow_dispatch:  # Allow manual triggering
     
 permissions:
@@ -38,7 +39,7 @@ jobs:
     - name: 📊 Check for data changes
       id: check_changes
       run: |
-        if git diff --quiet outbreak_data.json; then
+        if [ -f "outbreak_data.json" ] && git diff --quiet outbreak_data.json; then
           echo "changes=false" >> $GITHUB_OUTPUT
         else
           echo "changes=true" >> $GITHUB_OUTPUT
@@ -55,7 +56,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "OutbreakWatch Bot"
         git add .
-        git commit -m "🤖 Daily outbreak data update - $(date +'%Y-%m-%d %H:%M UTC')
+        git commit -m "🤖 Twice-daily outbreak data update - $(date +'%Y-%m-%d %H:%M UTC')
 
         - Updated surveillance data from WHO DON and CDC
         - Automated data collection and HTML generation
@@ -65,19 +66,19 @@ jobs:
     - name: 📝 Create update summary
       if: steps.check_changes.outputs.changes == 'true'
       run: |
-        echo "## 🌍 Daily Update Summary" >> $GITHUB_STEP_SUMMARY
+        echo "## 🌍 Twice-Daily Update Summary" >> $GITHUB_STEP_SUMMARY
         echo "- **Time:** $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
         echo "- **Status:** ✅ Data updated successfully" >> $GITHUB_STEP_SUMMARY
         echo "- **Sources:** WHO DON, CDC Alerts, CDC Measles Data" >> $GITHUB_STEP_SUMMARY
-        echo "- **Next Update:** $(date -d '+1 day' +'%Y-%m-%d 12:00 UTC')" >> $GITHUB_STEP_SUMMARY
+        echo "- **Next Update:** $(date -d '+12 hours' +'%Y-%m-%d %H:%M UTC') (3 AM or 3 PM EST)" >> $GITHUB_STEP_SUMMARY
     
     - name: 📝 Log no changes
       if: steps.check_changes.outputs.changes == 'false'
       run: |
-        echo "## 🌍 Daily Update Summary" >> $GITHUB_STEP_SUMMARY
+        echo "## 🌍 Twice-Daily Update Summary" >> $GITHUB_STEP_SUMMARY
         echo "- **Time:** $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
         echo "- **Status:** ℹ️ No new outbreak data found" >> $GITHUB_STEP_SUMMARY
-        echo "- **Next Check:** $(date -d '+1 day' +'%Y-%m-%d 12:00 UTC')" >> $GITHUB_STEP_SUMMARY
+        echo "- **Next Check:** $(date -d '+12 hours' +'%Y-%m-%d %H:%M UTC') (3 AM or 3 PM EST)" >> $GITHUB_STEP_SUMMARY
 
   deploy:
     needs: update-outbreak-data
