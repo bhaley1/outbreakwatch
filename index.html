@@ -336,7 +336,7 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
       </div>
     </div>
     <div class="alert-count" id="foodborneAlertCount">5 outbreaks</div>
-    <a href="#" class="view-details-btn" onclick="showFoodborneDetails()">View Details</a>
+    <a href="#" class="view-details-btn" onclick="showFoodborneModal()">View Details</a>
   </div>
 </div>
 
@@ -349,6 +349,19 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
     </div>
     <div class="modal-content" id="archiveContent">
       <p style="text-align: center; color: var(--ink-3); padding: 2rem;">Loading select agent data...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Foodborne Outbreak Modal -->
+<div class="modal-overlay" id="foodborneModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Global Foodborne Outbreak Archive</h3>
+      <button class="modal-close" onclick="closeFoodborneModal()">×</button>
+    </div>
+    <div class="modal-content" id="foodborneContent">
+      <p style="text-align: center; color: var(--ink-3); padding: 2rem;">Loading foodborne outbreak data...</p>
     </div>
   </div>
 </div>
@@ -712,25 +725,124 @@ function updateFoodborneStatus() {
   }
 }
 
-// Show foodborne details
-function showFoodborneDetails() {
-  let alertText = "Active Global Foodborne Outbreak Alerts:\n\n";
+// Show foodborne modal
+function showFoodborneModal() {
+  const modal = document.getElementById('foodborneModal');
+  const content = document.getElementById('foodborneContent');
   
-  foodborneOutbreaks.forEach((outbreak, index) => {
-    alertText += `${index + 1}. ${outbreak.pathogen} in ${outbreak.product}\n`;
-    alertText += `   Countries: ${outbreak.countries.join(", ")}\n`;
-    alertText += `   Cases: ${outbreak.cases}`;
-    if (outbreak.deaths) alertText += `, Deaths: ${outbreak.deaths}`;
-    if (outbreak.hospitalizations) alertText += `, Hospitalizations: ${outbreak.hospitalizations}`;
-    alertText += `\n   Source: ${outbreak.source}`;
-    alertText += `\n   Date: ${outbreak.date}\n\n`;
+  modal.classList.add('active');
+  renderFoodborneContent(content);
+}
+
+// Close foodborne modal
+function closeFoodborneModal() {
+  const modal = document.getElementById('foodborneModal');
+  modal.classList.remove('active');
+}
+
+// Render foodborne outbreak content in modal format
+function renderFoodborneContent(container) {
+  if (foodborneOutbreaks.length === 0) {
+    container.innerHTML = '<p style="text-align: center; color: var(--ink-3); padding: 2rem;">No active foodborne outbreaks detected at this time.<br><br>Data sources: WHO, ECDC, Health Canada, CDC<br>Last checked: ' + new Date().toLocaleString() + '</p>';
+    return;
+  }
+  
+  // Sort by severity and cases
+  const sortedOutbreaks = [...foodborneOutbreaks].sort((a, b) => {
+    const severityOrder = { 'High': 0, 'Medium': 1, 'Low': 2 };
+    const aSeverity = severityOrder[a.severity_level || 'Medium'];
+    const bSeverity = severityOrder[b.severity_level || 'Medium'];
+    if (aSeverity !== bSeverity) return aSeverity - bSeverity;
+    return (b.cases || 0) - (a.cases || 0);
   });
   
-  alertText += "Sources: ECDC, PAHO, Health Canada, Food Standards Australia New Zealand\n";
-  alertText += "Global Foodborne Surveillance Network\n";
-  alertText += "Last Updated: " + new Date().toLocaleString();
+  let html = '';
   
-  alert(alertText);
+  sortedOutbreaks.forEach(entry => {
+    const severityLevel = entry.severity_level || 'Medium';
+    const severityClass = severityLevel === 'High' ? 'critical' : 
+                         severityLevel === 'Low' ? 'green' : 'warning';
+    const severityIcon = severityLevel === 'High' ? '🔴' : 
+                        severityLevel === 'Medium' ? '🟡' : '🟢';
+    
+    html += `
+      <div class="archive-entry" style="border-left: 4px solid var(--${severityClass});">
+        <div class="entry-header">
+          <div class="entry-agent">${entry.pathogen}</div>
+          <div class="entry-bsl" style="background: var(--${severityClass}-light); color: var(--${severityClass});">
+            ${severityIcon} ${severityLevel}
+          </div>
+        </div>
+        <div class="entry-details">
+          <div class="entry-detail">
+            <div class="detail-label">Food Product</div>
+            <div class="detail-value">${entry.product || 'Food Product'}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Countries Affected</div>
+            <div class="detail-value">${(entry.countries || entry.states || ['Unknown']).join(', ')}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Cases Reported</div>
+            <div class="detail-value">${entry.cases ? entry.cases + ' cases' : 'Under investigation'}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Health Impact</div>
+            <div class="detail-value">
+              ${entry.deaths ? entry.deaths + ' deaths' : ''}
+              ${entry.hospitalizations ? (entry.deaths ? ', ' : '') + entry.hospitalizations + ' hospitalizations' : ''}
+              ${(!entry.deaths && !entry.hospitalizations) ? 'Being monitored' : ''}
+            </div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Date Reported</div>
+            <div class="detail-value">${formatDate(entry.date || entry.date_reported || new Date().toISOString())}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Source Organization</div>
+            <div class="detail-value">${entry.source_organization || entry.source || 'Health Authority'}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Status</div>
+            <div class="detail-value">${entry.status || 'Active Investigation'}</div>
+          </div>
+          <div class="entry-detail">
+            <div class="detail-label">Description</div>
+            <div class="detail-value">${entry.description || 'Foodborne illness outbreak investigation'}</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; margin-top: 1rem;">
+          ${entry.source_url ? `<a href="${entry.source_url}" target="_blank" class="entry-link">View Official Alert →</a>` : ''}
+          <a href="https://www.cdc.gov/foodsafety/diseases/${getPathogenSlug(entry.pathogen)}.html" target="_blank" class="entry-link">Pathogen Information →</a>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+// Get pathogen slug for CDC links
+function getPathogenSlug(pathogen) {
+  const slugs = {
+    'Salmonella': 'salmonella',
+    'E. coli': 'ecoli',
+    'Listeria': 'listeria',
+    'Listeria monocytogenes': 'listeria',
+    'Campylobacter': 'campylobacter',
+    'Norovirus': 'norovirus',
+    'Hepatitis A': 'hepatitisa',
+    'Shigella': 'shigella',
+    'Clostridium perfringens': 'clostridium',
+    'Cyclospora': 'cyclospora'
+  };
+  
+  return slugs[pathogen] || 'foodborne-germs';
+}
+
+// Legacy function for compatibility - redirects to modal
+function showFoodborneDetails() {
+  showFoodborneModal();
 }
 
 // Show select agent modal
@@ -1017,6 +1129,13 @@ document.getElementById('selectAgentModal').addEventListener('click', function(e
   }
 });
 
+// Click handler for foodborne modal overlay
+document.getElementById('foodborneModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeFoodborneModal();
+  }
+});
+
 // Cleanup old entries (runs on page load)
 function cleanupOldEntries() {
   const ninetyDaysAgo = new Date();
@@ -1040,7 +1159,5 @@ cleanupOldEntries();
 // Note: Automatic refresh is now scheduled at 12:00 AM and 12:00 PM EST via scheduleAutomaticRefresh()
 </script>
 
-<script src="real_foodborne_integration.js"></script>
 </body>
 </html>
-<script src="real_foodborne_integration.js"></script>
