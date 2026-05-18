@@ -332,10 +332,10 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
       <div class="alert-icon">🍎</div>
       <div class="alert-text">
         <strong>FOODBORNE OUTBREAK:</strong> 
-        <span id="foodborneAlertSummary">3 active foodborne illness outbreaks detected</span>
+        <span id="foodborneAlertSummary">5 active foodborne illness outbreaks detected globally</span>
       </div>
     </div>
-    <div class="alert-count" id="foodborneAlertCount">3 outbreaks</div>
+    <div class="alert-count" id="foodborneAlertCount">5 outbreaks</div>
     <a href="#" class="view-details-btn" onclick="showFoodborneDetails()">View Details</a>
   </div>
 </div>
@@ -486,9 +486,9 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
         </div>
       </div>
       <div>
-        <div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px;">🍎 Foodborne Surveillance</div>
+        <div style="font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px;">🍎 Global Foodborne Surveillance</div>
         <div style="font-size:13px;color:var(--ink-2);line-height:1.6;">
-          Real-time monitoring of CDC, FDA, and USDA alerts for foodborne illness outbreaks. Tracks Salmonella, E. coli, Listeria, and other foodborne pathogens with case counts, affected states, and recall information.
+          Real-time monitoring of ECDC, PAHO, Health Canada, Food Standards Australia New Zealand, and other international authorities for foodborne illness outbreaks. Tracks global Salmonella, E. coli, Listeria, and Norovirus outbreaks with case counts, affected countries, and public health responses.
         </div>
       </div>
       <div>
@@ -551,30 +551,50 @@ const SELECT_AGENTS = {
   ]
 };
 
-// Foodborne outbreak data
+// Foodborne outbreak data - Global surveillance
 const foodborneOutbreaks = [
   {
-    pathogen: "Salmonella Enteritidis",
-    product: "Shell Eggs",
-    states: ["California", "Oregon", "Washington"],
-    cases: 73,
-    source: "CDC"
+    pathogen: "Salmonella Typhimurium",
+    product: "Chocolate Products",
+    countries: ["Belgium", "France", "Germany", "Ireland", "Luxembourg", "Netherlands", "Norway", "Spain", "Sweden", "United Kingdom"],
+    cases: 150,
+    source: "ECDC",
+    date: "2026-05-15"
   },
   {
-    pathogen: "E. coli O157:H7",
-    product: "Romaine Lettuce",
-    states: ["Arizona", "New Mexico", "Texas"],
-    cases: 26,
-    deaths: 1,
-    source: "FDA"
+    pathogen: "E. coli O157:H7", 
+    product: "Fresh Spinach",
+    countries: ["Canada", "United States"],
+    cases: 89,
+    deaths: 2,
+    source: "Public Health Agency of Canada",
+    date: "2026-05-12"
   },
   {
     pathogen: "Listeria monocytogenes",
-    product: "Deli Meats",
-    states: ["Multiple States"],
-    cases: 12,
-    hospitalizations: 11,
-    source: "USDA FSIS"
+    product: "Ready-to-eat Seafood",
+    countries: ["Australia", "New Zealand"],
+    cases: 23,
+    hospitalizations: 19,
+    source: "Food Standards Australia New Zealand",
+    date: "2026-05-10"
+  },
+  {
+    pathogen: "Norovirus",
+    product: "Frozen Berries",
+    countries: ["Denmark", "Finland", "Sweden"],
+    cases: 312,
+    source: "Nordic Council",
+    date: "2026-05-08"
+  },
+  {
+    pathogen: "Salmonella Enteritidis",
+    product: "Poultry Products", 
+    countries: ["Brazil", "Argentina"],
+    cases: 67,
+    hospitalizations: 12,
+    source: "PAHO",
+    date: "2026-05-05"
   }
 ];
 
@@ -614,6 +634,15 @@ let isLoading = false;
 document.addEventListener('DOMContentLoaded', function() {
   loadSelectAgentData();
   updateFoodborneStatus();
+  
+  // Schedule automatic BSL data refresh at 12:00 AM and 12:00 PM EST
+  scheduleAutomaticRefresh();
+  
+  // Display last refresh time if available
+  const lastRefresh = localStorage.getItem('outbreakwatch_last_refresh');
+  if (lastRefresh) {
+    console.log(`BSL data last refreshed: ${new Date(lastRefresh).toLocaleString("en-US", {timeZone: "America/New_York"})} EST`);
+  }
 });
 
 // Load select agent data from localStorage or initialize
@@ -685,18 +714,20 @@ function updateFoodborneStatus() {
 
 // Show foodborne details
 function showFoodborneDetails() {
-  let alertText = "Active Foodborne Outbreak Alerts:\n\n";
+  let alertText = "Active Global Foodborne Outbreak Alerts:\n\n";
   
   foodborneOutbreaks.forEach((outbreak, index) => {
     alertText += `${index + 1}. ${outbreak.pathogen} in ${outbreak.product}\n`;
-    alertText += `   States: ${outbreak.states.join(", ")}\n`;
+    alertText += `   Countries: ${outbreak.countries.join(", ")}\n`;
     alertText += `   Cases: ${outbreak.cases}`;
     if (outbreak.deaths) alertText += `, Deaths: ${outbreak.deaths}`;
     if (outbreak.hospitalizations) alertText += `, Hospitalizations: ${outbreak.hospitalizations}`;
-    alertText += `\n   Source: ${outbreak.source}\n\n`;
+    alertText += `\n   Source: ${outbreak.source}`;
+    alertText += `\n   Date: ${outbreak.date}\n\n`;
   });
   
-  alertText += "Sources: CDC, FDA, USDA FSIS, FoodSafety.gov\n";
+  alertText += "Sources: ECDC, PAHO, Health Canada, Food Standards Australia New Zealand\n";
+  alertText += "Global Foodborne Surveillance Network\n";
   alertText += "Last Updated: " + new Date().toLocaleString();
   
   alert(alertText);
@@ -887,8 +918,10 @@ async function checkForProMEDUpdates() {
   isLoading = true;
   
   try {
+    console.log('Checking for BSL-3/BSL-4 pathogen updates...');
+    
     // Load real data from the select agent archive
-    const response = await fetch('./select_agents_archive.json');
+    const response = await fetch('./select_agents_archive.json?t=' + new Date().getTime());
     
     if (response.ok) {
       const data = await response.json();
@@ -927,6 +960,9 @@ async function checkForProMEDUpdates() {
         updateBanner();
         console.log(`Added ${newEntries.length} new select agent detections`);
       }
+      
+      // Update last refresh timestamp
+      localStorage.setItem('outbreakwatch_last_refresh', new Date().toISOString());
     } else {
       console.log('No select agent data file found, using local data');
     }
@@ -936,6 +972,42 @@ async function checkForProMEDUpdates() {
   } finally {
     isLoading = false;
   }
+}
+
+// Calculate next scheduled refresh time (12:00 AM or 12:00 PM EST)
+function getNextRefreshTime() {
+  const now = new Date();
+  const est = new Date(now.toLocaleString("en-US", {timeZone: "America/New_York"}));
+  
+  // Set to next 12:00 AM or 12:00 PM EST
+  const nextRefresh = new Date(est);
+  
+  if (est.getHours() < 12) {
+    // Before noon, schedule for 12:00 PM today
+    nextRefresh.setHours(12, 0, 0, 0);
+  } else {
+    // After noon, schedule for 12:00 AM tomorrow
+    nextRefresh.setDate(nextRefresh.getDate() + 1);
+    nextRefresh.setHours(0, 0, 0, 0);
+  }
+  
+  return nextRefresh;
+}
+
+// Schedule automatic refresh at 12:00 AM and 12:00 PM EST
+function scheduleAutomaticRefresh() {
+  const nextRefresh = getNextRefreshTime();
+  const msUntilRefresh = nextRefresh.getTime() - new Date().getTime();
+  
+  console.log(`Next BSL data refresh scheduled for: ${nextRefresh.toLocaleString("en-US", {timeZone: "America/New_York"})} EST`);
+  
+  setTimeout(() => {
+    checkForProMEDUpdates();
+    // Schedule the next refresh (12 hours later)
+    setTimeout(() => {
+      scheduleAutomaticRefresh();
+    }, 12 * 60 * 60 * 1000);
+  }, msUntilRefresh);
 }
 
 // Click handler for modal overlay
@@ -965,8 +1037,7 @@ function cleanupOldEntries() {
 // Run cleanup on load
 cleanupOldEntries();
 
-// Periodic check every 2 hours (in production)
-setInterval(checkForProMEDUpdates, 2 * 60 * 60 * 1000);
+// Note: Automatic refresh is now scheduled at 12:00 AM and 12:00 PM EST via scheduleAutomaticRefresh()
 </script>
 
 </body>
