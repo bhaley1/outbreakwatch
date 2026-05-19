@@ -71,7 +71,7 @@ header{border-bottom:1px solid var(--rule);padding:0 2rem;background:white;posit
   display:flex;align-items:center;gap:0;
   width:max-content;
   padding:11px 0;
-  animation:tickerScroll 80s linear infinite;
+  animation:tickerScroll 150s linear infinite;
 }
 .ticker:hover .ticker-track{animation-play-state:paused;}
 @keyframes tickerScroll{
@@ -103,6 +103,11 @@ header{border-bottom:1px solid var(--rule);padding:0 2rem;background:white;posit
   color:#e8a89a;
   border-left:1px solid rgba(255,255,255,0.2);
   padding-left:9px;flex-shrink:0;
+}
+.ticker-item .ti-date{
+  font-size:11px;font-weight:500;
+  color:#c9b8b2;
+  flex-shrink:0;
 }
 .ticker-empty{
   padding:13px 2rem 13px calc(2rem + 120px);
@@ -639,6 +644,53 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
     return ICON_DEFAULT;
   }
 
+  // Infectious-disease filter — keep only items whose title names a known
+  // bacterial, viral, parasitic, or fungal disease. Everything else is dropped.
+  var INFECTIOUS_KW = [
+    // viral
+    "ebola","marburg","lassa","nipah","hendra","hemorrhagic","influenza","h5n1","h5n2","h7n9",
+    "bird flu","covid","sars","mers","coronavirus","rsv","respiratory syncytial","measles",
+    "mpox","monkeypox","polio","rabies","dengue","zika","chikungunya","yellow fever","west nile",
+    "hepatitis","hantavirus","rotavirus","norovirus","mumps","rubella","hiv","oropouche",
+    "japanese encephalitis","rift valley","crimean","enterovirus","adenovirus","varicella",
+    // bacterial
+    "cholera","salmonella","listeria","botulism","e. coli","escherichia","shigella","campylobacter",
+    "legionell","typhoid","vibrio","plague","yersinia","anthrax","brucell","leptospirosis",
+    "pertussis","whooping cough","diphtheria","tetanus","tuberculosis","meningococc","meningitis",
+    "gonorrh","syphilis","chlamydia","staphylococ","streptococ","klebsiella","tularemia",
+    "melioidosis","scarlet fever","leprosy",
+    // parasitic
+    "malaria","filariasis","leishmaniasis","schistosomiasis","trypanosomiasis","cryptosporidium",
+    "giardia","toxoplasm","cyclospora","onchocerciasis","amoeb","helminth","cysticercosis",
+    // fungal
+    "candida","aspergillos","cryptococc","mucormycosis","histoplasm","coccidioidomycosis",
+    "blastomycosis","valley fever","fungal","mycosis","sporotrichosis",
+    // generic infectious cues
+    "outbreak","spotted fever","encephalitis","fever -","viral","bacterial","zoonotic","avian"
+  ];
+  function isInfectious(title){
+    var t=(title||"").toLowerCase();
+    for (var i=0;i<INFECTIOUS_KW.length;i++){ if(t.indexOf(INFECTIOUS_KW[i])!==-1) return true; }
+    return false;
+  }
+
+  // Date parser — feed.json pubDate is empty, so we extract a date from the
+  // title text. Display-only (no filtering). Returns "" when none is found.
+  var MONTHS={january:0,february:1,march:2,april:3,may:4,june:5,july:6,august:7,
+    september:8,october:9,november:10,december:11,
+    jan:0,feb:1,mar:2,apr:3,jun:5,jul:6,aug:7,sep:8,sept:8,oct:9,nov:10,dec:11};
+  var MON_ABBR=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  function parseDate(title){
+    var t=title||"", m;
+    m=t.match(/(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/);          // "23 April 2026"
+    if(m){ var mo=MONTHS[m[2].toLowerCase()];
+      if(mo!==undefined) return m[1]+" "+MON_ABBR[mo]+" "+m[3]; }
+    m=t.match(/([A-Za-z]+)\s+(\d{1,2}),?\s+(\d{4})/);        // "April 23, 2026"
+    if(m){ var mo2=MONTHS[m[1].toLowerCase()];
+      if(mo2!==undefined) return m[2]+" "+MON_ABBR[mo2]+" "+m[3]; }
+    return "";
+  }
+
   function esc(s){
     return String(s||"").replace(/[&<>"']/g,function(c){
       return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
@@ -651,9 +703,11 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
     a.href=it.link||"#";
     a.target="_blank";
     a.rel="noopener";
+    var date=parseDate(it.title);
+    var dateHtml=date?'<span class="ti-date">'+esc(date)+'</span>':'';
     var src=it.source?'<span class="ti-src">'+esc(it.source)+'</span>':'';
     a.innerHTML='<span class="ti-icon">'+pickIcon(it.title)+'</span>'
-      +'<span class="ti-text">'+esc(it.title)+'</span>'+src;
+      +'<span class="ti-text">'+esc(it.title)+'</span>'+dateHtml+src;
     return a;
   }
 
@@ -661,13 +715,15 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
     var track=document.getElementById("tickerTrack");
     if(!track) return;
     track.innerHTML="";
-    if(!items || !items.length){
-      track.innerHTML='<div class="ticker-empty">No current outbreak alerts in surveillance feeds.</div>';
+    // Keep infectious-disease items only.
+    var filtered=(items||[]).filter(function(it){ return isInfectious(it.title); });
+    if(!filtered.length){
+      track.innerHTML='<div class="ticker-empty">No current infectious disease alerts in surveillance feeds.</div>';
       track.style.animation="none";
       return;
     }
-    // Cap to a reasonable number for a smooth loop.
-    var list=items.slice(0,30);
+    // Newest ~15 (feed.json is already in newest-first order).
+    var list=filtered.slice(0,15);
     // Spacer so the first item clears the "Latest Alerts" label on load.
     function pad(){var d=document.createElement("div");d.className="ticker-firstpad";return d;}
     // Duplicate the sequence so the -50% keyframe loops seamlessly.
@@ -675,8 +731,8 @@ footer a{color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;
       track.appendChild(pad());
       list.forEach(function(it){ track.appendChild(buildItem(it)); });
     });
-    // Scale duration to item count so speed feels consistent.
-    var dur=Math.max(40, list.length*5);
+    // Slower pace: scale duration to item count (~10s per item).
+    var dur=Math.max(90, list.length*10);
     track.style.animationDuration=dur+"s";
   }
 
