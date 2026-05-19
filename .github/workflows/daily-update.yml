@@ -1,0 +1,98 @@
+name: 🌍 Twice-Daily Outbreak Data Update
+
+on:
+  schedule:
+    # Run at 3:00 AM EST (8:00 UTC) and 3:00 PM EST (20:00 UTC)
+    - cron: '0 8 * * *'   # 3:00 AM EST
+    - cron: '0 20 * * *'  # 3:00 PM EST
+  workflow_dispatch:  # Allow manual triggering
+    
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  update-outbreak-data:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    
+    - name: 📦 Install dependencies
+      run: |
+        pip install -r requirements.txt
+    
+    - name: 🌍 Run outbreak data scraper
+      run: |
+        python update_outbreaks.py
+    
+    - name: 📊 Check for data changes
+      id: check_changes
+      run: |
+        if [ -f "outbreak_data.json" ] && git diff --quiet outbreak_data.json; then
+          echo "changes=false" >> $GITHUB_OUTPUT
+        else
+          echo "changes=true" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: 🔄 Update HTML with new data
+      if: steps.check_changes.outputs.changes == 'true'
+      run: |
+        python generate_html.py
+    
+    - name: ✅ Commit and push changes
+      if: steps.check_changes.outputs.changes == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "OutbreakWatch Bot"
+        git add .
+        git commit -m "🤖 Twice-daily outbreak data update - $(date +'%Y-%m-%d %H:%M UTC')
+
+        - Updated surveillance data from WHO DON and CDC
+        - Automated data collection and HTML generation
+        - Last updated: $(date +'%Y-%m-%d %H:%M:%S UTC')"
+        git push
+    
+    - name: 📝 Create update summary
+      if: steps.check_changes.outputs.changes == 'true'
+      run: |
+        echo "## 🌍 Twice-Daily Update Summary" >> $GITHUB_STEP_SUMMARY
+        echo "- **Time:** $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+        echo "- **Status:** ✅ Data updated successfully" >> $GITHUB_STEP_SUMMARY
+        echo "- **Sources:** WHO DON, CDC Alerts, CDC Measles Data" >> $GITHUB_STEP_SUMMARY
+        echo "- **Next Update:** $(date -d '+12 hours' +'%Y-%m-%d %H:%M UTC') (3 AM or 3 PM EST)" >> $GITHUB_STEP_SUMMARY
+    
+    - name: 📝 Log no changes
+      if: steps.check_changes.outputs.changes == 'false'
+      run: |
+        echo "## 🌍 Twice-Daily Update Summary" >> $GITHUB_STEP_SUMMARY
+        echo "- **Time:** $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+        echo "- **Status:** ℹ️ No new outbreak data found" >> $GITHUB_STEP_SUMMARY
+        echo "- **Next Check:** $(date -d '+12 hours' +'%Y-%m-%d %H:%M UTC') (3 AM or 3 PM EST)" >> $GITHUB_STEP_SUMMARY
+
+  deploy:
+    needs: update-outbreak-data
+    runs-on: ubuntu-latest
+    if: needs.update-outbreak-data.outputs.changes == 'true'
+    
+    steps:
+    - name: 📥 Checkout updated repository
+      uses: actions/checkout@v4
+    
+    - name: 🚀 Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./
+        publish_branch: gh-pages
+        commit_message: "🤖 Deploy updated OutbreakWatch data"

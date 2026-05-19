@@ -1,0 +1,50 @@
+{
+  "last_updated": "2026-05-17T21:35:47.928219",
+  "total_outbreaks": 2,
+  "outbreaks": [
+    {
+      "id": "HC_-5700941629818883437",
+      "pathogen": "Salmonella",
+      "product": "Food Product",
+      "countries": [
+        "Canada"
+      ],
+      "regions": [
+        "North America"
+      ],
+      "cases": null,
+      "deaths": null,
+      "hospitalizations": null,
+      "date_detected": "2026-05-17",
+      "date_reported": "2026-05-17",
+      "source_organization": "Health Canada",
+      "source_url": "https://recalls-rappels.canada.ca/en/alert-recall/shirreza-brand-tahini-halva-date-sap-recalled-due-salmonella",
+      "severity_level": "Medium",
+      "status": "Recall Issued",
+      "description": "Shirreza brand Tahini Halva with Date Sap recalled due to Salmonella",
+      "last_updated": "2026-05-17T21:35:43.717579"
+    },
+    {
+      "id": "HC_-1954819934910232236",
+      "pathogen": "E. coli",
+      "product": "Food Product",
+      "countries": [
+        "Canada"
+      ],
+      "regions": [
+        "North America"
+      ],
+      "cases": null,
+      "deaths": null,
+      "hospitalizations": null,
+      "date_detected": "2026-05-17",
+      "date_reported": "2026-05-17",
+      "source_organization": "Health Canada",
+      "source_url": "https://recalls-rappels.canada.ca/en/alert-recall/kyan-culture-brand-and-farm-boy-brand-organic-microgreens-recalled-due-pathogenic-e",
+      "severity_level": "Medium",
+      "status": "Recall Issued",
+      "description": "Kyan Culture brand and Farm Boy brand organic microgreens recalled due to pathogenic E. coli",
+      "last_updated": "2026-05-17T21:35:43.717676"
+    }
+  ]
+}
