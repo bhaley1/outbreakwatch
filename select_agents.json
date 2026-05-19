@@ -1,11 +1,11 @@
 {
   "detections": [],
   "active_detections": [],
-  "updated": "2026-05-19T21:40:57.342015Z",
+  "updated": "2026-05-19T23:10:12.757449Z",
   "total_detections": 0,
   "active_count": 0,
   "metadata": {
-    "scan_date": "2026-05-19T21:40:57.342018",
+    "scan_date": "2026-05-19T23:10:12.757453",
     "scan_period_days": 30,
     "agents_monitored": {
       "bsl3": 30,
