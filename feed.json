@@ -49,6 +49,14 @@
       "source": "PAHO"
     },
     {
+      "title": "Epidemiological Alert - Ebola Disease due to Bundibugyo virus in the Democratic Republic of the Congo and Uganda - 21 May 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-ebola-disease-due-bundibugyo-virus-democratic-republic-congo-and",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
       "title": "Epidemiological Alert: Seasonal Influenza and Other Respiratory Viruses —Start of the Southern Hemisphere Season— 27 April 2026",
       "link": "https://www.paho.org/en/documents/epidemiological-alert-seasonal-influenza-and-other-respiratory-viruses-start-southern",
       "pubDate": "",
@@ -161,8 +169,8 @@
       "source": "PAHO"
     }
   ],
-  "updated": "2026-05-21T23:08:07.059130Z",
-  "count": 20,
+  "updated": "2026-05-22T04:11:52.503694Z",
+  "count": 21,
   "sources": [
     "CDC EID: 0",
     "WHO DON: 0",
