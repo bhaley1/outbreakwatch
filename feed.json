@@ -1,6 +1,14 @@
 {
   "items": [
     {
+      "title": "Communicable disease threats report, 23-29 May 2026, Week 22",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-23-29-may-2026-week-22",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
       "title": "Communicable disease threats report, 14-22 May 2026, Week 21",
       "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-14-22-may-2026-week-21",
       "pubDate": "",
@@ -27,14 +35,6 @@
     {
       "title": "Communicable disease threats report, 25-30 April 2026, Week 18",
       "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-25-30-april-2026-week-18",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 18-24 April 2026, Week 17",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-18-24-april-2026-week-17",
       "pubDate": "",
       "description": "",
       "category": "human",
@@ -169,7 +169,7 @@
       "source": "PAHO"
     }
   ],
-  "updated": "2026-05-29T10:04:49.914071Z",
+  "updated": "2026-05-29T15:55:53.265522Z",
   "count": 21,
   "sources": [
     "CDC EID: 0",
