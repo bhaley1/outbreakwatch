@@ -49,6 +49,14 @@
       "source": "PAHO"
     },
     {
+      "title": "Epidemiological Alert: Measles in the Americas Region - 29 May 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-measles-americas-region-29-may-2026",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
       "title": "Epidemiological Alert - Ebola Disease due to Bundibugyo virus in the Democratic Republic of the Congo and Uganda - 21 May 2026",
       "link": "https://www.paho.org/en/documents/epidemiological-alert-ebola-disease-due-bundibugyo-virus-democratic-republic-congo-and",
       "pubDate": "",
@@ -159,17 +167,9 @@
       "description": "",
       "category": "human",
       "source": "PAHO"
-    },
-    {
-      "title": "Epidemiological Update Avian Influenza A(H5N1) in the Americas Region - 24 November 2025",
-      "link": "https://www.paho.org/en/documents/epidemiological-update-avian-influenza-ah5n1-americas-region-24-november-2025",
-      "pubDate": "",
-      "description": "",
-      "category": "animal",
-      "source": "PAHO"
     }
   ],
-  "updated": "2026-05-29T23:20:59.790084Z",
+  "updated": "2026-05-30T03:57:51.481719Z",
   "count": 21,
   "sources": [
     "CDC EID: 0",
