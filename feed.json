@@ -159,23 +159,15 @@
       "description": "",
       "category": "human",
       "source": "PAHO"
-    },
-    {
-      "title": "Epidemiological Alert Seasonal Influenza in the Americas Region: End of the 2025 Season in the Southern Hemisphere Start of the 2025-26 Season in the Northern Hemisphere - 4 December 2025",
-      "link": "https://www.paho.org/en/documents/epidemiological-alert-seasonal-influenza-americas-region-end-2025-season-southern",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "PAHO"
     }
   ],
-  "updated": "2026-06-11T16:13:29.367436Z",
-  "count": 21,
+  "updated": "2026-06-11T20:28:45.602192Z",
+  "count": 20,
   "sources": [
     "CDC EID: 0",
     "WHO DON: 0",
     "ECDC: 5",
-    "PAHO: 16"
+    "PAHO: 15"
   ],
   "errors": []
 }
