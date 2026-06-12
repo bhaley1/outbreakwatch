@@ -1,48 +1,16 @@
 {
   "items": [
     {
-      "title": "Communicable disease threats report, 30 May - 5 June 2026, Week 23",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-30-may-5-june-2026-week-23",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 23-29 May 2026, Week 22",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-23-29-may-2026-week-22",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 14-22 May 2026, Week 21",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-14-22-may-2026-week-21",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 9-13 May 2026, Week 20",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-9-13-may-2026-week-20",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 2-8 May 2026, Week 19",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-2-8-may-2026-week-19",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
       "title": "Alerts and Epidemiologic Updates",
       "link": "https://www.paho.org/en/epidemiological-alerts-and-updates",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
+      "title": "Epidemiological Alert: Diphtheria in the Americas Region - 11 June 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-diphtheria-americas-region-11-june-2026",
       "pubDate": "",
       "description": "",
       "category": "human",
@@ -151,22 +119,14 @@
       "description": "",
       "category": "human",
       "source": "PAHO"
-    },
-    {
-      "title": "Epidemiological Update: Pertussis (Whooping Cough) in the Americas Region - 8 December 2025",
-      "link": "https://www.paho.org/en/documents/epidemiological-update-pertussis-whooping-cough-americas-region-8-december-2025",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "PAHO"
     }
   ],
-  "updated": "2026-06-11T23:41:37.339164Z",
-  "count": 20,
+  "updated": "2026-06-12T04:41:19.861653Z",
+  "count": 15,
   "sources": [
     "CDC EID: 0",
     "WHO DON: 0",
-    "ECDC: 5",
+    "ECDC: 0",
     "PAHO: 15"
   ],
   "errors": []
