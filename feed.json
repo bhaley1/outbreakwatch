@@ -81,7 +81,7 @@
       "source": "PAHO"
     },
     {
-      "title": "2026-april-27-phe-epi-alert-influenza-rsv-engfinal.pdf1.42 MB",
+      "title": "Epidemiological Alert: Seasonal Influenza and Other Respiratory Viruses —Start of the Southern Hemisphere Season— 27 April 2026",
       "link": "https://www.paho.org/en/documents/epidemiological-alert-seasonal-influenza-and-other-respiratory-viruses-start-southern",
       "pubDate": "",
       "description": "",
@@ -89,7 +89,7 @@
       "source": "PAHO"
     },
     {
-      "title": "23042026epiupdatempoxenfinal.pdf630.41 KB",
+      "title": "Epidemiological Update Mpox in the Americas Region - 23 April 2026",
       "link": "https://www.paho.org/en/documents/epidemiological-update-mpox-americas-region-23-april-2026",
       "pubDate": "",
       "description": "",
@@ -105,7 +105,7 @@
       "source": "PAHO"
     },
     {
-      "title": "2026-march-13-phe-epidemiological-alert-yellow-fever-final.pdf1.12 MB",
+      "title": "Epidemiological Alert: Yellow fever in the Americas Region - 13 March 2026.",
       "link": "https://www.paho.org/en/documents/epidemiological-alert-yellow-fever-americas-region-13-march-2026",
       "pubDate": "",
       "description": "",
@@ -113,7 +113,7 @@
       "source": "PAHO"
     },
     {
-      "title": "2026-march-11-phe-avian-influenza-update-final.pdf931.26 KB",
+      "title": "Epidemiological Update - Avian Influenza A(H5N1) in the Americas Region - 11 March 2026",
       "link": "https://www.paho.org/en/documents/epidemiological-update-avian-influenza-ah5n1-americas-region-11-march-2026",
       "pubDate": "",
       "description": "",
@@ -129,7 +129,7 @@
       "source": "PAHO"
     },
     {
-      "title": "2026-18-feb-phe-epi-update-dengue-enfinal1.pdf810.41 KB",
+      "title": "Epidemiological Update Dengue in the Americas Region - 18 February 2026",
       "link": "https://www.paho.org/en/documents/epidemiological-update-dengue-americas-region-18-february-2026",
       "pubDate": "",
       "description": "",
@@ -161,7 +161,7 @@
       "source": "PAHO"
     },
     {
-      "title": "2025-12-19-epidemiological-alert-hantavirus-engfinal.pdf351.61 KB",
+      "title": "Epidemiological Alert Hantavirus Pulmonary Syndrome in Americas Region - 19 December 2025",
       "link": "https://www.paho.org/en/documents/epidemiological-alert-hantavirus-pulmonary-syndrome-americas-region-19-december-2025",
       "pubDate": "",
       "description": "",
@@ -169,13 +169,13 @@
       "source": "PAHO"
     }
   ],
-  "updated": "2026-07-08T23:13:47.047290Z",
+  "updated": "2026-07-09T03:51:00.588569Z",
   "count": 21,
   "sources": [
     "CDC EID: 0",
     "WHO DON: 0",
     "ECDC: 5",
-    "PAHO: 18"
+    "PAHO: 16"
   ],
   "errors": []
 }
