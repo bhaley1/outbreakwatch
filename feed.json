@@ -49,6 +49,14 @@
       "source": "PAHO"
     },
     {
+      "title": "Epidemiological Alert: Dermatophilosis by Dermatophilus congolensis - 9 July 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-dermatophilosis-dermatophilus-congolensis-9-july-2026",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
       "title": "Epidemiological Alert Seasonal Influenza and other respiratory viruses in the Southern Hemisphere - 1 July 2026",
       "link": "https://www.paho.org/en/documents/epidemiological-alert-seasonal-influenza-and-other-respiratory-viruses-southern-0",
       "pubDate": "",
@@ -159,17 +167,9 @@
       "description": "",
       "category": "human",
       "source": "PAHO"
-    },
-    {
-      "title": "Epidemiological Alert Hantavirus Pulmonary Syndrome in Americas Region - 19 December 2025",
-      "link": "https://www.paho.org/en/documents/epidemiological-alert-hantavirus-pulmonary-syndrome-americas-region-19-december-2025",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "PAHO"
     }
   ],
-  "updated": "2026-07-09T23:17:33.495031Z",
+  "updated": "2026-07-10T03:52:14.333550Z",
   "count": 21,
   "sources": [
     "CDC EID: 0",
