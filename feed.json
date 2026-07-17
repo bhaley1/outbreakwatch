@@ -1,6 +1,14 @@
 {
   "items": [
     {
+      "title": "Communicable disease threats report, 13 - 17 July 2026, week 29",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-13-17-july-2026-week-29",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
       "title": "Communicable disease threats report, 6 - 10 July 2026, week 28",
       "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-6-10-july-2026-week-28",
       "pubDate": "",
@@ -27,14 +35,6 @@
     {
       "title": "Communicable disease threats report, 13 - 18 June 2026, week 25",
       "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-13-18-june-2026-week-25",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 6 - 12 June 2026, week 24",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-6-12-june-2026-week-24",
       "pubDate": "",
       "description": "",
       "category": "human",
@@ -129,7 +129,7 @@
       "source": "PAHO"
     },
     {
-      "title": "2026-feb-27-phe-alertaagonistas-glp-1-eng1.pdf258.91 KB",
+      "title": "Epidemiological Alert: Misuse of GLP-1 receptor agonist medications and considerations for the Americas Region - 27 February 2026",
       "link": "https://www.paho.org/en/documents/epidemiological-alert-misuse-glp-1-receptor-agonist-medications-and-considerations",
       "pubDate": "",
       "description": "",
@@ -169,7 +169,7 @@
       "source": "PAHO"
     }
   ],
-  "updated": "2026-07-17T13:50:07.537899Z",
+  "updated": "2026-07-17T15:17:57.330056Z",
   "count": 21,
   "sources": [
     "CDC EID: 0",
