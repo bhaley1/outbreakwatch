@@ -1,8 +1,16 @@
 {
   "items": [
     {
-      "title": "Communicable disease threats report, 27 - 31 July 2026, week 31",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-27-31-july-2026-week-31",
+      "title": "Communicable disease threats report, 1 - 7 August 2026, week 32",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-1-7-august-2026-week-32",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
+      "title": "Communicable disease threats report, 25 - 31 July 2026, week 31",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-25-31-july-2026-week-31",
       "pubDate": "",
       "description": "",
       "category": "human",
@@ -17,8 +25,8 @@
       "source": "ECDC"
     },
     {
-      "title": "Communicable disease threats report, 13 - 17 July 2026, week 29",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-13-17-july-2026-week-29",
+      "title": "Communicable disease threats report, 11 - 17 July 2026, week 29",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-11-17-july-2026-week-29",
       "pubDate": "",
       "description": "",
       "category": "human",
@@ -27,14 +35,6 @@
     {
       "title": "Communicable disease threats report, 6 - 10 July 2026, week 28",
       "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-6-10-july-2026-week-28",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 27 June - 3 July 2026, week 27",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-27-june-3-july-2026-week-27",
       "pubDate": "",
       "description": "",
       "category": "human",
@@ -169,13 +169,14 @@
       "source": "PAHO"
     }
   ],
-  "updated": "2026-08-07T13:15:45.767870Z",
+  "updated": "2026-08-07T14:58:18.129542Z",
   "count": 21,
   "sources": [
     "CDC EID: 0",
-    "WHO DON: 0",
     "ECDC: 5",
     "PAHO: 16"
   ],
-  "errors": []
+  "errors": [
+    "WHO DON: HTTPSConnectionPool(host='www.who.int', port=443): Read timed out. (read timeout=25)"
+  ]
 }
