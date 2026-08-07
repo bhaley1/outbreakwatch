@@ -169,14 +169,13 @@
       "source": "PAHO"
     }
   ],
-  "updated": "2026-08-07T14:58:18.129542Z",
+  "updated": "2026-08-07T16:57:49.641975Z",
   "count": 21,
   "sources": [
     "CDC EID: 0",
+    "WHO DON: 0",
     "ECDC: 5",
     "PAHO: 16"
   ],
-  "errors": [
-    "WHO DON: HTTPSConnectionPool(host='www.who.int', port=443): Read timed out. (read timeout=25)"
-  ]
+  "errors": []
 }
