@@ -49,6 +49,14 @@
       "source": "PAHO"
     },
     {
+      "title": "Epidemiological Alert Measles in the Americas Region - 7 August 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-measles-americas-region-7-august-2026",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
       "title": "Epidemiological Alert: Dermatophilosis by Dermatophilus congolensis - 9 July 2026",
       "link": "https://www.paho.org/en/documents/epidemiological-alert-dermatophilosis-dermatophilus-congolensis-9-july-2026",
       "pubDate": "",
@@ -153,14 +161,6 @@
       "source": "PAHO"
     },
     {
-      "title": "Epidemiological Alert Measles in the Americas Region - 3 February 2026",
-      "link": "https://www.paho.org/en/documents/epidemiological-alert-measles-americas-region-3-february-2026",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "PAHO"
-    },
-    {
       "title": "Epidemiological Alert Simultaneous circulation of seasonal influenza and respiratory syncytial virus - 9 January 2026",
       "link": "https://www.paho.org/en/documents/epidemiological-alert-simultaneous-circulation-seasonal-influenza-and-respiratory",
       "pubDate": "",
@@ -169,13 +169,13 @@
       "source": "PAHO"
     }
   ],
-  "updated": "2026-08-08T01:59:25.443217Z",
+  "updated": "2026-08-08T03:40:26.629879Z",
   "count": 21,
   "sources": [
     "CDC EID: 0",
     "WHO DON: 0",
     "ECDC: 5",
-    "PAHO: 16"
+    "PAHO: 17"
   ],
   "errors": []
 }
