@@ -1,6 +1,14 @@
 {
   "items": [
     {
+      "title": "Communicable disease threats report, 8 - 14 August 2026, week 33",
+      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-8-14-august-2026-week-33",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "ECDC"
+    },
+    {
       "title": "Communicable disease threats report, 1 - 7 August 2026, week 32",
       "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-1-7-august-2026-week-32",
       "pubDate": "",
@@ -27,14 +35,6 @@
     {
       "title": "Communicable disease threats report, 11 - 17 July 2026, week 29",
       "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-11-17-july-2026-week-29",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 6 - 10 July 2026, week 28",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-6-10-july-2026-week-28",
       "pubDate": "",
       "description": "",
       "category": "human",
@@ -169,7 +169,7 @@
       "source": "PAHO"
     }
   ],
-  "updated": "2026-08-14T13:17:57.555323Z",
+  "updated": "2026-08-14T14:56:27.455702Z",
   "count": 21,
   "sources": [
     "CDC EID: 0",
