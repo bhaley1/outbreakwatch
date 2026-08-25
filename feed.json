@@ -1,46 +1,6 @@
 {
   "items": [
     {
-      "title": "Communicable disease threats report, 15 - 21 August 2026, week 34",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-15-21-august-2026-week-34",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 8 - 14 August 2026, week 33",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-8-14-august-2026-week-33",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 1 - 7 August 2026, week 32",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-1-7-august-2026-week-32",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 25 - 31 July 2026, week 31",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-25-31-july-2026-week-31",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
-      "title": "Communicable disease threats report, 18 - 24 July 2026, week 30",
-      "link": "https://www.ecdc.europa.eu/en/publications-data/communicable-disease-threats-report-18-24-july-2026-week-30",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "ECDC"
-    },
-    {
       "title": "Alerts and Epidemiologic Updates",
       "link": "https://www.paho.org/en/epidemiological-alerts-and-updates",
       "pubDate": "",
@@ -169,12 +129,12 @@
       "source": "PAHO"
     }
   ],
-  "updated": "2026-08-25T04:44:00.424113Z",
-  "count": 21,
+  "updated": "2026-08-25T06:56:15.291706Z",
+  "count": 16,
   "sources": [
     "CDC EID: 0",
     "WHO DON: 0",
-    "ECDC: 5",
+    "ECDC: 0",
     "PAHO: 17"
   ],
   "errors": []
