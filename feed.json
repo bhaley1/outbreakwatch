@@ -49,6 +49,14 @@
       "source": "PAHO"
     },
     {
+      "title": "Epidemiological Update Avian Influenza A(H5) in the Americas Region - 26 August 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-update-avian-influenza-ah5-americas-region-26-august-2026",
+      "pubDate": "",
+      "description": "",
+      "category": "animal",
+      "source": "PAHO"
+    },
+    {
       "title": "Epidemiological Alert Measles in the Americas Region - 7 August 2026",
       "link": "https://www.paho.org/en/documents/epidemiological-alert-measles-americas-region-7-august-2026",
       "pubDate": "",
@@ -159,17 +167,9 @@
       "description": "",
       "category": "human",
       "source": "PAHO"
-    },
-    {
-      "title": "Epidemiological Alert Simultaneous circulation of seasonal influenza and respiratory syncytial virus - 9 January 2026",
-      "link": "https://www.paho.org/en/documents/epidemiological-alert-simultaneous-circulation-seasonal-influenza-and-respiratory",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "PAHO"
     }
   ],
-  "updated": "2026-08-26T19:52:40.482376Z",
+  "updated": "2026-08-26T23:10:47.816500Z",
   "count": 21,
   "sources": [
     "CDC EID: 0",
