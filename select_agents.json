@@ -4,7 +4,7 @@
       "agent": "Ebola virus",
       "bsl_level": "BSL-4",
       "confidence": 65,
-      "date": "2026-09-27",
+      "date": "2026-09-28",
       "location": "Location not specified",
       "source": "PAHO",
       "link": "https://www.paho.org/en/documents/epidemiological-alert-ebola-disease-due-bundibugyo-virus-democratic-republic-congo-and",
@@ -16,18 +16,18 @@
       "agent": "Ebola virus",
       "bsl_level": "BSL-4",
       "confidence": 65,
-      "date": "2026-09-27",
+      "date": "2026-09-28",
       "location": "Location not specified",
       "source": "PAHO",
       "link": "https://www.paho.org/en/documents/epidemiological-alert-ebola-disease-due-bundibugyo-virus-democratic-republic-congo-and",
       "title": "Epidemiological Alert - Ebola Disease due to Bundibugyo virus in the Democratic Republic of the Cong"
     }
   ],
-  "updated": "2026-09-27T22:54:35.352053Z",
+  "updated": "2026-09-28T04:48:30.293305Z",
   "total_detections": 1,
   "active_count": 1,
   "metadata": {
-    "scan_date": "2026-09-27T22:54:35.352058",
+    "scan_date": "2026-09-28T04:48:30.293311",
     "scan_period_days": 30,
     "agents_monitored": {
       "bsl3": 30,
