@@ -49,6 +49,14 @@
       "source": "PAHO"
     },
     {
+      "title": "Epidemiological Alert: Myiasis caused by Cochliomyia hominivorax in the Americas Region, 16 October 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-myiasis-caused-cochliomyia-hominivorax-americas-region-16-october",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
       "title": "Epidemiological Update Avian Influenza A(H5) in the Americas Region - 26 August 2026",
       "link": "https://www.paho.org/en/documents/epidemiological-update-avian-influenza-ah5-americas-region-26-august-2026",
       "pubDate": "",
@@ -169,8 +177,8 @@
       "source": "PAHO"
     }
   ],
-  "updated": "2026-10-16T20:47:33.365803Z",
-  "count": 21,
+  "updated": "2026-10-17T00:14:21.371367Z",
+  "count": 22,
   "sources": [
     "CDC EID: 0",
     "WHO DON: 0",
