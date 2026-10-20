@@ -49,6 +49,14 @@
       "source": "PAHO"
     },
     {
+      "title": "Epidemiological Update: Dengue and Chikungunya in the Americas Region - 20 October 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-update-dengue-and-chikungunya-americas-region-20-october-2026",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
       "title": "Epidemiological Alert: Myiasis caused by Cochliomyia hominivorax in the Americas Region, 16 October 2026",
       "link": "https://www.paho.org/en/documents/epidemiological-alert-myiasis-caused-cochliomyia-hominivorax-americas-region-16-october",
       "pubDate": "",
@@ -167,17 +175,9 @@
       "description": "",
       "category": "human",
       "source": "PAHO"
-    },
-    {
-      "title": "Epidemiological alert Chikungunya - 10 February 2026",
-      "link": "https://www.paho.org/en/documents/epidemiological-alert-chikungunya-10-february-2026",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "PAHO"
     }
   ],
-  "updated": "2026-10-20T13:27:45.893616Z",
+  "updated": "2026-10-20T18:24:21.351735Z",
   "count": 22,
   "sources": [
     "CDC EID: 0",
