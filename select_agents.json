@@ -23,11 +23,11 @@
       "title": "Epidemiological Alert - Ebola Disease due to Bundibugyo virus in the Democratic Republic of the Cong"
     }
   ],
-  "updated": "2026-10-24T07:03:57.064529Z",
+  "updated": "2026-10-24T12:32:39.503779Z",
   "total_detections": 1,
   "active_count": 1,
   "metadata": {
-    "scan_date": "2026-10-24T07:03:57.064534",
+    "scan_date": "2026-10-24T12:32:39.503782",
     "scan_period_days": 30,
     "agents_monitored": {
       "bsl3": 30,
