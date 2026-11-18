@@ -49,6 +49,22 @@
       "source": "PAHO"
     },
     {
+      "title": "Epidemiological Alert: Collection and consumption of wild mushrooms in the Americas Region - 17 November 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-collection-and-consumption-wild-mushrooms-americas-region-17",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
+      "title": "Epidemiological Alert - Seasonal Influenza and Other Respiratory Viruses: Start of the Season in the Northern Hemisphere - 17 November 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-seasonal-influenza-and-other-respiratory-viruses-start-season",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
       "title": "Epidemiological Update: Dengue and Chikungunya in the Americas Region - 20 October 2026",
       "link": "https://www.paho.org/en/documents/epidemiological-update-dengue-and-chikungunya-americas-region-20-october-2026",
       "pubDate": "",
@@ -159,25 +175,9 @@
       "description": "",
       "category": "animal",
       "source": "PAHO"
-    },
-    {
-      "title": "Epidemiological Alert: Misuse of GLP-1 receptor agonist medications and considerations for the Americas Region - 27 February 2026",
-      "link": "https://www.paho.org/en/documents/epidemiological-alert-misuse-glp-1-receptor-agonist-medications-and-considerations",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "PAHO"
-    },
-    {
-      "title": "Epidemiological Update Dengue in the Americas Region - 18 February 2026",
-      "link": "https://www.paho.org/en/documents/epidemiological-update-dengue-americas-region-18-february-2026",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "PAHO"
     }
   ],
-  "updated": "2026-11-17T20:41:24.941711Z",
+  "updated": "2026-11-18T03:29:36.770530Z",
   "count": 22,
   "sources": [
     "CDC EID: 0",
