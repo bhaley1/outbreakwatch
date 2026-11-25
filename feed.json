@@ -49,6 +49,22 @@
       "source": "PAHO"
     },
     {
+      "title": "Epidemiological Alert - Mpox in the Americas Region - 24 November 2026",
+      "link": "https://www.paho.org/en/documents/epidemiological-alert-mpox-americas-region-24-november-2026",
+      "pubDate": "",
+      "description": "",
+      "category": "human",
+      "source": "PAHO"
+    },
+    {
+      "title": "Epiemiological Alert - Epidemiological Alert Avian Influenza A(H5N1) in the Americas Region - 24 November 2026",
+      "link": "https://www.paho.org/en/documents/epiemiological-alert-epidemiological-alert-avian-influenza-ah5n1-americas-region-24",
+      "pubDate": "",
+      "description": "",
+      "category": "animal",
+      "source": "PAHO"
+    },
+    {
       "title": "Epidemiological Alert: Collection and consumption of wild mushrooms in the Americas Region - 17 November 2026",
       "link": "https://www.paho.org/en/documents/epidemiological-alert-collection-and-consumption-wild-mushrooms-americas-region-17",
       "pubDate": "",
@@ -159,25 +175,9 @@
       "description": "",
       "category": "human",
       "source": "PAHO"
-    },
-    {
-      "title": "Epidemiological Alert: Yellow fever in the Americas Region - 13 March 2026.",
-      "link": "https://www.paho.org/en/documents/epidemiological-alert-yellow-fever-americas-region-13-march-2026",
-      "pubDate": "",
-      "description": "",
-      "category": "human",
-      "source": "PAHO"
-    },
-    {
-      "title": "Epidemiological Update - Avian Influenza A(H5N1) in the Americas Region - 11 March 2026",
-      "link": "https://www.paho.org/en/documents/epidemiological-update-avian-influenza-ah5n1-americas-region-11-march-2026",
-      "pubDate": "",
-      "description": "",
-      "category": "animal",
-      "source": "PAHO"
     }
   ],
-  "updated": "2026-11-25T02:06:48.942424Z",
+  "updated": "2026-11-25T14:03:03.930912Z",
   "count": 22,
   "sources": [
     "CDC EID: 0",
